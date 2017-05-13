@@ -11,6 +11,24 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+
+Route::get('/', 'FrontController@index')->name('home');
+Route::get('/shirts', 'FrontController@shirts')->name('shirts');
+Route::get('/shirt', 'FrontController@shirt')->name('shirt');
+
+
+Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
+
+	Route::get('/', function () {
+		return view('admin.index');
+	})->name('admin.index');
 });
+
+
+    Route::resource('product','ProductsController');
+    Route::resource('category','CategoriesController');
+
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
