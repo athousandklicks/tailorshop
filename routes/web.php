@@ -13,6 +13,18 @@
 
 
 Route::get('/', 'FrontController@index')->name('home');
+Route::get('/about', 'FrontController@about')->name('about');
+Route::get('/women', 'FrontController@women')->name('women');
+Route::get('/men', 'FrontController@men')->name('men');
+Route::get('/accessories', 'FrontController@accessories')->name('accessories');
+Route::get('/online_design', 'FrontController@online_design')->name('online_design');
+Route::get('/contact', 'FrontController@contact')->name('contact');
+Route::get('/user_login', 'FrontController@user_login')->name('user_login');
+
+
+
+
+
 Route::get('/shirts', 'FrontController@shirts')->name('shirts');
 Route::get('/shirt', 'FrontController@shirt')->name('shirt');
 
