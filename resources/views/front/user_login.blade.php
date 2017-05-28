@@ -8,7 +8,6 @@
 		<div class="breadcrumbs haslayout">
 			<div class="container">
 				<span class="page-title"></span>
-				
 			</div>
 		</div>
 		<!-- BreadCrumbs End -->
