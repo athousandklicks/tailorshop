@@ -2195,7 +2195,8 @@ figure a img{
 	width:100%;
 	height:auto;
 }
-#content .products{ padding:80px 0 0;}
+#content .admin_products{ padding: 0px 0 0;}
+#content .products{ padding: 80px 0 0;}
 .products-listing .product .detail{padding:30px 30px 30px;}
 .products-listing .product .detail span.title{ float:left;}
 .products-listing .product .detail .stars{

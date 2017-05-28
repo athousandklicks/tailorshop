@@ -61,8 +61,8 @@
                         </div>
                     </div>
                     <div id="product-slider" class="product-slider haslayout">
-                            @forelse($shirts->chunk(4) as $chunk)
-                            @foreach($chunk as $shirt)
+                       @forelse($shirts->chunk(4) as $chunk)
+                            @foreach($chunk as $shirt)  
                         <div class="item product">
                             <div class="product-img">
                                 <img src="images/img2.jpg" alt="image description">
