@@ -1,30 +1,86 @@
 @extends('admin.layout.admin')
 
+@section('title', '| Dashboard')
+
 @section('content')
 
-    <h3>Products</h3>
 
-<ul>
-    @forelse($products as $product)
-    <li>
-        <h4>Name of product:{{$product->name}}</h4>
+<!-- BreadCrumbs Start -->
+<div class="breadcrumbs haslayout">
+  <div class="container">
+  </div>
+</div>
+<!-- BreadCrumbs End -->
 
-{{--
-        <h4>Category:{{count($product->category)?$product->category->name:"N/A"}}</h4>
-        <form action="{{route('product.destroy',$product->id)}}"  method="POST">
-           {{csrf_field()}}
-           {{method_field('DELETE')}}
-           <input class="btn btn-sm btn-danger" type="submit" value="Delete">
-         </form>
---}}
-    </li>
 
-        @empty
 
-        <h3>No products</h3>
+<!-- Main Start -->
+<div id="main" class="haslayout padding-section products-listing">
+  <div class="container">
+    <div class="row">
 
-    @endforelse
-</ul>
+
+      <aside id="sidebar" class="col-lg-3 col-md-3 col-sm-12 col-sx-12">
+        @include('admin.layout.includes.sidenav')
+      </aside>
+
+      <div class="col-lg-9 col-md-9 col-sm-12 pull-right">
+        <div id="content" class="haslayout">
+
+          <div class="admin_products haslayout">
+            <div class="row">
+
+              <table class="table cart-table">
+                <thead>
+                  <tr>
+                    <th>Name/Description</th>
+                    <th>Unit Price</th>
+                    <th>Stock Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                 @forelse($products as $product)
+                 <tr>
+                  <td data-title="Product Name">
+                    <img src="images/shop/img6.jpg" width="90" height="90" alt="image description">
+                    <em>{{$product->name}}</em>
+                  </td>
+                  <td data-title="Unit Price">$ {{$product->price}}</td>
+                  <td data-title="Stock Status">{{$product->stock_status >= 1 ? "In Stock": "Out of Stock"}} ({{$product->stock_status}})</td>
+                  <td data-title="Remove Item">
+                  <i class="btn-delete-item"><a href="#" class="fa fa-remove"></a></i>
+                  <i class="btn-delete-item"><a href="#" class="fa fa-edit"></a></i>
+                  <i class="btn-delete-item"><a href="#" class="fa fa-eye"></a></i>
+
+                  </td>
+                </tr>
+                @empty
+                <tr>
+                  <td data-title="Unit Price"><h3>No products</h3></td>
+
+                </tr>
+                @endforelse
+
+              </tbody>
+            </table>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+
+
+
+  </div>
+</div>
+</div>
+
+<!-- Main End -->
 
 
 @endsection

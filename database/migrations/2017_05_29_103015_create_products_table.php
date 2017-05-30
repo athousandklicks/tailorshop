@@ -17,11 +17,21 @@ class CreateProductsTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('description');
-            $table->string('size')->nullable();
-            $table->string('image');
+            $table->float('price');
             $table->integer('category_id');
+            $table->integer('stock_status');
+            $table->string('small');
+            $table->string('medium');
+            $table->string('large');
+            $table->string('xlarge');
+            $table->string('xxlarge');
+            $table->string('front_image');
+            $table->string('back_image');
+            $table->string('left_image');
+            $table->string('right_image');
+            $table->string('detailed_image');
             $table->timestamps();
-        });
+            });
     }
 
     /**

@@ -17,8 +17,8 @@
                                 </div>
                                 <div id="collapseOne" class="panel-collapse collapse">
                                     <div class="panel-body">
-                                        <label><em><a href="#">Add Product</a></em></label>
-                                        <label><em><a href="#">View Products (356)</a></em></label>
+                                        <label><em><a href="{{route('product.create')}}">Add Product</a></em></label>
+                                        <label><em><a href="{{route('product.index')}}">View Products (356)</a></em></label>
                                     </div>
                                 </div>
                             </div>

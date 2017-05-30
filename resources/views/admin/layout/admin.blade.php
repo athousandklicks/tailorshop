@@ -11,7 +11,7 @@
     <div id="wrapper">
 
         <header id="header" class="haslayout">
-            @include('admin.layout.includes.header')
+           @include('admin.layout.includes.header') 
         </header>
 
         <div class="banner haslayout">
@@ -23,13 +23,13 @@
         </div>
 
         <footer id="footer" class="footer haslayout">
-            @include('partials._footer')
+            @include('admin.layout.includes.footer')
         </footer>
 
     </div>
     <!-- Wrapper End -->
 
-        @include('partials._javascript')
+        @include('admin.layout.includes.javascript')
 
         @yield('scripts')
         

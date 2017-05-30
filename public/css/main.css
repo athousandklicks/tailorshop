@@ -896,6 +896,7 @@ table.cart-table tbody td .btn-delete-item {float: right;}
 	color: #fdb62d;
 	display: block;
 	text-align: center;
+	margin-right: 5px;
 	padding:0 4px 0 5px;
 }
 /* =============================================
@@ -3320,13 +3321,13 @@ table.cart-table tfoot tr td{ width:50%;}
 	background:none;
 	border:1px solid #bfa16b;
 }
-.login-form .dateofbirth.dd {padding: 0 10px 0 0;}
-.login-form .dateofbirth {
+.dateofbirth.dd {padding: 0 10px 0 0;}
+.dateofbirth {
 	float: left;
-	width: 25%;
+	width: 18%;
 	padding:0 10px
 }
 .login-form .dateofbirth:last-child {
-	width: 50%;
+	width: 40%;
 	padding: 0 0 0 10px;
 }

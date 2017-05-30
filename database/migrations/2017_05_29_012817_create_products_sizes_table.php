@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddPriceToProducts extends Migration
+class CreateProductsSizesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,10 @@ class AddPriceToProducts extends Migration
      */
     public function up()
     {
-        Schema::table('products', function (Blueprint $table) {
-            $table->float('price')->after('size');
+        Schema::create('sizes', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('sizes');
+            $table->timestamps();
         });
     }
 
@@ -25,8 +27,6 @@ class AddPriceToProducts extends Migration
      */
     public function down()
     {
-        Schema::table('products', function (Blueprint $table) {
-            Schema::dropIfExists('price');
-        });
+        Schema::dropIfExists('sizes');
     }
 }

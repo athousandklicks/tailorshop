@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Category;
 use App\Product;
+use App\Size;
+use Image;
 
 class ProductsController extends Controller
 {
@@ -15,8 +17,9 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        $products=Product::all();
-        return view('admin.product.index',compact('products'));
+      $products=Product::all();
+
+      return view('admin.product.index',compact('products'));
     }
 
     /**
@@ -26,8 +29,8 @@ class ProductsController extends Controller
      */
     public function create()
     {
-        $categories=Category::pluck('name','id');
-        return view('admin.product.create',compact('categories'));
+      $categories=Category::pluck('name','id');
+      return view('admin.product.create',compact('categories'));
     }
 
     /**
@@ -38,29 +41,80 @@ class ProductsController extends Controller
      */
     public function store(Request $request)
     {
-
-       $formInput=$request->except('image');
-
+//dd($request);
 //        validation
-       $this->validate($request,[
-        'name'=>'required',
-        'price'=>'required',
-        'size'=>'required',
-        'image'=>'image|mimes:png,jpg,jpeg|max:10000'
-        ]);
+     $this->validate($request,[
+      'name'=>'required|max:255',
+      'description'=>'required|max:1000',
+      'price'=>'required',
+      'category_id'=>'required|integer',
+      'small'=>'integer',
+      'medium'=>'integer',
+      'large'=>'integer',
+      'xlarge'=>'integer',
+      'xxlarge'=>'integer',
+      'front_image'=>'image|mimes:png,jpg,jpeg|max:10000',
+      'back_image'=>'image|mimes:png,jpg,jpeg|max:10000',
+      'left_image'=>'image|mimes:png,jpg,jpeg|max:10000',
+      'right_image'=>'image|mimes:png,jpg,jpeg|max:10000',
+      'detailed_image'=>'image|mimes:png,jpg,jpeg|max:10000'
 
-// image upload
-       $image=$request->image;
-       if($image){
-        $imageName=$image->getClientOriginalName();
-        $image->move('images',$imageName);
-        $formInput['image']=$imageName;
+      ]);
+
+        // store in the database
+     $product = new Product;
+
+     $product->name = $request->name;
+     $product->description = $request->description;
+     $product->price = $request->price;
+     $product->category_id = $request->category_id;
+     $product->small = $request->small;
+     $product->medium = $request->medium;
+     $product->large = $request->large;
+     $product->xlarge = $request->xlarge;
+     $product->xxlarge = $request->xxlarge;
+
+
+     $front_image=$request->front_image;
+     if($front_image){
+      $imageName=$front_image->getClientOriginalName();
+      $front_image->move('images/products/'.preg_replace('/\s+/', '_', $request->name) ,$imageName);
+      $product['front_image']=$imageName;
     }
 
-    Product::create($formInput);
+    $back_image=$request->back_image;
+    if($back_image){
+      $imageName=$back_image->getClientOriginalName();
+      $back_image->move('images/products/'.preg_replace('/\s+/', '_', $request->name) ,$imageName);
+      $product['back_image']=$imageName;
+    }
 
+    $left_image=$request->left_image;
+    if($left_image){
+      $imageName=$left_image->getClientOriginalName();
+      $left_image->move('images/products/'.preg_replace('/\s+/', '_', $request->name) ,$imageName);
+      $product['left_image']=$imageName;
+    }
+
+    $right_image=$request->right_image;
+    if($right_image){
+      $imageName=$right_image->getClientOriginalName();
+      $right_image->move('images/products/'.preg_replace('/\s+/', '_', $request->name) ,$imageName);
+      $product['right_image']=$imageName;
+    }
+
+    $detailed_image=$request->detailed_image;
+    if($detailed_image){
+      $imageName=$detailed_image->getClientOriginalName();
+      $detailed_image->move('images/products/'.preg_replace('/\s+/', '_', $request->name) ,$imageName);
+      $product['detailed_image']=$imageName;
+    }
+
+    
+
+    $product->save();
     return redirect()->route('admin.index');
-}
+  }
 
     /**
      * Display the specified resource.
@@ -106,4 +160,5 @@ class ProductsController extends Controller
     {
         //
     }
-}
+
+  }
