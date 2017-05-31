@@ -19,7 +19,6 @@ class CreateProductsTable extends Migration
             $table->string('description');
             $table->float('price');
             $table->integer('category_id');
-            $table->integer('stock_status');
             $table->string('small');
             $table->string('medium');
             $table->string('large');

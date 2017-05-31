@@ -3,9 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Category;
+use Session;
 
 class CategoriesController extends Controller
 {
+
+        public function __construct() {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -13,7 +19,8 @@ class CategoriesController extends Controller
      */
     public function index()
     {
-        //
+        $categories = Category::all();
+        return view('admin.category.index',compact('categories'));
     }
 
     /**
@@ -34,7 +41,19 @@ class CategoriesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+                // Save a new category and then redirect back to index
+        $this->validate($request, array(
+            'name' => 'required|max:255'
+            ));
+
+        $category = new Category;
+
+        $category->name = $request->name;
+        $category->save();
+
+        Session::flash('success', 'New Category has been created');
+
+        return redirect()->route('category.index');
     }
 
     /**
@@ -56,7 +75,8 @@ class CategoriesController extends Controller
      */
     public function edit($id)
     {
-        //
+        $categories = Category::find($id);
+        return view('admin.category.edit',compact('categories'));
     }
 
     /**
@@ -68,8 +88,22 @@ class CategoriesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $categories = Category::find($id);
+
+            $this->validate($request, array(
+            'name' => 'required|max:255'
+            ));
+
+
+            $categories -> name = $request->input('name');
+
+            $categories -> save(); //save to the database
+
+        Session::flash('success','Category successfully updated'); //
+
+        return redirect()->route('category.index');
     }
+    
 
     /**
      * Remove the specified resource from storage.
@@ -79,6 +113,13 @@ class CategoriesController extends Controller
      */
     public function destroy($id)
     {
-        //
+                //find the item to delete
+        $categories = Category::find($id);
+
+        $categories->delete();
+
+        Session::flash('success','Category successfully deleted'); //import use Session;
+
+        return redirect()->route('category.index');
     }
 }

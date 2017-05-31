@@ -51,7 +51,7 @@
 
                         <strong class="logo">
                         <a href="{{route('admin.index')}}">
-                                <img src="images/logo.png" alt="image description">
+                                <img src="/images/logo.png" alt="image description">
                             </a>
                         </strong>
                     </div>

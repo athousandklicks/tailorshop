@@ -38,7 +38,9 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
 
 
     Route::resource('product','ProductsController');
-    Route::resource('category','CategoriesController');
+    Route::resource('category','CategoriesController', ['except' => ['create']]);
+    Route::resource('colour','ColoursController', ['except' => ['create']]);
+
 
 
 Auth::routes();

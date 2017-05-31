@@ -409,7 +409,7 @@ button.close span{
 }
 .my-account p{margin:0 0 20px;}
 .theme-btn{
-	width:168px;
+	width:100%;
 	display:block;
 	border:1px solid;
 	text-align:center;
@@ -895,6 +895,14 @@ table.cart-table tbody td .btn-delete-item {float: right;}
 	border: 1px solid #bfa16b;
 	color: #fdb62d;
 	display: block;
+	text-align: center;
+	margin-right: 5px;
+	padding:0 4px 0 5px;
+}
+
+.btn-action {
+	border: 1px solid #bfa16b;
+	color: #fdb62d;
 	text-align: center;
 	margin-right: 5px;
 	padding:0 4px 0 5px;
@@ -2470,7 +2478,7 @@ product-slider{ position:relative;}
 	text-transform:capitalize;
 	padding:3px 13px 3px 0;
 	border-radius:0;
-	width:50px;
+	width:100px;
 	text-align:left;
 }
 .product-color ul,
@@ -3225,7 +3233,27 @@ table.cart-table tfoot tr td{ width:50%;}
 .shop-form fieldset .cart-foot .coupon{
 	float:left;
 	padding-bottom:25px;
+	margin-bottom: 20px;
 }
+.coupon{
+	float:left;
+	padding-bottom:25px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.category-edit{
+	width:100%;
+	float:left;
+	border-width:1px;
+	line-height:38px;
+	height:38px;
+	background:none;
+	border:1px solid #e5e5e5;
+	margin-top:10px;
+	margin-bottom: 10px;
+}
+
 .shop-form fieldset .cart-foot .coupon input{
 	width:200px;
 	float:left;

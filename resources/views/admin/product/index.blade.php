@@ -42,17 +42,23 @@
                 <tbody>
 
                  @forelse($products as $product)
+                 @php 
+                      $stock_status = $product->small + $product->large + $product->medium + $product->xlarge + $product->xxlarge;
+                 @endphp
+
                  <tr>
                   <td data-title="Product Name">
-                    <img src="images/shop/img6.jpg" width="90" height="90" alt="image description">
+                    <img src="images/products/{{preg_replace('/\s+/', '_', $product->name)}}/{{$product->front_image}}" width="90" height="90" alt="image description">
                     <em>{{$product->name}}</em>
                   </td>
                   <td data-title="Unit Price">$ {{$product->price}}</td>
-                  <td data-title="Stock Status">{{$product->stock_status >= 1 ? "In Stock": "Out of Stock"}} ({{$product->stock_status}})</td>
+                  <td data-title="Stock Status">{{$stock_status
+                   >= 1 ? "In Stock": "Out of Stock"}} ({{$stock_status}})</td>
+
                   <td data-title="Remove Item">
-                  <i class="btn-delete-item"><a href="#" class="fa fa-remove"></a></i>
-                  <i class="btn-delete-item"><a href="#" class="fa fa-edit"></a></i>
-                  <i class="btn-delete-item"><a href="#" class="fa fa-eye"></a></i>
+                  <i class="btn-delete-item"><a href="{{route('product.destroy', $product->id)}}" class="fa fa-remove"></a></i>
+                  <i class="btn-delete-item"><a href="{{route('product.edit', $product->id)}}" class="fa fa-edit"></a></i>
+                  <i class="btn-delete-item"><a href="{{route('product.show', $product->id)}}" class="fa fa-eye"></a></i>
 
                   </td>
                 </tr>

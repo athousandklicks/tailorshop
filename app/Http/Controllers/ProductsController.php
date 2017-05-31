@@ -124,7 +124,8 @@ class ProductsController extends Controller
      */
     public function show($id)
     {
-        //
+      $products=Product::find($id);
+      return view('admin.product.product-details', compact('products'));
     }
 
     /**

@@ -2,13 +2,13 @@
 			<div class="brands haslayout padding-section">
 				<div class="container">
 					<div id="brand-slider" class="brand-slider">
-						<div class="item"><img src="images/brands/img1.jpg" alt="image description"></div>
-						<div class="item"><img src="images/brands/img2.jpg" alt="image description"></div>
-						<div class="item"><img src="images/brands/img3.jpg" alt="image description"></div>
-						<div class="item"><img src="images/brands/img4.jpg" alt="image description"></div>
-						<div class="item"><img src="images/brands/img5.jpg" alt="image description"></div>
-						<div class="item"><img src="images/brands/img1.jpg" alt="image description"></div>
-						<div class="item"><img src="images/brands/img2.jpg" alt="image description"></div>
+						<div class="item"><img src="/images/brands/img1.jpg" alt="image description"></div>
+						<div class="item"><img src="/images/brands/img2.jpg" alt="image description"></div>
+						<div class="item"><img src="/images/brands/img3.jpg" alt="image description"></div>
+						<div class="item"><img src="/images/brands/img4.jpg" alt="image description"></div>
+						<div class="item"><img src="/images/brands/img5.jpg" alt="image description"></div>
+						<div class="item"><img src="/images/brands/img1.jpg" alt="image description"></div>
+						<div class="item"><img src="/images/brands/img2.jpg" alt="image description"></div>
 					</div>
 				</div>
 			</div>
@@ -24,7 +24,7 @@
 						<div class="row">
 							<strong class="logo">
 								<a href="index.html">
-									<img src="images/logo2.png" alt="image description">
+									<img src="/images/logo2.png" alt="image description">
 								</a>
 							</strong>
 							<div class="description">

@@ -149,9 +149,7 @@ button.close,
 	color:#d3d3d3;
 }
 .product-size ul li.xxl a{border-color:#484848;}
-.product-color ul li a{background:#5c9acd;}
-.product-color ul li:nth-child(2) a{background:#c249a6;}
-.product-color ul li:nth-child(3) a{background:#9db543;}
+
 .product-size ul li.l a,
 .product-size ul li.xl a{border-color:#f44029;}
 #sync2 .item img,
