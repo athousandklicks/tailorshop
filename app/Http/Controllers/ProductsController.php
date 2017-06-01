@@ -9,6 +9,7 @@ use App\Size;
 use Image;
 use App\Colour;
 
+
 class ProductsController extends Controller
 {
     /**
@@ -32,7 +33,8 @@ class ProductsController extends Controller
     {
       $categories=Category::pluck('name','id');
       $colours = Colour::all();
-      return view('admin.product.create',compact('categories', 'colours'));
+      $sizes = Size::all();
+      return view('admin.product.create',compact('categories', 'colours', 'sizes'));
     }
 
     /**

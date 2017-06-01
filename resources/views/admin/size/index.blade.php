@@ -1,6 +1,6 @@
 @extends('admin.layout.admin')
 
-@section('title', '| Add Product Category')
+@section('title', '| Add Product Sizes')
 
 @section('content')
 
@@ -11,12 +11,6 @@
   </div>
 </div>
 <!-- BreadCrumbs End -->
-
-
-
-
-
-
 
 <!-- Main Start -->
 <div id="main" class="haslayout padding-section products-listing product-page">
@@ -33,26 +27,26 @@
         <div id="content" class="haslayout">
           <div class="product-detail haslayout">
             <div class="row">
-              <h3>Categories</h3>
+              <h3>Product Sizes</h3>
               <table class="table">
                 <thead>
                   <tr>
                     <th>#</th>
-                    <th>Name</th>
+                    <th>Size Names</th>
                     <th>Edit</th>
                     <th>Delete</th>
                   </tr>
                 </thead>
 
                 <tbody>
-                 @foreach ($categories as $category)               
+                 @foreach ($sizes as $size)               
                  <tr>
-                  <td>{{ $category->id }}</td>
-                  <td>{{ $category->name }}</td>
+                  <td>{{ $size->id }}</td>
+                  <td>{{ $size->sizes }}</td>
                   <td>
-                    <i class="btn-action"><a href="{{route('category.edit', $category->id)}}" class="fa fa-edit"></a></i>
+                    <i class="btn-action"><a href="{{route('size.edit', $size->id)}}" class="fa fa-edit"></a></i>
                   </td>
-                  <td>{!!Form::open(['route' => ['category.destroy', $category->id], 'method' => 'DELETE', 'onsubmit' => 'return ConfirmDelete()'])
+                  <td>{!!Form::open(['route' => ['size.destroy', $size->id], 'method' => 'DELETE', 'onsubmit' => 'return ConfirmDelete()'])
                     !!}
 
                     {!! Form::button('<i class="fa fa-trash-o"></i>', ['type' => 'submit', 'class' => 'btn-action', ]) 
@@ -74,11 +68,16 @@
     <div class="col-sm-3 col-xs-6 product-description">
 
       <div class="well">
-        {!! Form::open(['route' => 'category.store', 'method' => 'POST']) !!}
-        <h4>New Category</h4>
-        {{ Form::text('name', null, ['class' => 'form-control coupon', 'placeholder'=>'Enter Category Name']) }}
-        {{ Form::submit('Create New Category', ['class' => 'theme-btn btn-small']) }}
-        {!! Form::close() !!}
+        {!! Form::open(['route' => 'size.store', 'method' => 'POST']) !!}
+        <h4>New Size</h4>
+        {{ Form::text('sizes', null, ['class' => 'form-control coupon', 'placeholder'=>'Enter Size']) }}
+        {{ Form::submit('Create New Size', ['class' => 'theme-btn btn-small']) }}
+        {!! Form::close() !!}</br>
+        <h6>Please Enter (S) => Small</h6>
+        <h6>Please Enter (M) => Medium</h6>
+        <h6>Please Enter (L) => Large</h6>
+        <h6>Please Enter (XL) => XLarge</h6>
+        <h6>Please Enter (XXL) => 2XLarge</h6>
       </div>
     </div>
   </div>

@@ -67,8 +67,10 @@
                                 <div class="panel-body">
                                     <label><em><a href="{{route('category.index')}}">Add Product Categories</a></em>
                                     </label> 
-                                    <label><em><a href="{{route('colour.index')}}">Add Product Colours</a></em>
-                                    </label> 
+                                    <label><em><a href="{{route('size.index')}}">Add Product Sizes</a></em>
+                                    </label>
+                                  <!--  <label><em><a href="{{--route('colour.index')--}}">Add Product Colours</a></em>
+                                    </label> -->
 
 
                                 </div>

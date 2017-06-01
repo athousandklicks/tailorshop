@@ -1,6 +1,6 @@
 @extends('admin.layout.admin')
 
-@section('title', '| Dashboard')
+@section('title', '| Dashboard - Create Product')
 
 @section('stylesheet')
 {!!Html::style('/css/select2.min.css')!!}
@@ -64,13 +64,30 @@
                 {{Form::select('category_id', $categories, null, ['class' => 'form-control', 'placeholder'=>'Select Product Category'])}}
               </div>
             </div>
-
-            {{ Form::label('colours', 'Choose Colours (Select Multiple Colours)') }}
-            <select class="form-control select2-multi" name="colours[]" multiple="multiple">
-              @foreach($colours as $colour)
-              <option value='{{ $colour->id }}'>{{ $colour->name }}</option>
-              @endforeach
-            </select>
+<!--
+{{--
+            <div class="row">
+              <div class="form-group col-sm-9 col-xs-12">
+              {{ Form::label('sizes', 'Choose Sizes * (Select Multiple Sizes)') }}
+                <select class="form-control sizes" name="sizes[]" multiple="multiple">
+                  @foreach($sizes as $size)
+                  <option value='{{ $size->id }}'>{{ $size->sizes }}</option>
+                  @endforeach
+                </select>
+              </div>
+            </div> 
+      --}}
+-->
+            <div class="row">
+              <div class="form-group col-sm-9 col-xs-12">
+              {{ Form::label('colours', 'Choose Colours * (Select Multiple Colours)') }}
+                <select class="form-control colours" name="colours[]" multiple="multiple">
+                  @foreach($colours as $colour)
+                  <option value='{{ $colour->id }}'>{{ $colour->name }}</option>
+                  @endforeach
+                </select>
+              </div>
+            </div>
 
             <hr>
 
@@ -168,6 +185,11 @@
 {!! Html::script('/js/select2.min.js')!!}
 
 <script type="text/javascript">
-  $('.select2-multi').select2();
+  $('.colours').select2();
 </script>
+
+<script type="text/javascript">
+  $('.sizes').select2();
+</script>
+
 @endsection

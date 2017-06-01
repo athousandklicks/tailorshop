@@ -1,6 +1,6 @@
 @extends('admin.layout.admin')
 
-@section('title', '| Edit Colours')
+@section('title', '| Dashboard - Edit Sizes')
 
 @section('content')
 
@@ -33,13 +33,12 @@
         <div id="content" class="haslayout">
           <div class="product-detail haslayout">
             <div class="row">
-              <h3>Edit Colours</h3>
+              <h3>Edit Sizes</h3>
 
 
-                  {!! Form::model($colours, ['route' => ['colour.update', $colours->id], 'method' => 'PUT']) !!}
+                  {!! Form::model($sizes, ['route' => ['size.update', $sizes->id], 'method' => 'PUT']) !!}
 
-                  {{ Form::text('name', null, ["class" => 'form-control category-edit']) }}
-                  {{ Form::text('hexvalue', null, ["class" => 'form-control category-edit']) }}
+                  {{ Form::text('sizes', null, ["class" => 'form-control category-edit']) }}
 
                   {{ Form::submit('Save Changes', ['class' => 'theme-btn btn-small']) }}
 
@@ -56,11 +55,16 @@
 
         <div class="well">
           {!! Form::open(['route' => 'colour.store', 'method' => 'POST']) !!}
-          <h4>New Colour</h4>
-          {{ Form::text('name', null, ['class' => 'form-control coupon', 'placeholder'=>'Enter Colour Name']) }}
-          {{ Form::text('hexvalue', null, ['class' => 'form-control coupon', 'placeholder'=>'Enter Hexadecimal Value']) }}
-          {{ Form::submit('Create New Colour', ['class' => 'theme-btn btn-small']) }}
-          {!! Form::close() !!}
+          <h4>New Size</h4>
+          {{ Form::text('sizes', null, ['class' => 'form-control coupon', 'placeholder'=>'Enter Size']) }}
+
+          {{ Form::submit('Create New Size', ['class' => 'theme-btn btn-small']) }}
+          {!! Form::close() !!}</br>
+        <h6>Please Enter (S) => Small</h6>
+        <h6>Please Enter (M) => Medium</h6>
+        <h6>Please Enter (L) => Large</h6>
+        <h6>Please Enter (XL) => XLarge</h6>
+        <h6>Please Enter (XXL) => 2XLarge</h6>
         </div>
       </div>
     </div>
