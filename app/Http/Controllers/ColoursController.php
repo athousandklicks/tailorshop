@@ -3,9 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Colour;
+use Session;
 
 class ColoursController extends Controller
 {
+
+    public function __construct() {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -13,7 +19,8 @@ class ColoursController extends Controller
      */
     public function index()
     {
-        //
+        $colours = Colour::all();
+        return view('admin.colour.index',compact('colours'));
     }
 
     /**
@@ -34,7 +41,21 @@ class ColoursController extends Controller
      */
     public function store(Request $request)
     {
-        //
+                        // Save a new category and then redirect back to index
+        $this->validate($request, array(
+            'name' => 'required|max:255',
+            'hexvalue' => 'required|max:255'
+            ));
+
+        $colours = new Colour;
+
+        $colours->name = $request->name;
+        $colours->hexvalue = $request->hexvalue;
+        $colours->save();
+
+        Session::flash('success', 'New Colour has been created');
+
+        return redirect()->route('colour.index');
     }
 
     /**
@@ -56,7 +77,8 @@ class ColoursController extends Controller
      */
     public function edit($id)
     {
-        //
+        $colours = Colour::find($id);
+        return view('admin.colour.edit',compact('colours'));
     }
 
     /**
@@ -68,7 +90,22 @@ class ColoursController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+                $colours = Colour::find($id);
+
+            $this->validate($request, array(
+            'name' => 'required|max:255',
+            'hexvalue' => 'required|max:255'
+            ));
+
+
+            $colours -> name = $request->input('name');
+            $colours -> hexvalue = $request->input('hexvalue');
+
+            $colours -> save(); //save to the database
+
+        Session::flash('success','Colour successfully updated'); //
+
+        return redirect()->route('colour.index');
     }
 
     /**
@@ -79,6 +116,12 @@ class ColoursController extends Controller
      */
     public function destroy($id)
     {
-        //
+                $colours = Colour::find($id);
+
+        $colours->delete();
+
+        Session::flash('success','Colour successfully deleted'); //import use Session;
+
+        return redirect()->route('colour.index');
     }
 }

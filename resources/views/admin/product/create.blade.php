@@ -57,12 +57,21 @@
                 {{Form::text('price', null, ['class' => 'form-control', 'placeholder'=>'Enter Product Unit Price'])}}
               </div>
             </div>
+
             <div class="row">
               <div class="form-group col-sm-9 col-xs-12">
                 {{Form::label('category_id', 'Product Category *')}}
                 {{Form::select('category_id', $categories, null, ['class' => 'form-control', 'placeholder'=>'Select Product Category'])}}
               </div>
             </div>
+
+            {{ Form::label('colours', 'Choose Colours (Select Multiple Colours)') }}
+            <select class="form-control select2-multi" name="colours[]" multiple="multiple">
+              @foreach($colours as $colour)
+              <option value='{{ $colour->id }}'>{{ $colour->name }}</option>
+              @endforeach
+            </select>
+
             <hr>
 
             <div class="row">
@@ -75,7 +84,7 @@
             <div class="row">
               <div class="form-group col-sm-9 col-xs-12">
                 <div class="dateofbirth">
-                
+
                   {{Form::text('small', null, ['class' => 'form-control', 'placeholder'=>'Small'])}}
                 </div>
                 <div class="dateofbirth">

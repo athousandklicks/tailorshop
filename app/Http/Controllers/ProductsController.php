@@ -7,6 +7,7 @@ use App\Category;
 use App\Product;
 use App\Size;
 use Image;
+use App\Colour;
 
 class ProductsController extends Controller
 {
@@ -30,7 +31,8 @@ class ProductsController extends Controller
     public function create()
     {
       $categories=Category::pluck('name','id');
-      return view('admin.product.create',compact('categories'));
+      $colours = Colour::all();
+      return view('admin.product.create',compact('categories', 'colours'));
     }
 
     /**
@@ -113,6 +115,10 @@ class ProductsController extends Controller
     
 
     $product->save();
+
+//connect to products to colours in a many to many relationship using this next line of sync
+    $product->colours()->sync($request->colours, false);
+
     return redirect()->route('admin.index');
   }
 

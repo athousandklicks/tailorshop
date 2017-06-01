@@ -40,30 +40,36 @@
                   <div id="sync1">
                     <div class="item">
                       <a class="prettyPhoto" data-rel="prettyPhoto[product]" href="/images/products/{{preg_replace('/\s+/', '_', $products->name)}}/{{$products->front_image}}">
-                        <img src="/images/products/{{preg_replace('/\s+/', '_', $products->name)}}/{{$products->front_image}}" alt="image description">
+                        <img src="/images/products/{{preg_replace('/\s+/', '_', $products->name)}}/{{$products->front_image}}" alt="The Tailor Shop">
                       </a>
                     </div>
                     <div class="item">
                       <a class="prettyPhoto" data-rel="prettyPhoto[product]" href="/images/products/{{preg_replace('/\s+/', '_', $products->name)}}/{{$products->back_image}}">
-                        <img src="/images/products/{{preg_replace('/\s+/', '_', $products->name)}}/{{$products->back_image}}" alt="image description">
+                        <img src="/images/products/{{preg_replace('/\s+/', '_', $products->name)}}/{{$products->back_image}}" alt="The Tailor Shop">
                       </a>
                     </div>
                     <div class="item">
                       <a class="prettyPhoto" data-rel="prettyPhoto[product]" href="/images/products/{{preg_replace('/\s+/', '_', $products->name)}}/{{$products->left_image}}">
-                        <img src="/images/products/{{preg_replace('/\s+/', '_', $products->name)}}/{{$products->left_image}}" alt="image description">
+                        <img src="/images/products/{{preg_replace('/\s+/', '_', $products->name)}}/{{$products->left_image}}" alt="The Tailor Shop">
                       </a>
                     </div>
                     <div class="item">
                       <a class="prettyPhoto" data-rel="prettyPhoto[product]" href="/images/products/{{preg_replace('/\s+/', '_', $products->name)}}/{{$products->right_image}}">
-                        <img src="/images/products/{{preg_replace('/\s+/', '_', $products->name)}}/{{$products->right_image}}" alt="image description">
+                        <img src="/images/products/{{preg_replace('/\s+/', '_', $products->name)}}/{{$products->right_image}}" alt="The Tailor Shop">
+                      </a>
+                    </div>
+                    <div class="item">
+                      <a class="prettyPhoto" data-rel="prettyPhoto[product]" href="/images/products/{{preg_replace('/\s+/', '_', $products->name)}}/{{$products->detailed_image}}">
+                        <img src="/images/products/{{preg_replace('/\s+/', '_', $products->name)}}/{{$products->detailed_image}}" alt="The Tailor Shop">
                       </a>
                     </div>
                   </div>
                   <div id="sync2">
-                    <div class="item"><img src="/images/products/{{preg_replace('/\s+/', '_', $products->name)}}/{{$products->front_image}}" alt="image description"></div>
-                    <div class="item"><img src="/images/products/{{preg_replace('/\s+/', '_', $products->name)}}/{{$products->back_image}}" alt="image description"></div>
-                    <div class="item"><img src="/images/products/{{preg_replace('/\s+/', '_', $products->name)}}/{{$products->left_image}}" alt="image description"></div>
-                    <div class="item"><img src="/images/products/{{preg_replace('/\s+/', '_', $products->name)}}/{{$products->right_image}}" alt="image description"></div>
+                    <div class="item"><img src="/images/products/{{preg_replace('/\s+/', '_', $products->name)}}/{{$products->front_image}}" alt="The Tailor Shop"></div>
+                    <div class="item"><img src="/images/products/{{preg_replace('/\s+/', '_', $products->name)}}/{{$products->back_image}}" alt="The Tailor Shop"></div>
+                    <div class="item"><img src="/images/products/{{preg_replace('/\s+/', '_', $products->name)}}/{{$products->left_image}}" alt="The Tailor Shop"></div>
+                    <div class="item"><img src="/images/products/{{preg_replace('/\s+/', '_', $products->name)}}/{{$products->right_image}}" alt="The Tailor Shop"></div>
+                    <div class="item"><img src="/images/products/{{preg_replace('/\s+/', '_', $products->name)}}/{{$products->detailed_image}}" alt="The Tailor Shop"></div>
 
                   </div>
                 </div>
@@ -92,9 +98,9 @@
                 <div class="product-color">
                   <strong class="label">color:</strong>
                   <ul>
-                    <li style="background:#000000;"><a></a></li>
-                    <li style="background:#00a200;"><a></a></li>
-                    <li style="background:#109ce4;"><a></a></li>
+                    @foreach ($products->colours as $colour)
+                    <li style="background:{{ $colour->hexvalue }};"><a></a></li>
+                    @endforeach
                   </ul>
                 </div>
 
@@ -104,48 +110,48 @@
                     <h3>{{$products->price}}</h3>           
                   </div>
 
-                <div class="product-color">
-                  <strong class="label">Category: </strong>
-                  <ul>
-                    <h3>{{$products->category->name}}</h3>           
-                  </div>
-
                   <div class="product-color">
-                    <strong class="label">Created On: </strong>
+                    <strong class="label">Category: </strong>
                     <ul>
-                    <h3>{{$products->created_at->toFormattedDateString()}}</h3>       
-                  </div>
-
-                  <div class="product-color">
-                    <strong class="label">Last Updated: </strong>
-                    <ul>
-                    <h3>{{$products->updated_at->toFormattedDateString()}}</h3>       
-                  </div>
-
-                    <div class="products-btns">
-                      <a href="#" class="theme-btn btn-buynow">Buy Now</a>
+                      <h3>{{$products->category->name}}</h3>           
                     </div>
+
+                    <div class="product-color">
+                      <strong class="label">Created On: </strong>
+                      <ul>
+                        <h3>{{$products->created_at->toFormattedDateString()}}</h3>       
+                      </div>
+
+                      <div class="product-color">
+                        <strong class="label">Last Updated: </strong>
+                        <ul>
+                          <h3>{{$products->updated_at->toFormattedDateString()}}</h3>       
+                        </div>
+
+                        <div class="products-btns">
+                          <a href="{{route('product.index')}}" class="theme-btn btn-buynow">View all Products</a>
+                        </div>
+                      </div>
+                    </div>
+
+
                   </div>
                 </div>
-
-
               </div>
+
             </div>
           </div>
-
         </div>
+
+
+
+
+
       </div>
     </div>
-
-
-
-
-
   </div>
-</div>
-</div>
 
-<!-- Main End -->
+  <!-- Main End -->
 
 
-@endsection
+  @endsection
