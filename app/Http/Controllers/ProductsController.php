@@ -203,9 +203,9 @@ if ($request->hasFile('front_image')) {
       $front_image=$request->front_image;
 
       if($front_image){
-        $imageName=$front_image->getClientOriginalExtension();
+        $imageName=$front_image->getClientOriginalName();
               
-        $front_image->move('images/products/'.preg_replace('/\s+/', '_', $request->input('name')) ,$imageName);
+        $front_image->move('images/products/'.preg_replace('/\s+/', '_', $request->name), $imageName);
         //dd($front_image);
         $oldImageName = preg_replace('/\s+/', '_', $product->name).'/'.$imageName;
         $product['front_image']=$imageName;
