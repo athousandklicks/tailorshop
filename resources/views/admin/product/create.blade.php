@@ -149,12 +149,7 @@
          {{Form::file('right_image', ['class'=>'btn btn-default'])}}
        </div>
      </div>
-     <div class="row">
-      <div class="form-group col-sm-6 col-xs-12">
-       {{Form::label('detailed_image', 'Upload Product Detailed Image *')}}
-       {{Form::file('detailed_image', ['class'=>'btn btn-default'])}}
-     </div>
-   </div>
+
 
    <div class="row">
     <div class="form-group col-sm-6 col-xs-6 full-widthsx">

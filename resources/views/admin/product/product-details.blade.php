@@ -58,18 +58,14 @@
                         <img src="/images/products/{{preg_replace('/\s+/', '_', $products->name)}}/{{$products->right_image}}" alt="The Tailor Shop">
                       </a>
                     </div>
-                    <div class="item">
-                      <a class="prettyPhoto" data-rel="prettyPhoto[product]" href="/images/products/{{preg_replace('/\s+/', '_', $products->name)}}/{{$products->detailed_image}}">
-                        <img src="/images/products/{{preg_replace('/\s+/', '_', $products->name)}}/{{$products->detailed_image}}" alt="The Tailor Shop">
-                      </a>
-                    </div>
+
                   </div>
                   <div id="sync2">
                     <div class="item"><img src="/images/products/{{preg_replace('/\s+/', '_', $products->name)}}/{{$products->front_image}}" alt="The Tailor Shop"></div>
                     <div class="item"><img src="/images/products/{{preg_replace('/\s+/', '_', $products->name)}}/{{$products->back_image}}" alt="The Tailor Shop"></div>
                     <div class="item"><img src="/images/products/{{preg_replace('/\s+/', '_', $products->name)}}/{{$products->left_image}}" alt="The Tailor Shop"></div>
                     <div class="item"><img src="/images/products/{{preg_replace('/\s+/', '_', $products->name)}}/{{$products->right_image}}" alt="The Tailor Shop"></div>
-                    <div class="item"><img src="/images/products/{{preg_replace('/\s+/', '_', $products->name)}}/{{$products->detailed_image}}" alt="The Tailor Shop"></div>
+
 
                   </div>
                 </div>

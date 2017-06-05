@@ -28,7 +28,6 @@ class CreateProductsTable extends Migration
             $table->string('back_image');
             $table->string('left_image');
             $table->string('right_image');
-            $table->string('detailed_image');
             $table->timestamps();
             });
     }

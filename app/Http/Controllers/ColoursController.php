@@ -116,8 +116,8 @@ class ColoursController extends Controller
      */
     public function destroy($id)
     {
-                $colours = Colour::find($id);
-
+        $colours = Colour::find($id);
+        $colours->products()->detach();
         $colours->delete();
 
         Session::flash('success','Colour successfully deleted'); //import use Session;

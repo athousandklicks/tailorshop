@@ -8,6 +8,8 @@ use App\Product;
 use App\Size;
 use Image;
 use App\Colour;
+use Storage;
+use Session;
 
 
 class ProductsController extends Controller
@@ -60,8 +62,7 @@ class ProductsController extends Controller
       'front_image'=>'image|mimes:png,jpg,jpeg|max:10000',
       'back_image'=>'image|mimes:png,jpg,jpeg|max:10000',
       'left_image'=>'image|mimes:png,jpg,jpeg|max:10000',
-      'right_image'=>'image|mimes:png,jpg,jpeg|max:10000',
-      'detailed_image'=>'image|mimes:png,jpg,jpeg|max:10000'
+      'right_image'=>'image|mimes:png,jpg,jpeg|max:10000'
 
       ]);
 
@@ -107,12 +108,6 @@ class ProductsController extends Controller
       $product['right_image']=$imageName;
     }
 
-    $detailed_image=$request->detailed_image;
-    if($detailed_image){
-      $imageName=$detailed_image->getClientOriginalName();
-      $detailed_image->move('images/products/'.preg_replace('/\s+/', '_', $request->name) ,$imageName);
-      $product['detailed_image']=$imageName;
-    }
 
     
 
@@ -144,8 +139,23 @@ class ProductsController extends Controller
      */
     public function edit($id)
     {
-        //
+     $products = Product::find($id);
+     $categories = Category::all();
+     $colours = Colour::all();
+     $cats = array();
+     foreach ($categories as $category) {
+      $cats[$category->id] = $category->name;
     }
+
+    $colour_array = array();
+    foreach ($colours as $colour) {
+      $colour_array[$colour->id] = $colour->name;
+    }
+        // return the view and pass in the var we previously created
+    //return view('admin.product.edit', compact('products', '$cats', '$colour_array'));
+
+    return view('admin.product.edit')->withProduct($products)->withCategories($cats)->withColours($colour_array);
+  }
 
     /**
      * Update the specified resource in storage.
@@ -156,8 +166,99 @@ class ProductsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
+      //dd($request);
+                // Validate the data
+      $product = Product::find($id);
+
+      $this->validate($request, array(
+        'name'=>'required|max:255',
+        'description'=>'required|max:1000',
+        'price'=>'required',
+        'category_id'=>'required|integer',
+        'small'=>'integer',
+        'medium'=>'integer',
+        'large'=>'integer',
+        'xlarge'=>'integer',
+        'xxlarge'=>'integer',
+        'front_image'=>'image|mimes:png,jpg,jpeg|max:10000',
+        'back_image'=>'image|mimes:png,jpg,jpeg|max:10000',
+        'left_image'=>'image|mimes:png,jpg,jpeg|max:10000',
+        'right_image'=>'image|mimes:png,jpg,jpeg|max:10000'
+        ));
+
+      $product = Product::find($id);
+
+      $product->name = $request->input('name');
+      $product->description = $request->input('description');
+      $product->price = $request->input('price');
+      $product->category_id = $request->input('category_id');
+      $product->small = $request->input('small');
+      $product->medium = $request->input('medium');
+      $product->large = $request->input('large');
+      $product->xlarge = $request->input('xlarge');
+      $product->xxlarge = $request->input('xxlarge');
+
+if ($request->hasFile('front_image')) {
+      $front_image=$request->front_image;
+
+      if($front_image){
+        $imageName=$front_image->getClientOriginalExtension();
+              
+        $front_image->move('images/products/'.preg_replace('/\s+/', '_', $request->input('name')) ,$imageName);
+        //dd($front_image);
+        $oldImageName = preg_replace('/\s+/', '_', $product->name).'/'.$imageName;
+        $product['front_image']=$imageName;
+        Storage::delete($oldImageName);
+      }
     }
+if ($request->hasFile('back_image')) {
+      $back_image=$request->back_image;
+      if($back_image){
+        $imageName=$back_image->getClientOriginalName();
+        $back_image->move('images/products/'.preg_replace('/\s+/', '_', $request->input('name')) ,$imageName);
+        $oldImageName = preg_replace('/\s+/', '_', $product->name).'/'.$imageName;
+        $product['back_image']=$imageName;
+        Storage::delete($oldImageName);
+      }
+    }
+if ($request->hasFile('left_image')) {
+      $left_image=$request->left_image;
+      if($left_image){
+        $imageName=$left_image->getClientOriginalName();
+        $left_image->move('images/products/'.preg_replace('/\s+/', '_', $request->input('name')) ,$imageName);
+        $oldImageName = preg_replace('/\s+/', '_', $product->name).'/'.$imageName;
+        $product['left_image']=$imageName;
+        Storage::delete($oldImageName);
+      }
+}
+if ($request->hasFile('right_image')) {
+      $right_image=$request->right_image;
+      if($right_image){
+        $imageName=$right_image->getClientOriginalName();
+        $right_image->move('images/products/'.preg_replace('/\s+/', '_', $request->input('name')) ,$imageName);
+        $oldImageName = preg_replace('/\s+/', '_', $product->name).'/'.$imageName;
+        $product['right_image']=$imageName;
+        Storage::delete($oldImageName);
+      }
+}
+
+
+      $product->save();
+
+      if (isset($request->colours)) {
+        $product->colours()->sync($request->colours);
+      } else {
+        $product->colours()->sync(array());
+      }
+
+
+        // set flash data with success message
+      Session::flash('success', 'This products was successfully saved.');
+
+        // redirect with flash data to productss.show
+        return redirect()->route('product.show', $product->id);//
+      }
 
     /**
      * Remove the specified resource from storage.
@@ -167,7 +268,11 @@ class ProductsController extends Controller
      */
     public function destroy($id)
     {
-        //
+      $product = Product::find($id);
+      $product->colours()->detach();
+      $product->delete();
+      session()->flash('Success', 'Product Successfully Deleted!');
+      return redirect()->route('admin.product.index');
     }
 
   }
