@@ -48,7 +48,7 @@
 
                  <tr>
                   <td data-title="Product Name">
-                    <img src="images/products/{{preg_replace('/\s+/', '_', $product->name)}}/{{$product->front_image}}" width="90" height="90" alt="image description">
+                    <img src="images/products/{{preg_replace('/\s+/', '_', $product->reference_no)}}/{{$product->front_image}}" width="90" height="90" alt="image description">
                     <em>{{$product->name}}</em>
                   </td>
                   <td data-title="Unit Price">$ {{$product->price}}</td>

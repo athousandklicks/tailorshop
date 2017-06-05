@@ -39,32 +39,32 @@
                 <div class="product-slider">
                   <div id="sync1">
                     <div class="item">
-                      <a class="prettyPhoto" data-rel="prettyPhoto[product]" href="/images/products/{{preg_replace('/\s+/', '_', $products->name)}}/{{$products->front_image}}">
-                        <img src="/images/products/{{preg_replace('/\s+/', '_', $products->name)}}/{{$products->front_image}}" alt="The Tailor Shop">
+                      <a class="prettyPhoto" data-rel="prettyPhoto[product]" href="/images/products/{{preg_replace('/\s+/', '_', $products->reference_no)}}/{{$products->front_image}}">
+                        <img src="/images/products/{{preg_replace('/\s+/', '_', $products->reference_no)}}/{{$products->front_image}}" alt="The Tailor Shop">
                       </a>
                     </div>
                     <div class="item">
-                      <a class="prettyPhoto" data-rel="prettyPhoto[product]" href="/images/products/{{preg_replace('/\s+/', '_', $products->name)}}/{{$products->back_image}}">
-                        <img src="/images/products/{{preg_replace('/\s+/', '_', $products->name)}}/{{$products->back_image}}" alt="The Tailor Shop">
+                      <a class="prettyPhoto" data-rel="prettyPhoto[product]" href="/images/products/{{preg_replace('/\s+/', '_', $products->reference_no)}}/{{$products->back_image}}">
+                        <img src="/images/products/{{preg_replace('/\s+/', '_', $products->reference_no)}}/{{$products->back_image}}" alt="The Tailor Shop">
                       </a>
                     </div>
                     <div class="item">
-                      <a class="prettyPhoto" data-rel="prettyPhoto[product]" href="/images/products/{{preg_replace('/\s+/', '_', $products->name)}}/{{$products->left_image}}">
-                        <img src="/images/products/{{preg_replace('/\s+/', '_', $products->name)}}/{{$products->left_image}}" alt="The Tailor Shop">
+                      <a class="prettyPhoto" data-rel="prettyPhoto[product]" href="/images/products/{{preg_replace('/\s+/', '_', $products->reference_no)}}/{{$products->left_image}}">
+                        <img src="/images/products/{{preg_replace('/\s+/', '_', $products->reference_no)}}/{{$products->left_image}}" alt="The Tailor Shop">
                       </a>
                     </div>
                     <div class="item">
-                      <a class="prettyPhoto" data-rel="prettyPhoto[product]" href="/images/products/{{preg_replace('/\s+/', '_', $products->name)}}/{{$products->right_image}}">
-                        <img src="/images/products/{{preg_replace('/\s+/', '_', $products->name)}}/{{$products->right_image}}" alt="The Tailor Shop">
+                      <a class="prettyPhoto" data-rel="prettyPhoto[product]" href="/images/products/{{preg_replace('/\s+/', '_', $products->reference_no)}}/{{$products->right_image}}">
+                        <img src="/images/products/{{preg_replace('/\s+/', '_', $products->reference_no)}}/{{$products->right_image}}" alt="The Tailor Shop">
                       </a>
                     </div>
 
                   </div>
                   <div id="sync2">
-                    <div class="item"><img src="/images/products/{{preg_replace('/\s+/', '_', $products->name)}}/{{$products->front_image}}" alt="The Tailor Shop"></div>
-                    <div class="item"><img src="/images/products/{{preg_replace('/\s+/', '_', $products->name)}}/{{$products->back_image}}" alt="The Tailor Shop"></div>
-                    <div class="item"><img src="/images/products/{{preg_replace('/\s+/', '_', $products->name)}}/{{$products->left_image}}" alt="The Tailor Shop"></div>
-                    <div class="item"><img src="/images/products/{{preg_replace('/\s+/', '_', $products->name)}}/{{$products->right_image}}" alt="The Tailor Shop"></div>
+                    <div class="item"><img src="/images/products/{{preg_replace('/\s+/', '_', $products->reference_no)}}/{{$products->front_image}}" alt="The Tailor Shop"></div>
+                    <div class="item"><img src="/images/products/{{preg_replace('/\s+/', '_', $products->reference_no)}}/{{$products->back_image}}" alt="The Tailor Shop"></div>
+                    <div class="item"><img src="/images/products/{{preg_replace('/\s+/', '_', $products->reference_no)}}/{{$products->left_image}}" alt="The Tailor Shop"></div>
+                    <div class="item"><img src="/images/products/{{preg_replace('/\s+/', '_', $products->reference_no)}}/{{$products->right_image}}" alt="The Tailor Shop"></div>
 
 
                   </div>
@@ -74,10 +74,13 @@
                 <div class="border-left">
                   <h3>{{$products->name}}</h3>
                 </div>
+
+                <p><strong>
+                  <span class="product-reference">Reference : {{$products->reference_no}}</span>
+                </strong></p>
+
                 <div class="description">
-
                   <p>{{$products->description}}</p>
-
                 </div>
                 <div class="product-size">
                   <strong class="label">size:</strong>
@@ -123,31 +126,44 @@
                         <ul>
                           <h3>{{$products->updated_at->toFormattedDateString()}}</h3>       
                         </div>
+                        <div class="col-sm-12 col-xs-6 product-description">
+                          <div class="col-sm-4 col-xs-12>
+                            <div class="products-btns">
+                              <a href="{{route('product.index')}}" class="theme-btn btn-buynow">View Products</a>
+                            </div>
+                            <div class="col-sm-4 col-xs-12>
+                              <div class="products-btns">
+                                <a href="{{route('product.edit', $products->id)}}" class="theme-btn btn-buynow">Edit Product</a>
+                              </div>
 
-                        <div class="products-btns">
-                          <a href="{{route('product.index')}}" class="theme-btn btn-buynow">View all Products</a>
+                              <div class="col-sm-4 col-xs-12>
+                                <div class="products-btns">
+                                <a href="{{route('product.destroy', $products->id)}}" class="theme-btn btn-buynow">Delete Product</a>
+                                </div>
+
+                              </div>
+                            </div>                        
+                          </div>
                         </div>
+
+
                       </div>
                     </div>
-
-
                   </div>
+
                 </div>
               </div>
-
             </div>
+
+
+
+
+
           </div>
         </div>
-
-
-
-
-
       </div>
-    </div>
-  </div>
 
-  <!-- Main End -->
+      <!-- Main End -->
 
 
-  @endsection
+      @endsection

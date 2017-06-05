@@ -45,6 +45,14 @@
                 {{Form::text('name', null, ['class' => 'form-control'])}}
               </div>
             </div>
+            <div class="row">
+              <div class="form-group col-sm-9 col-xs-12">
+
+                {{ Form::hidden('reference_no', $product->reference_no) }}
+                {{Form::label('reference_no', 'Reference No (Not Editable)')}}
+                {{ Form::text('reference_no', $product->reference_no, ['readonly']) }}
+              </div>
+            </div>
 
             <div class="row">
               <div class="form-group col-sm-9 col-xs-12">
@@ -129,38 +137,38 @@
     </div>
     <div class="row">
       <div class="form-group col-sm-6 col-xs-12">
-        <img src="/images/products/{{preg_replace('/\s+/', '_', $product->name)}}/{{$product->front_image}}" alt="The Tailor Shop" width="200" height="300">
+        <img src="/images/products/{{preg_replace('/\s+/', '_', $product->reference_no)}}/{{$product->front_image}}" alt="The Tailor Shop" width="200" height="300">
         {{Form::label('front_image', 'UPDATE Front View Image *')}}
         {{Form::file('front_image', ['class'=>'btn btn-default'])}}
       </div>
-        <div class="form-group col-sm-6 col-xs-12">
-        <img src="/images/products/{{preg_replace('/\s+/', '_', $product->name)}}/{{$product->back_image}}" alt="The Tailor Shop" width="200" height="300">
-       {{Form::label('back_image', 'UPDATE Back View Image *')}}
-       {{Form::file('back_image', ['class'=>'btn btn-default'])}}
-     </div>
+      <div class="form-group col-sm-6 col-xs-12">
+        <img src="/images/products/{{preg_replace('/\s+/', '_', $product->reference_no)}}/{{$product->back_image}}" alt="The Tailor Shop" width="200" height="300">
+        {{Form::label('back_image', 'UPDATE Back View Image *')}}
+        {{Form::file('back_image', ['class'=>'btn btn-default'])}}
+      </div>
     </div>
 
-   <div class="row">
-    <div class="form-group col-sm-6 col-xs-12">
-    <img src="/images/products/{{preg_replace('/\s+/', '_', $product->name)}}/{{$product->left_image}}" alt="The Tailor Shop" width="200" height="300">
-     {{Form::label('left_image', 'UPDATE Left-side View Image *')}}
-     {{Form::file('left_image', ['class'=>'btn btn-default'])}}
-   </div>
-     <div class="form-group col-sm-6 col-xs-12">
-  <img src="/images/products/{{preg_replace('/\s+/', '_', $product->name)}}/{{$product->right_image}}" alt="The Tailor Shop" width="200" height="300">
-   {{Form::label('right_image', 'UPDATE Right-side View Image *')}}
-   {{Form::file('right_image', ['class'=>'btn btn-default'])}}
- </div>
- </div>
+    <div class="row">
+      <div class="form-group col-sm-6 col-xs-12">
+        <img src="/images/products/{{preg_replace('/\s+/', '_', $product->reference_no)}}/{{$product->left_image}}" alt="The Tailor Shop" width="200" height="300">
+        {{Form::label('left_image', 'UPDATE Left-side View Image *')}}
+        {{Form::file('left_image', ['class'=>'btn btn-default'])}}
+      </div>
+      <div class="form-group col-sm-6 col-xs-12">
+        <img src="/images/products/{{preg_replace('/\s+/', '_', $product->reference_no)}}/{{$product->right_image}}" alt="The Tailor Shop" width="200" height="300">
+        {{Form::label('right_image', 'UPDATE Right-side View Image *')}}
+        {{Form::file('right_image', ['class'=>'btn btn-default'])}}
+      </div>
+    </div>
 
 
-<div class="row">
-  <div class="form-group col-sm-6 col-xs-6 full-widthsx">
-    {{Form::submit('Update Product', ['class'=>'btn btn-primary'])}}
-  </div>
-</div>
-</fieldset>
-{!! Form::close() !!}
+    <div class="row">
+      <div class="form-group col-sm-6 col-xs-6 full-widthsx">
+        {{Form::submit('Update Product', ['class'=>'btn btn-primary'])}}
+      </div>
+    </div>
+  </fieldset>
+  {!! Form::close() !!}
 
 </div>
 </div>
@@ -179,7 +187,7 @@
 @endsection
 
 @section('scripts')
-{!! Html::script('/js/parsley.min.js')!!}allRelatedIds
+{!! Html::script('/js/parsley.min.js')!!}
 {!! Html::script('/js/select2.min.js')!!}
 
 <script type="text/javascript">

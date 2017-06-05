@@ -52,6 +52,7 @@ class ProductsController extends Controller
      $this->validate($request,[
       'name'=>'required|max:255',
       'description'=>'required|max:1000',
+      'reference_no'=>'required|Integer',
       'price'=>'required',
       'category_id'=>'required|integer',
       'small'=>'integer',
@@ -63,13 +64,13 @@ class ProductsController extends Controller
       'back_image'=>'image|mimes:png,jpg,jpeg|max:10000',
       'left_image'=>'image|mimes:png,jpg,jpeg|max:10000',
       'right_image'=>'image|mimes:png,jpg,jpeg|max:10000'
-
       ]);
 
         // store in the database
      $product = new Product;
 
      $product->name = $request->name;
+     $product->reference_no = $request->reference_no;
      $product->description = $request->description;
      $product->price = $request->price;
      $product->category_id = $request->category_id;
@@ -83,28 +84,28 @@ class ProductsController extends Controller
      $front_image=$request->front_image;
      if($front_image){
       $imageName=$front_image->getClientOriginalName();
-      $front_image->move('images/products/'.preg_replace('/\s+/', '_', $request->name) ,$imageName);
+      $front_image->move('images/products/'.preg_replace('/\s+/', '_', $request->reference_no) ,$imageName);
       $product['front_image']=$imageName;
     }
 
     $back_image=$request->back_image;
     if($back_image){
       $imageName=$back_image->getClientOriginalName();
-      $back_image->move('images/products/'.preg_replace('/\s+/', '_', $request->name) ,$imageName);
+      $back_image->move('images/products/'.preg_replace('/\s+/', '_', $request->reference_no) ,$imageName);
       $product['back_image']=$imageName;
     }
 
     $left_image=$request->left_image;
     if($left_image){
       $imageName=$left_image->getClientOriginalName();
-      $left_image->move('images/products/'.preg_replace('/\s+/', '_', $request->name) ,$imageName);
+      $left_image->move('images/products/'.preg_replace('/\s+/', '_', $request->reference_no) ,$imageName);
       $product['left_image']=$imageName;
     }
 
     $right_image=$request->right_image;
     if($right_image){
       $imageName=$right_image->getClientOriginalName();
-      $right_image->move('images/products/'.preg_replace('/\s+/', '_', $request->name) ,$imageName);
+      $right_image->move('images/products/'.preg_replace('/\s+/', '_', $request->reference_no) ,$imageName);
       $product['right_image']=$imageName;
     }
 
@@ -167,7 +168,6 @@ class ProductsController extends Controller
     public function update(Request $request, $id)
     {
 
-      //dd($request);
                 // Validate the data
       $product = Product::find($id);
 
@@ -205,41 +205,41 @@ if ($request->hasFile('front_image')) {
       if($front_image){
         $imageName=$front_image->getClientOriginalName();
               
-        $front_image->move('images/products/'.preg_replace('/\s+/', '_', $request->name), $imageName);
-        //dd($front_image);
-        $oldImageName = preg_replace('/\s+/', '_', $product->name).'/'.$imageName;
+        $front_image->move('images/products/'.preg_replace('/\s+/', '_', $request->reference_no) ,$imageName);
+
+       // $oldImageName = preg_replace('/\s+/', '_', $product->name).'/'.$imageName;
         $product['front_image']=$imageName;
-        Storage::delete($oldImageName);
+   //     Storage::delete($oldImageName);
       }
     }
 if ($request->hasFile('back_image')) {
       $back_image=$request->back_image;
       if($back_image){
         $imageName=$back_image->getClientOriginalName();
-        $back_image->move('images/products/'.preg_replace('/\s+/', '_', $request->input('name')) ,$imageName);
-        $oldImageName = preg_replace('/\s+/', '_', $product->name).'/'.$imageName;
+        $back_image->move('images/products/'.preg_replace('/\s+/', '_', $request->reference_no) ,$imageName);
+      //  $oldImageName = preg_replace('/\s+/', '_', $product->name).'/'.$imageName;
         $product['back_image']=$imageName;
-        Storage::delete($oldImageName);
+      //  Storage::delete($oldImageName);
       }
     }
 if ($request->hasFile('left_image')) {
       $left_image=$request->left_image;
       if($left_image){
         $imageName=$left_image->getClientOriginalName();
-        $left_image->move('images/products/'.preg_replace('/\s+/', '_', $request->input('name')) ,$imageName);
-        $oldImageName = preg_replace('/\s+/', '_', $product->name).'/'.$imageName;
+        $left_image->move('images/products/'.preg_replace('/\s+/', '_', $request->reference_no) ,$imageName);
+       // $oldImageName = preg_replace('/\s+/', '_', $product->name).'/'.$imageName;
         $product['left_image']=$imageName;
-        Storage::delete($oldImageName);
+      //  Storage::delete($oldImageName);
       }
 }
 if ($request->hasFile('right_image')) {
       $right_image=$request->right_image;
       if($right_image){
         $imageName=$right_image->getClientOriginalName();
-        $right_image->move('images/products/'.preg_replace('/\s+/', '_', $request->input('name')) ,$imageName);
-        $oldImageName = preg_replace('/\s+/', '_', $product->name).'/'.$imageName;
+        $right_image->move('images/products/'.preg_replace('/\s+/', '_', $request->reference_no) ,$imageName);
+       // $oldImageName = preg_replace('/\s+/', '_', $product->name).'/'.$imageName;
         $product['right_image']=$imageName;
-        Storage::delete($oldImageName);
+       // Storage::delete($oldImageName);
       }
 }
 
