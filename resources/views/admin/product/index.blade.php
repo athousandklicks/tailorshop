@@ -56,7 +56,12 @@
                    >= 1 ? "In Stock": "Out of Stock"}} ({{$stock_status}})</td>
 
                   <td data-title="Remove Item">
-                  <i class="btn-delete-item"><a href="{{route('product.destroy', $product->id)}}" class="fa fa-remove"></a></i>
+                  {!!Form::open(['route' => ['product.destroy', $product->id], 'method' => 'DELETE', 'onsubmit' => 'return ConfirmDelete()'])
+                    !!}
+
+                    {!! Form::button('<i class="fa fa-trash-o"></i>', ['type' => 'submit', 'class' => 'btn-delete-item' ]) !!}
+                      {!!Form::close()!!}
+
                   <i class="btn-delete-item"><a href="{{route('product.edit', $product->id)}}" class="fa fa-edit"></a></i>
                   <i class="btn-delete-item"><a href="{{route('product.show', $product->id)}}" class="fa fa-eye"></a></i>
 
@@ -80,6 +85,9 @@
 
 
 
+<script type="text/javascript">
+  @include('admin.layout.includes.confirm_delete')
+</script>
 
 
   </div>

@@ -10,6 +10,7 @@ use Image;
 use App\Colour;
 use Storage;
 use Session;
+use File;
 
 
 class ProductsController extends Controller
@@ -270,9 +271,13 @@ if ($request->hasFile('right_image')) {
     {
       $product = Product::find($id);
       $product->colours()->detach();
+      //$path= $product->reference_no;
+      //File::deleteDirectory($path);
+
+      //Storage::delete($path);
       $product->delete();
       session()->flash('Success', 'Product Successfully Deleted!');
-      return redirect()->route('admin.product.index');
+      return redirect()->route('admin.index');
     }
 
   }

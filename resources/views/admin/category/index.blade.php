@@ -57,8 +57,9 @@
 
                     {!! Form::button('<i class="fa fa-trash-o"></i>', ['type' => 'submit', 'class' => 'btn-action', ]) 
                     !!}
+                      {!!Form::close()!!}
                   </td>
-                  {!!Form::close()!!}
+                
                 </tr>
                 @endforeach
               </tbody>
