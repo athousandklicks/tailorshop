@@ -28,7 +28,7 @@
 
                   <div class="col-sm-4 col-xs-6 product">
                     <div class="product-img">
-                      <img src="images/img26.jpg" alt="image description">
+                      <img src="/images/img26.jpg" alt="image description">
                       <div class="img-hover">
                         <div class="holder">
                           <a class="icon glyph-icon flaticon-plus79" href="#"></a>
@@ -45,7 +45,7 @@
 
                   <div class="col-sm-4 col-xs-6 product">
                     <div class="product-img">
-                      <img src="images/img27.jpg" alt="image description">
+                      <img src="/images/img27.jpg" alt="image description">
                       <div class="img-hover">
                         <div class="holder">
                           <a class="icon glyph-icon flaticon-plus79" href="#"></a>
@@ -65,7 +65,7 @@
 
                   <div class="col-sm-4 col-xs-6 product">
                     <div class="product-img">
-                      <img src="images/img28.jpg" alt="image description">
+                      <img src="/images/img28.jpg" alt="image description">
                       <div class="img-hover">
                         <div class="holder">
                           <a class="icon glyph-icon flaticon-plus79" href="#"></a>
@@ -85,7 +85,7 @@
 
                   <div class="col-sm-4 col-xs-6 product">
                     <div class="product-img">
-                      <img src="images/img29.jpg" alt="image description">
+                      <img src="/images/img29.jpg" alt="image description">
                       <div class="img-hover">
                         <div class="holder">
                           <a class="icon glyph-icon flaticon-plus79" href="#"></a>
@@ -104,7 +104,7 @@
 
                   <div class="col-sm-4 col-xs-6 product">
                     <div class="product-img">
-                      <img src="images/img30.jpg" alt="image description">
+                      <img src="/images/img30.jpg" alt="image description">
                       <div class="img-hover">
                         <div class="holder">
                           <a class="icon glyph-icon flaticon-plus79" href="#"></a>
@@ -124,7 +124,7 @@
 
                   <div class="col-sm-4 col-xs-6 product">
                     <div class="product-img">
-                      <img src="images/img31.jpg" alt="image description">
+                      <img src="/images/img31.jpg" alt="image description">
                       <div class="img-hover">
                         <div class="holder">
                           <a class="icon glyph-icon flaticon-plus79" href="#"></a>

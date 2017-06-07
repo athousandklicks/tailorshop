@@ -27,6 +27,20 @@
 								<em><a href="/user_login">Login</a></em>
 								</span>
 
+								<span class="email">
+								<i class="glyphicon glyphicon-send"></i>
+								<a href="{{ route('logout') }}"
+                                            onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                            Logout
+                                        </a>
+ <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                            {{ csrf_field() }}
+                                        </form>
+								</span>
+
+								
+
 					
 							<ul class="social-icon">
 								<li><a href="#"><i class="fa fa-facebook"></i></a></li>
