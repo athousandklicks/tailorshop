@@ -3,13 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Category;
+use App\PocketHankerchief;
 use Session;
 
-class CategoriesController extends Controller
+class PocketHankerchiefController extends Controller
 {
-
-        public function __construct() {
+            public function __construct() {
         $this->middleware('auth:admin');
     }
     /**
@@ -17,10 +16,10 @@ class CategoriesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+   public function index()
     {
-        $categories = Category::all();
-        return view('admin.category.index',compact('categories'));
+        $pocketHankerchiefs = PocketHankerchief::all();
+        return view('admin.tailorshop.pocketHankerchief',compact('pocketHankerchiefs'));
     }
 
     /**
@@ -41,19 +40,19 @@ class CategoriesController extends Controller
      */
     public function store(Request $request)
     {
-                // Save a new category and then redirect back to index
+                // Save a new pocketHankerchiefs and then redirect back to index
         $this->validate($request, array(
             'name' => 'required|max:255'
             ));
 
-        $categories = new Category;
+        $pocketHankerchiefs = new PocketHankerchief;
 
-        $categories->name = $request->name;
-        $categories->save();
+        $pocketHankerchiefs->name = $request->name;
+        $pocketHankerchiefs->save();
 
-        Session::flash('success', 'New Category has been created');
+        Session::flash('success', 'New pocketHankerchiefs has been created');
 
-        return redirect()->route('category.index');
+        return redirect()->route('pocketHankerchief.index');
     }
 
     /**
@@ -75,8 +74,8 @@ class CategoriesController extends Controller
      */
     public function edit($id)
     {
-        $categories = Category::find($id);
-        return view('admin.category.edit',compact('categories'));
+        $pocketHankerchiefs = PocketHankerchief::find($id);
+        return view('admin.tailorshop.pocketHankerchief_edit',compact('pocketHankerchiefs'));
     }
 
     /**
@@ -88,20 +87,20 @@ class CategoriesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $categories = Category::find($id);
+        $pocketHankerchiefs = PocketHankerchief::find($id);
 
             $this->validate($request, array(
             'name' => 'required|max:255'
             ));
 
 
-            $categories -> name = $request->input('name');
+            $pocketHankerchiefs -> name = $request->input('name');
 
-            $categories -> save(); //save to the database
+            $pocketHankerchiefs -> save(); //save to the database
 
-        Session::flash('success','Category successfully updated'); //
+        Session::flash('success','pocketHankerchiefs successfully updated'); //
 
-        return redirect()->route('category.index');
+        return redirect()->route('pocketHankerchief.index');
     }
     
 
@@ -114,12 +113,12 @@ class CategoriesController extends Controller
     public function destroy($id)
     {
                 //find the item to delete
-        $categories = Category::find($id);
+        $pocketHankerchiefs = PocketHankerchief::find($id);
 
-        $categories->delete();
+        $pocketHankerchiefs->delete();
 
-        Session::flash('success','Category successfully deleted'); //import use Session;
+        Session::flash('success','pocketHankerchiefs successfully deleted'); //import use Session;
 
-        return redirect()->route('category.index');
+        return redirect()->route('pocketHankerchief.index');
     }
 }

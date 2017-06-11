@@ -43,6 +43,17 @@ Route::resource('colour','ColoursController', ['except' => ['create']]);
 Route::resource('size','SizeController', ['except' => ['create']]);
 
 
+Route::resource('button','ButtonController', ['except' => ['create']]);
+Route::resource('collarType','CollarTypeController', ['except' => ['create']]);
+Route::resource('embroidery','EmbroideryController', ['except' => ['create']]);
+Route::resource('fabric','FabricController', ['except' => ['create']]);
+Route::resource('fitting','FittingController', ['except' => ['create']]);
+Route::resource('pocketHankerchief','PocketHankerchiefController', ['except' => ['create']]);
+Route::resource('pocket','PocketController', ['except' => ['create']]);
+Route::resource('thread','ThreadController', ['except' => ['create']]);
+Route::resource('zipperType','ZipperTypeController', ['except' => ['create']]);
+
+
 
 Auth::routes();
 

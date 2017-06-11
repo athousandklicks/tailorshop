@@ -3,12 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Category;
+use App\Embroidery;
 use Session;
 
-class CategoriesController extends Controller
+class EmbroideryController extends Controller
 {
-
         public function __construct() {
         $this->middleware('auth:admin');
     }
@@ -17,10 +16,10 @@ class CategoriesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+   public function index()
     {
-        $categories = Category::all();
-        return view('admin.category.index',compact('categories'));
+        $embroideries = Embroidery::all();
+        return view('admin.tailorshop.embroidery',compact('embroideries'));
     }
 
     /**
@@ -41,19 +40,19 @@ class CategoriesController extends Controller
      */
     public function store(Request $request)
     {
-                // Save a new category and then redirect back to index
+                // Save a new Embroideries and then redirect back to index
         $this->validate($request, array(
             'name' => 'required|max:255'
             ));
 
-        $categories = new Category;
+        $embroideries = new Embroidery;
 
-        $categories->name = $request->name;
-        $categories->save();
+        $embroideries->name = $request->name;
+        $embroideries->save();
 
-        Session::flash('success', 'New Category has been created');
+        Session::flash('success', 'New Embroideries has been created');
 
-        return redirect()->route('category.index');
+        return redirect()->route('embroidery.index');
     }
 
     /**
@@ -75,8 +74,8 @@ class CategoriesController extends Controller
      */
     public function edit($id)
     {
-        $categories = Category::find($id);
-        return view('admin.category.edit',compact('categories'));
+        $embroideries = Embroidery::find($id);
+        return view('admin.tailorshop.embroidery_edit',compact('embroideries'));
     }
 
     /**
@@ -88,20 +87,20 @@ class CategoriesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $categories = Category::find($id);
+        $embroideries = Embroidery::find($id);
 
             $this->validate($request, array(
             'name' => 'required|max:255'
             ));
 
 
-            $categories -> name = $request->input('name');
+            $embroideries -> name = $request->input('name');
 
-            $categories -> save(); //save to the database
+            $embroideries -> save(); //save to the database
 
-        Session::flash('success','Category successfully updated'); //
+        Session::flash('success','Embroideries successfully updated'); //
 
-        return redirect()->route('category.index');
+        return redirect()->route('embroidery.index');
     }
     
 
@@ -114,12 +113,12 @@ class CategoriesController extends Controller
     public function destroy($id)
     {
                 //find the item to delete
-        $categories = Category::find($id);
+        $embroideries = Embroidery::find($id);
 
-        $categories->delete();
+        $embroideries->delete();
 
-        Session::flash('success','Category successfully deleted'); //import use Session;
+        Session::flash('success','Embroideries successfully deleted'); //import use Session;
 
-        return redirect()->route('category.index');
+        return redirect()->route('embroidery.index');
     }
 }

@@ -3,13 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Category;
+use App\Thread;
 use Session;
 
-class CategoriesController extends Controller
+class ThreadController extends Controller
 {
-
-        public function __construct() {
+                public function __construct() {
         $this->middleware('auth:admin');
     }
     /**
@@ -17,10 +16,10 @@ class CategoriesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+   public function index()
     {
-        $categories = Category::all();
-        return view('admin.category.index',compact('categories'));
+        $threads = Thread::all();
+        return view('admin.tailorshop.thread',compact('threads'));
     }
 
     /**
@@ -41,19 +40,19 @@ class CategoriesController extends Controller
      */
     public function store(Request $request)
     {
-                // Save a new category and then redirect back to index
+                // Save a new threads and then redirect back to index
         $this->validate($request, array(
             'name' => 'required|max:255'
             ));
 
-        $categories = new Category;
+        $threads = new Thread;
 
-        $categories->name = $request->name;
-        $categories->save();
+        $threads->name = $request->name;
+        $threads->save();
 
-        Session::flash('success', 'New Category has been created');
+        Session::flash('success', 'New threads has been created');
 
-        return redirect()->route('category.index');
+        return redirect()->route('thread.index');
     }
 
     /**
@@ -75,8 +74,8 @@ class CategoriesController extends Controller
      */
     public function edit($id)
     {
-        $categories = Category::find($id);
-        return view('admin.category.edit',compact('categories'));
+        $threads = Thread::find($id);
+        return view('admin.tailorshop.thread_edit',compact('threads'));
     }
 
     /**
@@ -88,20 +87,20 @@ class CategoriesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $categories = Category::find($id);
+        $threads = Thread::find($id);
 
             $this->validate($request, array(
             'name' => 'required|max:255'
             ));
 
 
-            $categories -> name = $request->input('name');
+            $threads -> name = $request->input('name');
 
-            $categories -> save(); //save to the database
+            $threads -> save(); //save to the database
 
-        Session::flash('success','Category successfully updated'); //
+        Session::flash('success','threads successfully updated'); //
 
-        return redirect()->route('category.index');
+        return redirect()->route('thread.index');
     }
     
 
@@ -114,12 +113,12 @@ class CategoriesController extends Controller
     public function destroy($id)
     {
                 //find the item to delete
-        $categories = Category::find($id);
+        $threads = Thread::find($id);
 
-        $categories->delete();
+        $threads->delete();
 
-        Session::flash('success','Category successfully deleted'); //import use Session;
+        Session::flash('success','threads successfully deleted'); //import use Session;
 
-        return redirect()->route('category.index');
+        return redirect()->route('thread.index');
     }
 }

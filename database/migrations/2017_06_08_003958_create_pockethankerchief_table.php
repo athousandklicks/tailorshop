@@ -13,7 +13,7 @@ class CreatePockethankerchiefTable extends Migration
      */
     public function up()
     {
-        Schema::create('pockerhankerchief', function (Blueprint $table) {
+        Schema::create('pockethankerchief', function (Blueprint $table) {
             $table->increments('id');
              $table->string('name');
             $table->timestamps();
@@ -27,6 +27,6 @@ class CreatePockethankerchiefTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pockerhankerchief');
+        Schema::dropIfExists('pockethankerchief');
     }
 }

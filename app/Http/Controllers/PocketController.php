@@ -3,13 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Category;
+use App\Pocket;
 use Session;
 
-class CategoriesController extends Controller
+class PocketController extends Controller
 {
-
-        public function __construct() {
+                public function __construct() {
         $this->middleware('auth:admin');
     }
     /**
@@ -17,10 +16,10 @@ class CategoriesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+   public function index()
     {
-        $categories = Category::all();
-        return view('admin.category.index',compact('categories'));
+        $pockets = Pocket::all();
+        return view('admin.tailorshop.pocket',compact('pockets'));
     }
 
     /**
@@ -41,19 +40,19 @@ class CategoriesController extends Controller
      */
     public function store(Request $request)
     {
-                // Save a new category and then redirect back to index
+                // Save a new pockets and then redirect back to index
         $this->validate($request, array(
             'name' => 'required|max:255'
             ));
 
-        $categories = new Category;
+        $pockets = new Pocket;
 
-        $categories->name = $request->name;
-        $categories->save();
+        $pockets->name = $request->name;
+        $pockets->save();
 
-        Session::flash('success', 'New Category has been created');
+        Session::flash('success', 'New pockets has been created');
 
-        return redirect()->route('category.index');
+        return redirect()->route('pocket.index');
     }
 
     /**
@@ -75,8 +74,8 @@ class CategoriesController extends Controller
      */
     public function edit($id)
     {
-        $categories = Category::find($id);
-        return view('admin.category.edit',compact('categories'));
+        $pockets = Pocket::find($id);
+        return view('admin.tailorshop.pocket_edit',compact('pockets'));
     }
 
     /**
@@ -88,20 +87,20 @@ class CategoriesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $categories = Category::find($id);
+        $pockets = Pocket::find($id);
 
             $this->validate($request, array(
             'name' => 'required|max:255'
             ));
 
 
-            $categories -> name = $request->input('name');
+            $pockets -> name = $request->input('name');
 
-            $categories -> save(); //save to the database
+            $pockets -> save(); //save to the database
 
-        Session::flash('success','Category successfully updated'); //
+        Session::flash('success','pockets successfully updated'); //
 
-        return redirect()->route('category.index');
+        return redirect()->route('pocket.index');
     }
     
 
@@ -114,12 +113,12 @@ class CategoriesController extends Controller
     public function destroy($id)
     {
                 //find the item to delete
-        $categories = Category::find($id);
+        $pockets = Pocket::find($id);
 
-        $categories->delete();
+        $pockets->delete();
 
-        Session::flash('success','Category successfully deleted'); //import use Session;
+        Session::flash('success','pockets successfully deleted'); //import use Session;
 
-        return redirect()->route('category.index');
+        return redirect()->route('pocket.index');
     }
 }

@@ -3,13 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Category;
+use App\Button;
 use Session;
 
-class CategoriesController extends Controller
+class ButtonController extends Controller
 {
-
-        public function __construct() {
+            public function __construct() {
         $this->middleware('auth:admin');
     }
     /**
@@ -17,10 +16,10 @@ class CategoriesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+   public function index()
     {
-        $categories = Category::all();
-        return view('admin.category.index',compact('categories'));
+        $buttons = Button::all();
+        return view('admin.tailorshop.button',compact('buttons'));
     }
 
     /**
@@ -41,19 +40,19 @@ class CategoriesController extends Controller
      */
     public function store(Request $request)
     {
-                // Save a new category and then redirect back to index
+                // Save a new buttons and then redirect back to index
         $this->validate($request, array(
             'name' => 'required|max:255'
             ));
 
-        $categories = new Category;
+        $buttons = new Button;
 
-        $categories->name = $request->name;
-        $categories->save();
+        $buttons->name = $request->name;
+        $buttons->save();
 
-        Session::flash('success', 'New Category has been created');
+        Session::flash('success', 'New buttons has been created');
 
-        return redirect()->route('category.index');
+        return redirect()->route('button.index');
     }
 
     /**
@@ -75,8 +74,8 @@ class CategoriesController extends Controller
      */
     public function edit($id)
     {
-        $categories = Category::find($id);
-        return view('admin.category.edit',compact('categories'));
+        $buttons = Button::find($id);
+        return view('admin.tailorshop.button_edit',compact('buttons'));
     }
 
     /**
@@ -88,20 +87,20 @@ class CategoriesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $categories = Category::find($id);
+        $buttons = Button::find($id);
 
             $this->validate($request, array(
             'name' => 'required|max:255'
             ));
 
 
-            $categories -> name = $request->input('name');
+            $buttons -> name = $request->input('name');
 
-            $categories -> save(); //save to the database
+            $buttons -> save(); //save to the database
 
-        Session::flash('success','Category successfully updated'); //
+        Session::flash('success','buttons successfully updated'); //
 
-        return redirect()->route('category.index');
+        return redirect()->route('button.index');
     }
     
 
@@ -114,12 +113,12 @@ class CategoriesController extends Controller
     public function destroy($id)
     {
                 //find the item to delete
-        $categories = Category::find($id);
+        $buttons = Button::find($id);
 
-        $categories->delete();
+        $buttons->delete();
 
-        Session::flash('success','Category successfully deleted'); //import use Session;
+        Session::flash('success','buttons successfully deleted'); //import use Session;
 
-        return redirect()->route('category.index');
+        return redirect()->route('button.index');
     }
 }

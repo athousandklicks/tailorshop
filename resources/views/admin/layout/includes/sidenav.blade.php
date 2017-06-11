@@ -33,7 +33,15 @@
                             </div>
                             <div id="collapseTwo" class="panel-collapse collapse">
                                 <div class="panel-body">
-                                    <label><em><a href="">Ipsum</a></em>
+                                    <label><em><a href="{{route('button.index')}}">Add Buttons</a></em></label>
+                                    <label><em><a href="{{route('collarType.index')}}">Add Collar Types</a></em></label>
+                                    <label><em><a href="{{route('embroidery.index')}}">Add Embriodery</a></em></label>
+                                    <label><em><a href="{{route('fabric.index')}}">Add Fabric</a></em></label>
+                                    <label><em><a href="{{route('fitting.index')}}">Add Fitting</a></em></label>
+                                    <label><em><a href="{{route('pocketHankerchief.index')}}">Add Pocket Hankerchief</a></em></label>
+                                    <label><em><a href="{{route('pocket.index')}}">Add Pockets</a></em></label>
+                                    <label><em><a href="{{route('thread.index')}}">Add Thread</a></em></label>
+                                    <label><em><a href="{{route('zipperType.index')}}">Add Zipper Type</a></em>
                                     </label>               
                                 </div>
                             </div>

@@ -3,13 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Category;
+use App\CollarType;
 use Session;
 
-class CategoriesController extends Controller
+class CollarTypeController extends Controller
 {
-
-        public function __construct() {
+         public function __construct() {
         $this->middleware('auth:admin');
     }
     /**
@@ -17,10 +16,10 @@ class CategoriesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+   public function index()
     {
-        $categories = Category::all();
-        return view('admin.category.index',compact('categories'));
+        $collarTypes = CollarType::all();
+        return view('admin.tailorshop.collarType',compact('collarTypes'));
     }
 
     /**
@@ -41,19 +40,19 @@ class CategoriesController extends Controller
      */
     public function store(Request $request)
     {
-                // Save a new category and then redirect back to index
+                // Save a new collarTypes and then redirect back to index
         $this->validate($request, array(
             'name' => 'required|max:255'
             ));
 
-        $categories = new Category;
+        $collarTypes = new CollarType;
 
-        $categories->name = $request->name;
-        $categories->save();
+        $collarTypes->name = $request->name;
+        $collarTypes->save();
 
-        Session::flash('success', 'New Category has been created');
+        Session::flash('success', 'New collarTypes has been created');
 
-        return redirect()->route('category.index');
+        return redirect()->route('collarType.index');
     }
 
     /**
@@ -75,8 +74,8 @@ class CategoriesController extends Controller
      */
     public function edit($id)
     {
-        $categories = Category::find($id);
-        return view('admin.category.edit',compact('categories'));
+        $collarTypes = CollarType::find($id);
+        return view('admin.tailorshop.collarType_edit',compact('collarTypes'));
     }
 
     /**
@@ -88,20 +87,20 @@ class CategoriesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $categories = Category::find($id);
+        $collarTypes = CollarType::find($id);
 
             $this->validate($request, array(
             'name' => 'required|max:255'
             ));
 
 
-            $categories -> name = $request->input('name');
+            $collarTypes -> name = $request->input('name');
 
-            $categories -> save(); //save to the database
+            $collarTypes -> save(); //save to the database
 
-        Session::flash('success','Category successfully updated'); //
+        Session::flash('success','collarTypes successfully updated'); //
 
-        return redirect()->route('category.index');
+        return redirect()->route('collarType.index');
     }
     
 
@@ -114,12 +113,12 @@ class CategoriesController extends Controller
     public function destroy($id)
     {
                 //find the item to delete
-        $categories = Category::find($id);
+        $collarTypes = CollarType::find($id);
 
-        $categories->delete();
+        $collarTypes->delete();
 
-        Session::flash('success','Category successfully deleted'); //import use Session;
+        Session::flash('success','collarTypes successfully deleted'); //import use Session;
 
-        return redirect()->route('category.index');
+        return redirect()->route('collarType.index');
     }
 }

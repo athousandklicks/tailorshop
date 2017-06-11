@@ -3,15 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Category;
+use App\Fitting;
 use Session;
 
-class CategoriesController extends Controller
+class FittingController extends Controller
 {
-
-        public function __construct() {
-        $this->middleware('auth:admin');
-    }
+ public function __construct() {
+    $this->middleware('auth:admin');
+}
     /**
      * Display a listing of the resource.
      *
@@ -19,8 +18,8 @@ class CategoriesController extends Controller
      */
     public function index()
     {
-        $categories = Category::all();
-        return view('admin.category.index',compact('categories'));
+        $fittings = Fitting::all();
+        return view('admin.tailorshop.fitting',compact('fittings'));
     }
 
     /**
@@ -41,19 +40,19 @@ class CategoriesController extends Controller
      */
     public function store(Request $request)
     {
-                // Save a new category and then redirect back to index
+                // Save a new fittings and then redirect back to index
         $this->validate($request, array(
             'name' => 'required|max:255'
             ));
 
-        $categories = new Category;
+        $fittings = new Fitting;
 
-        $categories->name = $request->name;
-        $categories->save();
+        $fittings->name = $request->name;
+        $fittings->save();
 
-        Session::flash('success', 'New Category has been created');
+        Session::flash('success', 'New fittings has been created');
 
-        return redirect()->route('category.index');
+        return redirect()->route('fitting.index');
     }
 
     /**
@@ -75,8 +74,8 @@ class CategoriesController extends Controller
      */
     public function edit($id)
     {
-        $categories = Category::find($id);
-        return view('admin.category.edit',compact('categories'));
+        $fittings = Fitting::find($id);
+        return view('admin.tailorshop.fitting_edit',compact('fittings'));
     }
 
     /**
@@ -88,20 +87,20 @@ class CategoriesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $categories = Category::find($id);
+        $fittings = Fitting::find($id);
 
-            $this->validate($request, array(
+        $this->validate($request, array(
             'name' => 'required|max:255'
             ));
 
 
-            $categories -> name = $request->input('name');
+        $fittings -> name = $request->input('name');
 
-            $categories -> save(); //save to the database
+            $fittings -> save(); //save to the database
 
-        Session::flash('success','Category successfully updated'); //
+        Session::flash('success','fittings successfully updated'); //
 
-        return redirect()->route('category.index');
+        return redirect()->route('fitting.index');
     }
     
 
@@ -114,12 +113,12 @@ class CategoriesController extends Controller
     public function destroy($id)
     {
                 //find the item to delete
-        $categories = Category::find($id);
+        $fittings = Fitting::find($id);
 
-        $categories->delete();
+        $fittings->delete();
 
-        Session::flash('success','Category successfully deleted'); //import use Session;
+        Session::flash('success','fittings successfully deleted'); //import use Session;
 
-        return redirect()->route('category.index');
+        return redirect()->route('fitting.index');
     }
 }
