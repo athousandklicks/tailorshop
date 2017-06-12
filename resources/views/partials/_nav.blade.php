@@ -132,7 +132,7 @@
 
 							<li class="{{Request::is('online_design') ? "active" : ""}}">
 							<span class="nav-tag-holder"><span class="nav-tag">Signature Feature</span></span>
-							<a href="/online_design">Online Design</a></li>
+							<a href="{{route('measurement.create')}}">Online Design</a></li>
 
 							<li class="{{Request::is('contact') ? "active" : ""}}"><a href="/contact">Contact</a></li>
 

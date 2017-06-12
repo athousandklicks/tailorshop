@@ -36,11 +36,12 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
 	})->name('index');
 });
 */
-
+Route::resource('measurement','MeasurementController');
 Route::resource('product','ProductsController');
 Route::resource('category','CategoriesController', ['except' => ['create']]);
 Route::resource('colour','ColoursController', ['except' => ['create']]);
 Route::resource('size','SizeController', ['except' => ['create']]);
+
 
 
 Route::resource('button','ButtonController', ['except' => ['create']]);
