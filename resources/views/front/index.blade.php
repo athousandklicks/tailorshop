@@ -105,7 +105,7 @@
                                                 <div class="border-center">
                                                     <h2><span>Design your</span>dress Online</h2>
                                                 </div>
-                                                <a class="small-theme-btn" href="#">DESIGN Now</a>
+                                                <a class="small-theme-btn" href="/design-options">DESIGN Now</a>
                                             </div>
                                         </div>
                                     </div>

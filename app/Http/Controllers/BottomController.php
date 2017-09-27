@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Fabric;
+use App\Bottom;
 
-class MeasurementController extends Controller
+class BottomController extends Controller
 {
+    public function __construct() {
+        $this->middleware('auth:admin');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +17,8 @@ class MeasurementController extends Controller
      */
     public function index()
     {
-        //
+        $bottoms = Bottom::all();
+        return view('admin.tailorshop.bottom',compact('bottoms'));
     }
 
     /**
@@ -24,8 +28,7 @@ class MeasurementController extends Controller
      */
     public function create()
     {
-        $fabrics=Fabric::pluck('name','id');
-        return view('front.measurement.index',compact('fabrics'));
+        //
     }
 
     /**
@@ -36,7 +39,15 @@ class MeasurementController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, array(
+            'name' => 'required|max:255'
+            ));
+
+        $bottoms = new Bottom;
+        $bottoms->name = $request->name;
+        $bottoms->save();
+        Session::flash('success', 'New bottoms has been created');
+        return redirect()->route('bottom.index');
     }
 
     /**
@@ -58,7 +69,8 @@ class MeasurementController extends Controller
      */
     public function edit($id)
     {
-        //
+        $bottoms = Bottom::find($id);
+        return view('admin.tailorshop.bottom_edit',compact('bottoms'));
     }
 
     /**
@@ -70,7 +82,14 @@ class MeasurementController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $bottoms = Bottom::find($id);
+            $this->validate($request, array(
+            'name' => 'required|max:255'
+            ));
+            $bottoms -> name = $request->input('name');
+            $bottoms -> save(); //save to the database
+        Session::flash('success','bottoms successfully updated'); //
+        return redirect()->route('bottom.index');
     }
 
     /**
@@ -81,6 +100,9 @@ class MeasurementController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $bottoms = Bottom::find($id);
+        $bottoms->delete();
+        Session::flash('success','bottoms successfully deleted'); //import use Session
+        return redirect()->route('bottom.index');
     }
 }

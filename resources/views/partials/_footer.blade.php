@@ -1,5 +1,5 @@
 
-			<div class="brands haslayout padding-section">
+		<!--	<div class="brands haslayout padding-section">
 				<div class="container">
 					<div id="brand-slider" class="brand-slider">
 						<div class="item"><img src="images/brands/img1.jpg" alt="image description"></div>
@@ -11,13 +11,13 @@
 						<div class="item"><img src="images/brands/img2.jpg" alt="image description"></div>
 					</div>
 				</div>
-			</div>
-			<div class="getstarted haslayout small-padding-section">
+			</div>-->
+		<!--	<div class="getstarted haslayout small-padding-section">
 				<div class="container">
 					<h3>Free Shipping On All Orders Over $60</h3>
 					<a class="theme-btn" href="#">get started</a>
 				</div>
-			</div>
+			</div> -->
 			<div class="footer-description haslayout small-padding-section">
 				<div class="container">
 					<div class="col-md-6 col-md-offset-3">

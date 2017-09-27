@@ -1,6 +1,6 @@
 @extends('main')
 
-@section('title', '| Tailorshop Online Design')
+@section('title', '| Tailorshop Store')
 
 @section('content')
 	<!-- BreadCrumbs Start -->

@@ -74,23 +74,17 @@
 														</a>
 													</h4>
 												</div>
-												<div id="collapsedressfabric" class="panel-collapse collapse in">
-													<div class="panel-body">
-														<ul class="tab-nav" role="tablist">
-															<li role="presentation" class="col-lg-3 col-md-4 col-sm-6 col-xs-6 pattran-half">
-																<a href="#pattranone" aria-controls="pattranone" role="tab" data-toggle="tab">
-																	<label>
-																		<em>green</em>
-																		<img src="images/pattran/pattran01.jpg" alt="image description">
-																		<span class="bg-checkbox">
-																			<input type="radio" name="pattran" value="" checked>
-																		</span>
-																	</label>
-																</a>
-															</li>
-														</ul>
-													</div>
-												</div>
+	<div id="collapsedressfabric" class="panel-collapse collapse in">
+		<div class="panel-body">
+			<ul class="tab-nav" role="tablist">
+				<li role="presentation" class="col-lg-3 col-md-4 col-sm-6 col-xs-6 pattran-half">
+					<a href="#pattranone" aria-controls="pattranone" role="tab" data-toggle="tab">
+		
+				    </a>
+				</li>
+			</ul>
+		</div>
+	</div>
 											</div>
 											<div class="panel accordion-pannel">
 												<div class="accordion-heading">

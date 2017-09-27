@@ -1,10 +1,9 @@
 @extends('main')
 
-@section('title', '| Tailorshop for Women')
+@section('title', '| Design Dresses')
 
 @section('content')
-
-		<!-- BreadCrumbs Start -->
+	<!-- BreadCrumbs Start -->
 		<div class="breadcrumbs haslayout">
 			<div class="container">
 				<span class="page-title"></span>

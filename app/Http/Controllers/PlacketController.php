@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Fabric;
+use App\Placket;
 
-class MeasurementController extends Controller
+class PlacketController extends Controller
 {
+      public function __construct() {
+        $this->middleware('auth:admin');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +17,8 @@ class MeasurementController extends Controller
      */
     public function index()
     {
-        //
+        $plackets = Placket::all();
+        return view('admin.tailorshop.placket',compact('plackets'));
     }
 
     /**
@@ -24,8 +28,7 @@ class MeasurementController extends Controller
      */
     public function create()
     {
-        $fabrics=Fabric::pluck('name','id');
-        return view('front.measurement.index',compact('fabrics'));
+        //
     }
 
     /**
@@ -36,7 +39,15 @@ class MeasurementController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, array(
+            'name' => 'required|max:255'
+            ));
+
+        $plackets = new Placket;
+        $plackets->name = $request->name;
+        $plackets->save();
+        Session::flash('success', 'New plackets has been created');
+        return redirect()->route('placket.index');
     }
 
     /**
@@ -58,7 +69,8 @@ class MeasurementController extends Controller
      */
     public function edit($id)
     {
-        //
+        $plackets = Placket::find($id);
+        return view('admin.tailorshop.placket_edit',compact('plackets'));
     }
 
     /**
@@ -70,7 +82,14 @@ class MeasurementController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $plackets = Placket::find($id);
+            $this->validate($request, array(
+            'name' => 'required|max:255'
+            ));
+            $plackets -> name = $request->input('name');
+            $plackets -> save(); //save to the database
+        Session::flash('success','plackets successfully updated'); //
+        return redirect()->route('placket.index');
     }
 
     /**
@@ -81,6 +100,9 @@ class MeasurementController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $plackets = Placket::find($id);
+        $plackets->delete();
+        Session::flash('success','plackets successfully deleted'); //import use Session
+        return redirect()->route('placket.index');
     }
 }

@@ -12,12 +12,6 @@
 </div>
 <!-- BreadCrumbs End -->
 
-
-
-
-
-
-
 <!-- Main Start -->
 <div id="main" class="haslayout padding-section products-listing product-page">
   <div class="container">
@@ -38,10 +32,22 @@
 
               {!! Form::model($fabrics, ['route' => ['fabric.update', $fabrics->id], 'method' => 'PUT', 'files' => true, 'data-parsley-validate'=>'']) !!}
 
-              {{ Form::text('name', null, ["class" => 'form-control category-edit']) }}
+              {{ Form::text('name', $fabrics->name, ['class' => 'form-control coupon', 'placeholder'=>'Enter Fabric Name']) }}
 
-              <img src="/images/fabrics/{{preg_replace('/\s+/', '_', $fabrics->image)}}" alt="The Tailor Shop" width="200" height="300">
-              {{Form::label('image', 'UPDATE Back Fabric Image *')}}
+              {{ Form::text('fabric_id', $fabrics->fabric_id, ['class' => 'form-control coupon', 'placeholder'=>'Enter Fabric ID']) }}
+
+              {{ Form::text('material', $fabrics->material, ['class' => 'form-control coupon', 'placeholder'=>'Enter Material']) }}
+
+              {{ Form::text('season', $fabrics->season, ['class' => 'form-control coupon', 'placeholder'=>'Enter Season']) }}
+
+              {{ Form::text('ply', $fabrics->ply, ['class' => 'form-control coupon', 'placeholder'=>'Enter Ply']) }}
+
+              {{ Form::text('thread_count', $fabrics->thread_count, ['class' => 'form-control coupon', 'placeholder'=>'Enter Thread Count']) }}
+
+              {{ Form::text('weight', $fabrics->weight, ['class' => 'form-control coupon', 'placeholder'=>'Enter Weight']) }}
+
+              <img src="{{url('images/fabrics',$fabrics->image)}}" height="50" width="50"/>
+              {{Form::label('image', 'Update Fabric Image *')}}
               {{Form::file('image', ['class'=>'btn btn-small'])}}
 
               {{ Form::submit('Save Changes', ['class' => 'theme-btn btn-small']) }}
@@ -59,22 +65,35 @@
 
         <div class="well">
           {!! Form::open(['route' => 'fabric.store', 'method' => 'POST', 'files' => true, 'data-parsley-validate'=>'']) !!}
-        <h4>New Fabric</h4>
-        {{ Form::text('name', null, ['class' => 'form-control coupon', 'placeholder'=>'Enter Fabric Name']) }}
+          <h4>Add New Fabric</h4>
 
-        {{Form::label('image', 'Upload Fabric *')}}
-        {{Form::file('image', ['class'=>'btn btn-small'])}}
-</br>
+          {{ Form::text('name', null, ['class' => 'form-control coupon', 'placeholder'=>'Enter Fabric Name']) }}
+
+          {{ Form::text('fabric_id', null, ['class' => 'form-control coupon', 'placeholder'=>'Enter Fabric ID']) }}
+
+          {{ Form::text('material', null, ['class' => 'form-control coupon', 'placeholder'=>'Enter Material']) }}
+
+          {{ Form::text('season', null, ['class' => 'form-control coupon', 'placeholder'=>'Enter Season']) }}
+
+          {{ Form::text('ply', null, ['class' => 'form-control coupon', 'placeholder'=>'Enter Ply']) }}
+
+          {{ Form::text('thread_count', null, ['class' => 'form-control coupon', 'placeholder'=>'Enter Thread Count']) }}
+
+          {{ Form::text('weight', null, ['class' => 'form-control coupon', 'placeholder'=>'Enter Weight']) }}
+
+          {{Form::label('image', 'Upload Fabric *')}}
+          {{Form::file('image', ['class'=>'btn btn-small'])}}
+        </br>
         {{ Form::submit('Create New Fabric', ['class' => 'theme-btn btn-small']) }}
         {!! Form::close() !!}
-        </div>
       </div>
     </div>
-
-
-
-
   </div>
+
+
+
+
+</div>
 </div>
 </div>
 

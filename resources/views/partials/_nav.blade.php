@@ -55,12 +55,7 @@
 			</div>
 			<div class="mid-bar haslayout">
 				<div class="container">
-					<form class="form-search pull-left">
-						<fieldset>
-							<input type="text" placeholder="Search">
-							<i class="fa fa-search"></i>
-						</fieldset>
-					</form>
+					
 					<div class="cart pull-right btn-dropdown btn-cart">
 						<button class="btn-badge" type="button" id="cart" data-toggle="dropdown" aria-haspopup="true">
 							<i class="fa fa-shopping-cart"></i>
@@ -124,15 +119,17 @@
 
 							<li class="{{Request::is('about') ? "active" : ""}}"><a href="/about">About</a></li>
 
-							<li class="{{Request::is('women') ? "active" : ""}}"><a href="/women">Women</a></li>
+							<li class="{{Request::is('design-shirts') ? "active" : ""}}"><a href="/design-shirts">Shirts</a></li>
 
-							<li class="{{Request::is('men') ? "active" : ""}}"><a href="/men">Men</a></li>
+							<li class="{{Request::is('design-pants') ? "active" : ""}}"><a href="/design-pants">Pants</a></li>
+
+							<li class="{{Request::is('suit-jackets') ? "active" : ""}}"><a href="/suit-jackets">Suits/Jackets</a></li>
+
+							<li class="{{Request::is('dresses-skirts') ? "active" : ""}}"><a href="/dresses-skirts">Skirts/Dresses</a></li>
 
 							<li class="{{Request::is('accessories') ? "active" : ""}}"><a href="/accessories">Accessories</a></li>
 
-							<li class="{{Request::is('online_design') ? "active" : ""}}">
-							<span class="nav-tag-holder"><span class="nav-tag">Signature Feature</span></span>
-							<a href="{{route('measurement.create')}}">Online Design</a></li>
+							<li class="{{Request::is('shop') ? "active" : ""}}"><a href="/shop">Shop</a></li>
 
 							<li class="{{Request::is('contact') ? "active" : ""}}"><a href="/contact">Contact</a></li>
 

@@ -14,12 +14,33 @@
 
 Route::get('/', 'FrontController@index')->name('index');
 Route::get('/about', 'FrontController@about')->name('about');
-Route::get('/women', 'FrontController@women')->name('women');
-Route::get('/men', 'FrontController@men')->name('men');
+Route::get('/design-shirts', 'FrontController@design_shirts')->name('design-shirts');
+Route::get('/design-pants', 'FrontController@design_pants')->name('design-pants');
+Route::get('/suit-jackets', 'FrontController@suit_jackets')->name('suit-jackets');
+Route::get('/dresses-skirts', 'FrontController@dresses_skirts')->name('dresses-skirts');
+Route::get('/design-dresses', 'FrontController@design_dresses')->name('design-dresses');
 Route::get('/accessories', 'FrontController@accessories')->name('accessories');
-Route::get('/online_design', 'FrontController@online_design')->name('online_design');
+Route::get('/shop', 'FrontController@shop')->name('shop');
 Route::get('/contact', 'FrontController@contact')->name('contact');
 Route::get('/user_login', 'FrontController@user_login')->name('user_login');
+
+Route::get('/design-options', 'FrontController@design_options')->name('design-options');
+Route::get('/suite-home', 'FrontController@suite_home')->name('suite-home');
+Route::get('/male-suite', 'FrontController@male_suite')->name('male-suite');
+Route::get('/female-suite', 'FrontController@female_suite')->name('female-suite');
+Route::get('/male-jacket', 'FrontController@male_jacket')->name('male-jacket');
+Route::get('/female-jacket', 'FrontController@female_jacket')->name('female-jacket');
+
+Route::get('/shirts-home', 'FrontController@shirts_home')->name('shirts-home');
+Route::get('/male-shirts', 'FrontController@male_shirts')->name('male-shirts');
+Route::get('/female-shirts', 'FrontController@female_shirts')->name('female-shirts');
+
+Route::get('/trousers-home', 'FrontController@trousers_home')->name('trousers-home');
+Route::get('/male-trousers', 'FrontController@male_trousers')->name('male-trousers');
+Route::get('/female-trousers', 'FrontController@female_trousers')->name('female-trousers');
+
+
+
 
 
 
@@ -53,6 +74,13 @@ Route::resource('pocketHankerchief','PocketHankerchiefController', ['except' => 
 Route::resource('pocket','PocketController', ['except' => ['create']]);
 Route::resource('thread','ThreadController', ['except' => ['create']]);
 Route::resource('zipperType','ZipperTypeController', ['except' => ['create']]);
+Route::resource('sleeveAndCuff','sleeveAndCuffController', ['except' => ['create']]);
+Route::resource('back','BackController', ['except' => ['create']]);
+Route::resource('bottom','BottomController', ['except' => ['create']]);
+Route::resource('placket','PlacketController', ['except' => ['create']]);
+
+
+Route::resource('maleshirt','MaleShirtsController');
 
 
 

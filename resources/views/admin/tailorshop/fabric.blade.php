@@ -38,6 +38,7 @@
                 <thead>
                   <tr>
                     <th>#</th>
+                    <th>Thumbnail</th>
                     <th>Name</th>
                     <th>Edit</th>
                     <th>Delete</th>
@@ -47,7 +48,9 @@
                 <tbody>
                  @foreach ($fabrics as $fabric)               
                  <tr>
+
                   <td>{{ $fabric->id }}</td>
+                  <td><img src="{{url('images/fabrics',$fabric->image)}}" height="50" width="50"/></td>
                   <td>{{ $fabric->name }}</td>
                   <td>
                     <i class="btn-action"><a href="{{route('fabric.edit', $fabric->id)}}" class="fa fa-edit"></a></i>
@@ -76,8 +79,21 @@
 
       <div class="well">
         {!! Form::open(['route' => 'fabric.store', 'method' => 'POST', 'files' => true, 'data-parsley-validate'=>'']) !!}
-        <h4>New Fabric</h4>
+        <h4>Create New Fabric</h4>
+
         {{ Form::text('name', null, ['class' => 'form-control coupon', 'placeholder'=>'Enter Fabric Name']) }}
+
+        {{ Form::text('fabric_id', null, ['class' => 'form-control coupon', 'placeholder'=>'Enter Fabric ID']) }}
+
+        {{ Form::text('material', null, ['class' => 'form-control coupon', 'placeholder'=>'Enter Material']) }}
+
+        {{ Form::text('season', null, ['class' => 'form-control coupon', 'placeholder'=>'Enter Season']) }}
+
+        {{ Form::text('ply', null, ['class' => 'form-control coupon', 'placeholder'=>'Enter Ply']) }}
+
+        {{ Form::text('thread_count', null, ['class' => 'form-control coupon', 'placeholder'=>'Enter Thread Count']) }}
+
+        {{ Form::text('weight', null, ['class' => 'form-control coupon', 'placeholder'=>'Enter Weight']) }}
 
         {{Form::label('image', 'Upload Fabric *')}}
         {{Form::file('image', ['class'=>'btn btn-small'])}}

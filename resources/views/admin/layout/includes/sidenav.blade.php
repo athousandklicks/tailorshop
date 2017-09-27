@@ -39,10 +39,18 @@
                                     <label><em><a href="{{route('fabric.index')}}">Add Fabric</a></em></label>
                                     <label><em><a href="{{route('fitting.index')}}">Add Fitting</a></em></label>
                                     <label><em><a href="{{route('pocketHankerchief.index')}}">Add Pocket Hankerchief</a></em></label>
+                                    <label><em><a href="{{route('sleeveAndCuff.index')}}">Add Sleeve & Cuffs</a></em>
+                                    </label>
                                     <label><em><a href="{{route('pocket.index')}}">Add Pockets</a></em></label>
                                     <label><em><a href="{{route('thread.index')}}">Add Thread</a></em></label>
                                     <label><em><a href="{{route('zipperType.index')}}">Add Zipper Type</a></em>
-                                    </label>               
+                                    </label>
+                                    <label><em><a href="{{route('back.index')}}">Add Back Type</a></em>
+                                    </label> 
+                                    <label><em><a href="{{route('bottom.index')}}">Add Bottom Type</a></em>
+                                    </label>
+                                    <label><em><a href="{{route('placket.index')}}">Add Placket Type</a></em>
+                                    </label>                 
                                 </div>
                             </div>
                         </div>
@@ -76,18 +84,18 @@
                                     <label><em><a href="{{route('category.index')}}">Add Product Categories</a></em>
                                     </label> 
                                     <!--  <label><em><a href="{{--route('size.index')--}}">Add Product Sizes</a></em>
-                                    </label>-->
-                                  <label><em><a href="{{route('colour.index')}}">Add Product Colours</a></em>
-                                    </label> 
+                                </label>-->
+                                <label><em><a href="{{route('colour.index')}}">Add Product Colours</a></em>
+                                </label> 
 
 
-                                </div>
                             </div>
                         </div>
                     </div>
-                </fieldset>
-            </form>
-        </div>
+                </div>
+            </fieldset>
+        </form>
     </div>
+</div>
 </div>
 

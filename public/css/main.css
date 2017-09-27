@@ -690,6 +690,32 @@ button.close span{
 	height:1px;
 	z-index:1;
 }
+
+.section-heading-others{
+	overflow:hidden;
+	position:relative;
+	text-align:center;
+	margin:0 0 40px
+}
+
+.section-heading-others:after{
+	position:absolute;
+	width:100%;
+	top:18px;
+	left:0;
+	height:2px;
+	z-index:1;
+}
+.section-heading-others:before{
+	position:absolute;
+	width:100%;
+	bottom:19px;
+	left:0;
+	height:1px;
+	z-index:1;
+}
+
+
 .heading{
 	width:44%;
 	margin:0 auto;
@@ -1162,18 +1188,29 @@ table.cart-table tbody td .btn-delete-item {float: right;}
 	z-index:1;
 }
 .product .detail{
-	padding:30px 0 0;
+	padding:5px 0 0;
 	overflow:hidden;
-	text-align:center;
+	text-align:left;
 }
-.product .detail span{ display:block;}
-.product .detail .title{ font-weight:600;}
+.product .detail span{ 
+	display:block;
+}
+.product .detail .title{ 
+	font-weight:600;
+	font-size:20px;
+	line-height:40px;
+}
 .product .detail .price{
 	font-size:16px;
 	line-height:19px;
-	font-weight:700;
-	color:#bfa16b;
+	font-weight:300;
+	color:#000000;
 }
+
+.select-fabric{
+margin-top: 10px;
+}
+
 #product-slider .owl-controls .owl-buttons .owl-prev,
 #product-slider .owl-controls .owl-buttons .owl-next{
 	top:35%;
@@ -3359,3 +3396,31 @@ table.cart-table tfoot tr td{ width:50%;}
 	width: 40%;
 	padding: 0 0 0 10px;
 }
+
+.form-resized{
+	width: 90%;
+	margin-top: 8px;
+	margin-left: 5%;
+	margin-right: 5%;
+}
+
+.form-wrapper{
+border: 1px solid #d2d2d2;
+padding-bottom: 20px;
+}
+
+.form-heading{
+	padding:8px 7px 8px 8px;
+	overflow:hidden;
+	background:#23232d;
+	border-bottom:1px solid #d7d7d7;
+}
+
+.form-legend{
+	padding-top: 50px;
+	padding-bottom: 2px;
+	padding-left: 5%;
+	font-weight: 500;
+}
+
+

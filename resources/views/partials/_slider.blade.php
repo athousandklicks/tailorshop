@@ -13,7 +13,7 @@
 							<div class="description">
 								<p>Claritas est etiam processus dynamicus, qui sequitur mutationem consuetudium lectorum.</p>
 							</div>
-							<a class="theme-btn" href="#">DESIGN Now</a>
+							<a class="theme-btn" href="/design-options">DESIGN Now</a>
 						</div>
 					</div>
 				</div>

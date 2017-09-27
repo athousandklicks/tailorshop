@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Fabric;
+use App\Back;
 
-class MeasurementController extends Controller
+class BackController extends Controller
 {
+    public function __construct() {
+        $this->middleware('auth:admin');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +17,8 @@ class MeasurementController extends Controller
      */
     public function index()
     {
-        //
+        $backs = Back::all();
+        return view('admin.tailorshop.back',compact('backs'));
     }
 
     /**
@@ -24,8 +28,7 @@ class MeasurementController extends Controller
      */
     public function create()
     {
-        $fabrics=Fabric::pluck('name','id');
-        return view('front.measurement.index',compact('fabrics'));
+        //
     }
 
     /**
@@ -36,7 +39,15 @@ class MeasurementController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, array(
+            'name' => 'required|max:255'
+            ));
+
+        $backs = new Back;
+        $backs->name = $request->name;
+        $backs->save();
+        Session::flash('success', 'New backs has been created');
+        return redirect()->route('back.index');
     }
 
     /**
@@ -58,7 +69,8 @@ class MeasurementController extends Controller
      */
     public function edit($id)
     {
-        //
+        $backs = Back::find($id);
+        return view('admin.tailorshop.back_edit',compact('backs'));
     }
 
     /**
@@ -70,7 +82,14 @@ class MeasurementController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $backs = Back::find($id);
+            $this->validate($request, array(
+            'name' => 'required|max:255'
+            ));
+            $backs -> name = $request->input('name');
+            $backs -> save(); //save to the database
+        Session::flash('success','backs successfully updated'); //
+        return redirect()->route('back.index');
     }
 
     /**
@@ -81,6 +100,9 @@ class MeasurementController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $backs = Back::find($id);
+        $backs->delete();
+        Session::flash('success','backs successfully deleted'); //import use Session
+        return redirect()->route('back.index');
     }
 }

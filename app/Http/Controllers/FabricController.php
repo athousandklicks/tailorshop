@@ -44,14 +44,22 @@ class FabricController extends Controller
                 // Save a new fabrics and then redirect back to index
         $this->validate($request, array(
             'name' => 'required|max:255',
+            //'price' => 'required|max:16|numeric',
+            'fabric_id' => 'required|max:255',
+            'material' => 'required|max:255',
             'image'=>'image|mimes:png,jpg,jpeg|max:10000'
             ));
-
-
 
         $fabrics = new Fabric;
 
         $fabrics->name = $request->name;
+        $fabrics->price = $request->price;
+        $fabrics->fabric_id = $request->fabric_id;
+        $fabrics->material = $request->material;
+        $fabrics->season = $request->season;
+        $fabrics->ply = $request->ply;
+        $fabrics->thread_count = $request->thread_count;
+        $fabrics->weight = $request->weight;
 
         $image=$request->image;
         if($image){
@@ -104,11 +112,21 @@ class FabricController extends Controller
 
         $this->validate($request, array(
             'name' => 'required|max:255',
+           // 'price' => 'required|max:16|numeric',
+            'fabric_id' => 'required|max:255',
+            'material' => 'required|max:255',
             'image'=>'image|mimes:png,jpg,jpeg|max:10000'
             ));
 
 
-        $fabrics -> name = $request->input('name');
+        $fabrics->name = $request->name;
+        $fabrics->price = $request->price;
+        $fabrics->fabric_id = $request->fabric_id;
+        $fabrics->material = $request->material;
+        $fabrics->season = $request->season;
+        $fabrics->ply = $request->ply;
+        $fabrics->thread_count = $request->thread_count;
+        $fabrics->weight = $request->weight;
 
         if ($request->hasFile('image')) {
           $image=$request->image;
