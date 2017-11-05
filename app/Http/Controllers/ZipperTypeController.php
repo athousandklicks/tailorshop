@@ -42,12 +42,21 @@ class ZipperTypeController extends Controller
     {
                 // Save a new zipperTypes and then redirect back to index
         $this->validate($request, array(
-            'name' => 'required|max:255'
+            'name' => 'required|max:255',
+            'img_link'=>'image|mimes:png,jpg,jpeg|max:10000'
             ));
 
         $zipperTypes = new ZipperType;
 
         $zipperTypes->name = $request->name;
+
+              $img_link=$request->img_link;
+        if($img_link){
+          $imageName=$img_link->getClientOriginalName();
+          $img_link->move('images/zipperTypes/', $imageName);
+          $zipperTypes['img_link']=$imageName;
+      }
+      
         $zipperTypes->save();
 
         Session::flash('success', 'New zipperTypes has been created');
@@ -90,11 +99,21 @@ class ZipperTypeController extends Controller
         $zipperTypes = ZipperType::find($id);
 
             $this->validate($request, array(
-            'name' => 'required|max:255'
+            'name' => 'required|max:255',
+            'img_link'=>'image|mimes:png,jpg,jpeg|max:10000'
             ));
 
 
             $zipperTypes -> name = $request->input('name');
+
+                    if ($request->hasFile('img_link')) {
+            $img_link=$request->img_link;
+            if($img_link){
+              $imageName=$img_link->getClientOriginalName();
+              $img_link->move('images/zipperTypes/', $imageName);
+              $zipperTypes['img_link']=$imageName;
+          }
+      }
 
             $zipperTypes -> save(); //save to the database
 

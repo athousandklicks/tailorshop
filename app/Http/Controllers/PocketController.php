@@ -42,12 +42,21 @@ class PocketController extends Controller
     {
                 // Save a new pockets and then redirect back to index
         $this->validate($request, array(
-            'name' => 'required|max:255'
+            'name' => 'required|max:255',
+            'img_link'=>'image|mimes:png,jpg,jpeg|max:10000'
             ));
 
         $pockets = new Pocket;
 
         $pockets->name = $request->name;
+
+        $img_link=$request->img_link;
+        if($img_link){
+          $imageName=$img_link->getClientOriginalName();
+          $img_link->move('images/pockets/', $imageName);
+          $pockets['img_link']=$imageName;
+      }
+      
         $pockets->save();
 
         Session::flash('success', 'New pockets has been created');
@@ -90,11 +99,21 @@ class PocketController extends Controller
         $pockets = Pocket::find($id);
 
             $this->validate($request, array(
-            'name' => 'required|max:255'
+            'name' => 'required|max:255',
+            'img_link'=>'image|mimes:png,jpg,jpeg|max:10000'
             ));
 
 
             $pockets -> name = $request->input('name');
+
+              if ($request->hasFile('img_link')) {
+            $img_link=$request->img_link;
+            if($img_link){
+              $imageName=$img_link->getClientOriginalName();
+              $img_link->move('images/pockets/', $imageName);
+              $pockets['img_link']=$imageName;
+          }
+      }
 
             $pockets -> save(); //save to the database
 

@@ -38,6 +38,7 @@
                 <thead>
                   <tr>
                     <th>#</th>
+                    <th>Thumbnail</th>
                     <th>Name</th>
                     <th>Edit</th>
                     <th>Delete</th>
@@ -48,6 +49,7 @@
                  @foreach ($sleeveAndCuffs as $sleeveAndCuff)               
                  <tr>
                   <td>{{ $sleeveAndCuff->id }}</td>
+                  <td><img src="{{url('images/sleeveAndCuffs',$sleeveAndCuff->img_link)}}" height="50" width="50"/></td>
                   <td>{{ $sleeveAndCuff->name }}</td>
                   <td>
                     <i class="btn-action"><a href="{{route('sleeveAndCuff.edit', $sleeveAndCuff->id)}}" class="fa fa-edit"></a></i>
@@ -76,9 +78,11 @@
     <div class="col-sm-3 col-xs-6 product-description">
 
       <div class="well">
-        {!! Form::open(['route' => 'sleeveAndCuff.store', 'method' => 'POST']) !!}
+        {!! Form::open(['route' => 'sleeveAndCuff.store', 'files' => true, 'method' => 'POST']) !!}
         <h4>New Sleeve and Cuffs</h4>
         {{ Form::text('name', null, ['class' => 'form-control coupon', 'placeholder'=>'Select Sleeve and Cuffs']) }}
+        {{Form::label('img_link', 'Upload Image')}}
+        {{Form::file('img_link', ['class'=>'btn btn-small'])}}
         {{ Form::submit('Create New Sleeve and Cuffs', ['class' => 'theme-btn btn-small']) }}
         {!! Form::close() !!}
       </div>

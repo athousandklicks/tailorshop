@@ -36,13 +36,19 @@
               <h3>Edit Collar Types</h3>
 
 
-                  {!! Form::model($collarTypes, ['route' => ['collarType.update', $collarTypes->id], 'method' => 'PUT']) !!}
+              {!! Form::model($collarTypes, ['route' => ['collarType.update', $collarTypes->id], 'files' => true, 'method' => 'PUT']) !!}
 
-                  {{ Form::text('name', null, ["class" => 'form-control category-edit']) }}
+              {{ Form::text('name', null, ["class" => 'form-control category-edit']) }}
 
-                  {{ Form::submit('Save Changes', ['class' => 'theme-btn btn-small']) }}
+              <img src="{{url('images/collarTypes',$collarTypes->img_link)}}" height="200" width="200"/>
 
-                  {!! Form::close() !!}
+
+              {{Form::label('img_link', 'Upload Image')}}
+              {{Form::file('img_link', ['class'=>'btn btn-small'])}}
+
+              {{ Form::submit('Save Changes', ['class' => 'theme-btn btn-small']) }}
+
+              {!! Form::close() !!}
 
             </div>
           </div>
@@ -54,9 +60,14 @@
       <div class="col-sm-3 col-xs-6 product-description">
 
         <div class="well">
-          {!! Form::open(['route' => 'collarType.store', 'method' => 'POST']) !!}
+          {!! Form::open(['route' => 'collarType.store', 'files' => true, 'method' => 'POST']) !!}
           <h4>New Collar Types</h4>
+
           {{ Form::text('name', null, ['class' => 'form-control coupon', 'placeholder'=>'Enter Collar Type Name']) }}
+
+          {{Form::label('img_link', 'Upload Image')}}
+          {{Form::file('img_link', ['class'=>'btn btn-small'])}}
+
           {{ Form::submit('Create New Collar Type', ['class' => 'theme-btn btn-small']) }}
           {!! Form::close() !!}
         </div>

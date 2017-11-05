@@ -32,6 +32,7 @@
                 <thead>
                   <tr>
                     <th>#</th>
+                    <th>Thumbnail</th>
                     <th>Name</th>
                     <th>Edit</th>
                     <th>Delete</th>
@@ -42,6 +43,7 @@
                  @foreach ($bottoms as $bottom)               
                  <tr>
                   <td>{{ $bottom->id }}</td>
+                  <td><img src="{{url('images/bottoms',$bottom->img_link)}}" height="50" width="50"/></td>
                   <td>{{ $bottom->name }}</td>
                   <td>
                     <i class="btn-action"><a href="{{route('bottom.edit', $bottom->id)}}" class="fa fa-edit"></a></i>
@@ -69,9 +71,11 @@
     <div class="col-sm-3 col-xs-6 product-description">
 
       <div class="well">
-        {!! Form::open(['route' => 'bottom.store', 'method' => 'POST']) !!}
+        {!! Form::open(['route' => 'bottom.store', 'files' => true, 'method' => 'POST']) !!}
         <h4>New bottom Type</h4>
         {{ Form::text('name', null, ['class' => 'form-control coupon', 'placeholder'=>'Enter Bottom Type Name']) }}
+        {{Form::label('img_link', 'Upload Image')}}
+        {{Form::file('img_link', ['class'=>'btn btn-small'])}}
         {{ Form::submit('Create New Bottom Type', ['class' => 'theme-btn btn-small']) }}
         {!! Form::close() !!}
       </div>

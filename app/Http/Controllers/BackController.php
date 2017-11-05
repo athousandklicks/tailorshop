@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Back;
+use Session;
 
 class BackController extends Controller
 {
@@ -40,11 +41,20 @@ class BackController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, array(
-            'name' => 'required|max:255'
+            'name' => 'required|max:255',
+            'img_link'=>'image|mimes:png,jpg,jpeg|max:10000'
             ));
 
         $backs = new Back;
         $backs->name = $request->name;
+
+        $img_link=$request->img_link;
+        if($img_link){
+          $imageName=$img_link->getClientOriginalName();
+          $img_link->move('images/backs/', $imageName);
+          $backs['img_link']=$imageName;
+      }
+      
         $backs->save();
         Session::flash('success', 'New backs has been created');
         return redirect()->route('back.index');
@@ -81,14 +91,28 @@ class BackController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
+        {
         $backs = Back::find($id);
-            $this->validate($request, array(
-            'name' => 'required|max:255'
+
+        $this->validate($request, array(
+            'name' => 'required|max:255',
+            'img_link'=>'image|mimes:png,jpg,jpeg|max:10000'
             ));
-            $backs -> name = $request->input('name');
+
+        $backs -> name = $request->input('name');
+
+        if ($request->hasFile('img_link')) {
+            $img_link=$request->img_link;
+            if($img_link){
+              $imageName=$img_link->getClientOriginalName();
+              $img_link->move('images/backs/', $imageName);
+              $backs['img_link']=$imageName;
+          }
+      }
             $backs -> save(); //save to the database
+
         Session::flash('success','backs successfully updated'); //
+
         return redirect()->route('back.index');
     }
 

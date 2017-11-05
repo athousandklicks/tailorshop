@@ -33,7 +33,7 @@
 
 					{!! Form::hidden('gender', 'male', ['class' => 'form-control']) !!}
 
-					{!! Form::hidden('fabric_status', '1', ['class' => 'form-control']) !!}
+					{!! Form::hidden('fabric_status', '0', ['class' => 'form-control']) !!}
 
 					<div class="row">
 						<div class="form-group col-sm-6 col-xs-6 full-widthsx">

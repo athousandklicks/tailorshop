@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Placket;
+use Session;
 
 class PlacketController extends Controller
 {
@@ -40,11 +41,20 @@ class PlacketController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, array(
-            'name' => 'required|max:255'
+            'name' => 'required|max:255',
+            'img_link'=>'image|mimes:png,jpg,jpeg|max:10000'
             ));
 
         $plackets = new Placket;
         $plackets->name = $request->name;
+
+               $img_link=$request->img_link;
+        if($img_link){
+          $imageName=$img_link->getClientOriginalName();
+          $img_link->move('images/plackets/', $imageName);
+          $plackets['img_link']=$imageName;
+      }
+      
         $plackets->save();
         Session::flash('success', 'New plackets has been created');
         return redirect()->route('placket.index');
@@ -84,9 +94,20 @@ class PlacketController extends Controller
     {
         $plackets = Placket::find($id);
             $this->validate($request, array(
-            'name' => 'required|max:255'
+            'name' => 'required|max:255',
+            'img_link'=>'image|mimes:png,jpg,jpeg|max:10000'
             ));
             $plackets -> name = $request->input('name');
+
+                  if ($request->hasFile('img_link')) {
+            $img_link=$request->img_link;
+            if($img_link){
+              $imageName=$img_link->getClientOriginalName();
+              $img_link->move('images/plackets/', $imageName);
+              $plackets['img_link']=$imageName;
+          }
+      }
+
             $plackets -> save(); //save to the database
         Session::flash('success','plackets successfully updated'); //
         return redirect()->route('placket.index');

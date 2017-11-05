@@ -36,9 +36,14 @@
               <h3>Edit Sleeve and Cuffs</h3>
 
 
-                  {!! Form::model($sleeveAndCuffs, ['route' => ['sleeveAndCuff.update', $sleeveAndCuffs->id], 'method' => 'PUT']) !!}
+                  {!! Form::model($sleeveAndCuffs, ['route' => ['sleeveAndCuff.update', $sleeveAndCuffs->id], 'files' => true, 'method' => 'PUT']) !!}
 
                   {{ Form::text('name', null, ["class" => 'form-control category-edit']) }}
+                  <img src="{{url('images/sleeveAndCuffs',$sleeveAndCuffs->img_link)}}" height="200" width="200"/>
+
+
+              {{Form::label('img_link', 'Upload Image')}}
+              {{Form::file('img_link', ['class'=>'btn btn-small'])}}
 
                   {{ Form::submit('Save Changes', ['class' => 'theme-btn btn-small']) }}
 
@@ -54,9 +59,11 @@
       <div class="col-sm-3 col-xs-6 product-description">
 
         <div class="well">
-          {!! Form::open(['route' => 'collarType.store', 'method' => 'POST']) !!}
+          {!! Form::open(['route' => 'sleeveAndCuff.store', 'files' => true, 'method' => 'POST']) !!}
           <h4>New Sleeve And Cuffs</h4>
           {{ Form::text('name', null, ['class' => 'form-control coupon', 'placeholder'=>'Enter Sleeve And Cuffs Name']) }}
+          {{Form::label('img_link', 'Upload Image')}}
+              {{Form::file('img_link', ['class'=>'btn btn-small'])}}
           {{ Form::submit('Create New Sleeve And Cuffs', ['class' => 'theme-btn btn-small']) }}
           {!! Form::close() !!}
         </div>

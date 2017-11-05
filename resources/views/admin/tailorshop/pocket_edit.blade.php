@@ -36,9 +36,15 @@
               <h3>Edit Pockets</h3>
 
 
-                  {!! Form::model($pockets, ['route' => ['pocket.update', $pockets->id], 'method' => 'PUT']) !!}
+                  {!! Form::model($pockets, ['route' => ['pocket.update', $pockets->id], 'files' => true, 'method' => 'PUT']) !!}
 
                   {{ Form::text('name', null, ["class" => 'form-control pocket-edit']) }}
+
+                  <img src="{{url('images/pockets',$pockets->img_link)}}" height="200" width="200"/>
+
+
+              {{Form::label('img_link', 'Upload Image')}}
+              {{Form::file('img_link', ['class'=>'btn btn-small'])}}
 
                   {{ Form::submit('Save Changes', ['class' => 'theme-btn btn-small']) }}
 
@@ -54,9 +60,11 @@
       <div class="col-sm-3 col-xs-6 product-description">
 
         <div class="well">
-          {!! Form::open(['route' => 'pocket.store', 'method' => 'POST']) !!}
+          {!! Form::open(['route' => 'pocket.store', 'files' => true, 'method' => 'POST']) !!}
           <h4>New Pocket</h4>
           {{ Form::text('name', null, ['class' => 'form-control coupon', 'placeholder'=>'Enter Pocket Name']) }}
+          {{Form::label('img_link', 'Upload Image')}}
+          {{Form::file('img_link', ['class'=>'btn btn-small'])}}
           {{ Form::submit('Create New Pocket', ['class' => 'theme-btn btn-small']) }}
           {!! Form::close() !!}
         </div>

@@ -36,9 +36,15 @@
               <h3>Edit Pocket Hankerchiefs</h3>
 
 
-                  {!! Form::model($pocketHankerchiefs, ['route' => ['pocketHankerchief.update', $pocketHankerchiefs->id], 'method' => 'PUT']) !!}
+                  {!! Form::model($pocketHankerchiefs, ['route' => ['pocketHankerchief.update', $pocketHankerchiefs->id], 'files' => true, 'method' => 'PUT']) !!}
 
                   {{ Form::text('name', null, ["class" => 'form-control category-edit']) }}
+
+                  <img src="{{url('images/pocketHankerchiefs',$pocketHankerchiefs->img_link)}}" height="100" width="100"/>
+
+
+              {{Form::label('img_link', 'Upload Image')}}
+              {{Form::file('img_link', ['class'=>'btn btn-small'])}}
 
                   {{ Form::submit('Save Changes', ['class' => 'theme-btn btn-small']) }}
 
@@ -54,9 +60,11 @@
       <div class="col-sm-3 col-xs-6 product-description">
 
         <div class="well">
-          {!! Form::open(['route' => 'pocketHankerchief.store', 'method' => 'POST']) !!}
+          {!! Form::open(['route' => 'pocketHankerchief.store', 'files' => true, 'method' => 'POST']) !!}
           <h4>New Pocket Hankerchief</h4>
           {{ Form::text('name', null, ['class' => 'form-control coupon', 'placeholder'=>'Enter Pocket Hankerchief Name']) }}
+          {{Form::label('img_link', 'Upload Image')}}
+              {{Form::file('img_link', ['class'=>'btn btn-small'])}}
           {{ Form::submit('Create New Pocket Hankerchief', ['class' => 'theme-btn btn-small']) }}
           {!! Form::close() !!}
         </div>

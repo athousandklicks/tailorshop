@@ -18,6 +18,8 @@ class CreateShirtsTable extends Migration
             $table->string('order_id');
             $table->string('gender');
             $table->string('fabric');
+
+           // $table->double('column', 8, 2);
             
 
             $table->string('collar')->nullable();

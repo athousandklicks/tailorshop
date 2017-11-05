@@ -41,12 +41,21 @@ class sleeveAndCuffController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, array(
-            'name' => 'required|max:255'
+            'name' => 'required|max:255',
+            'img_link'=>'image|mimes:png,jpg,jpeg|max:10000'
             ));
 
         $sleeveAndCuffs = new SleeveAndCuffs;
 
         $sleeveAndCuffs->name = $request->name;
+
+            $img_link=$request->img_link;
+        if($img_link){
+          $imageName=$img_link->getClientOriginalName();
+          $img_link->move('images/sleeveAndCuffs/', $imageName);
+          $sleeveAndCuffs['img_link']=$imageName;
+      }
+
         $sleeveAndCuffs->save();
 
         Session::flash('success', 'New sleeveAndCuffs has been created');
@@ -89,11 +98,21 @@ class sleeveAndCuffController extends Controller
          $sleeveAndCuffs = SleeveAndCuffs::find($id);
 
             $this->validate($request, array(
-            'name' => 'required|max:255'
+            'name' => 'required|max:255',
+            'img_link'=>'image|mimes:png,jpg,jpeg|max:10000'
             ));
 
 
             $sleeveAndCuffs -> name = $request->input('name');
+
+                    if ($request->hasFile('img_link')) {
+            $img_link=$request->img_link;
+            if($img_link){
+              $imageName=$img_link->getClientOriginalName();
+              $img_link->move('images/sleeveAndCuffs/', $imageName);
+              $sleeveAndCuffs['img_link']=$imageName;
+          }
+      }
 
             $sleeveAndCuffs -> save(); //save to the database
 

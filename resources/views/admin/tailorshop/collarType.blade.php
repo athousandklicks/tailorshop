@@ -38,6 +38,7 @@
                 <thead>
                   <tr>
                     <th>#</th>
+                    <th>Thumbnail</th>
                     <th>Name</th>
                     <th>Edit</th>
                     <th>Delete</th>
@@ -48,6 +49,7 @@
                  @foreach ($collarTypes as $collarType)               
                  <tr>
                   <td>{{ $collarType->id }}</td>
+                  <td><img src="{{url('images/collartypes',$collarType->img_link)}}" height="50" width="50"/></td>
                   <td>{{ $collarType->name }}</td>
                   <td>
                     <i class="btn-action"><a href="{{route('collarType.edit', $collarType->id)}}" class="fa fa-edit"></a></i>
@@ -75,10 +77,17 @@
     <div class="col-sm-3 col-xs-6 product-description">
 
       <div class="well">
-        {!! Form::open(['route' => 'collarType.store', 'method' => 'POST']) !!}
+        {!! Form::open(['route' => 'collarType.store', 'files' => true, 'method' => 'POST']) !!}
         <h4>New Collar Type</h4>
+
         {{ Form::text('name', null, ['class' => 'form-control coupon', 'placeholder'=>'Enter Collar Type Name']) }}
+
+        {{Form::label('img_link', 'Upload Image')}}
+        {{Form::file('img_link', ['class'=>'btn btn-small'])}}
+
+
         {{ Form::submit('Create New Collar Type', ['class' => 'theme-btn btn-small']) }}
+
         {!! Form::close() !!}
       </div>
     </div>

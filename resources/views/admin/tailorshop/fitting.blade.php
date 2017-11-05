@@ -38,6 +38,7 @@
                 <thead>
                   <tr>
                     <th>#</th>
+                    <th>Thumbnail</th>
                     <th>Name</th>
                     <th>Edit</th>
                     <th>Delete</th>
@@ -48,6 +49,7 @@
                  @foreach ($fittings as $fitting)               
                  <tr>
                   <td>{{ $fitting->id }}</td>
+                  <td><img src="{{url('images/fittings',$fitting->img_link)}}" height="50" width="50"/></td>
                   <td>{{ $fitting->name }}</td>
                   <td>
                     <i class="btn-action"><a href="{{route('fitting.edit', $fitting->id)}}" class="fa fa-edit"></a></i>
@@ -75,9 +77,11 @@
     <div class="col-sm-3 col-xs-6 product-description">
 
       <div class="well">
-        {!! Form::open(['route' => 'fitting.store', 'method' => 'POST']) !!}
+        {!! Form::open(['route' => 'fitting.store', 'files' => true, 'method' => 'POST']) !!}
         <h4>New Fitting</h4>
         {{ Form::text('name', null, ['class' => 'form-control coupon', 'placeholder'=>'Enter Fitting Name']) }}
+        {{Form::label('img_link', 'Upload Image')}}
+        {{Form::file('img_link', ['class'=>'btn btn-small'])}}
         {{ Form::submit('Create New Fitting', ['class' => 'theme-btn btn-small']) }}
         {!! Form::close() !!}
       </div>

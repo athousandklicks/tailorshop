@@ -42,12 +42,21 @@ class PocketHankerchiefController extends Controller
     {
                 // Save a new pocketHankerchiefs and then redirect back to index
         $this->validate($request, array(
-            'name' => 'required|max:255'
+            'name' => 'required|max:255',
+            'img_link'=>'image|mimes:png,jpg,jpeg|max:10000'
             ));
 
         $pocketHankerchiefs = new PocketHankerchief;
 
         $pocketHankerchiefs->name = $request->name;
+
+        $img_link=$request->img_link;
+        if($img_link){
+          $imageName=$img_link->getClientOriginalName();
+          $img_link->move('images/pocketHankerchiefs/', $imageName);
+          $pocketHankerchiefs['img_link']=$imageName;
+      }
+
         $pocketHankerchiefs->save();
 
         Session::flash('success', 'New pocketHankerchiefs has been created');
@@ -90,11 +99,21 @@ class PocketHankerchiefController extends Controller
         $pocketHankerchiefs = PocketHankerchief::find($id);
 
             $this->validate($request, array(
-            'name' => 'required|max:255'
+            'name' => 'required|max:255',
+            'img_link'=>'image|mimes:png,jpg,jpeg|max:10000'
             ));
 
 
             $pocketHankerchiefs -> name = $request->input('name');
+
+                    if ($request->hasFile('img_link')) {
+            $img_link=$request->img_link;
+            if($img_link){
+              $imageName=$img_link->getClientOriginalName();
+              $img_link->move('images/pocketHankerchiefs/', $imageName);
+              $pocketHankerchiefs['img_link']=$imageName;
+          }
+      }
 
             $pocketHankerchiefs -> save(); //save to the database
 

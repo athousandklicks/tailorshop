@@ -36,13 +36,19 @@
               <h3>Edit Zipper Types</h3>
 
 
-                  {!! Form::model($zipperTypes, ['route' => ['zipperType.update', $zipperTypes->id], 'method' => 'PUT']) !!}
+              {!! Form::model($zipperTypes, ['route' => ['zipperType.update', $zipperTypes->id], 'files' => true, 'method' => 'PUT']) !!}
 
-                  {{ Form::text('name', null, ["class" => 'form-control category-edit']) }}
+              {{ Form::text('name', null, ["class" => 'form-control category-edit']) }}
 
-                  {{ Form::submit('Save Changes', ['class' => 'theme-btn btn-small']) }}
+              <img src="{{url('images/zipperTypes',$zipperTypes->img_link)}}" height="100" width="100"/>
 
-                  {!! Form::close() !!}
+
+              {{Form::label('img_link', 'Upload Image')}}
+              {{Form::file('img_link', ['class'=>'btn btn-small'])}}
+
+              {{ Form::submit('Save Changes', ['class' => 'theme-btn btn-small']) }}
+
+              {!! Form::close() !!}
 
             </div>
           </div>
@@ -54,9 +60,11 @@
       <div class="col-sm-3 col-xs-6 product-description">
 
         <div class="well">
-          {!! Form::open(['route' => 'zipperType.store', 'method' => 'POST']) !!}
+          {!! Form::open(['route' => 'zipperType.store', 'files' => true, 'method' => 'POST']) !!}
           <h4>New Zipper Type</h4>
           {{ Form::text('name', null, ['class' => 'form-control coupon', 'placeholder'=>'Enter Zipper Type Name']) }}
+          {{Form::label('img_link', 'Upload Image')}}
+          {{Form::file('img_link', ['class'=>'btn btn-small'])}}
           {{ Form::submit('Create New Zipper Type', ['class' => 'theme-btn btn-small']) }}
           {!! Form::close() !!}
         </div>
