@@ -34,13 +34,25 @@
 					{!! Form::hidden('gender', 'male', ['class' => 'form-control']) !!}
 
 					{!! Form::hidden('fabric_status', '0', ['class' => 'form-control']) !!}
-
+					@if (Auth::check())
 					<div class="row">
 						<div class="form-group col-sm-6 col-xs-6 full-widthsx">
-						{{Form::submit('I will Bring my Own Fabric', ['class'=>'btn btn-primary'])}}
+							{{Form::submit('I will Bring my Own Fabric', ['class'=>'btn btn-primary'])}}
 						</div>
 					</div>
+					@else
+					<div class="row">
+						<div class="form-group col-sm-6 col-xs-6 full-widthsx">
+							
+							<em><a href="/user_login">Sign in to Choose this Option</a></em>
+						</div>
+					</div>
+
+					@endif
+
 					{!! Form::close() !!}
+
+
 				</div>
 			</div>
 
@@ -71,12 +83,21 @@
 					{!! Form::hidden('gender', 'male', ['class' => 'form-control']) !!}
 
 					{!! Form::hidden('fabric_status', '1', ['class' => 'form-control']) !!}
-
+					@if (Auth::check())
 					<div class="row">
 						<div class="form-group col-sm-6 col-xs-6 full-widthsx">
 							{{Form::submit('Choose this Fabric', ['class'=>'btn btn-default'])}}
 						</div>
 					</div>
+					@else				
+					<div class="row">
+						<div class="form-group col-sm-6 col-xs-6 full-widthsx">
+							<em><a href="/user_login">Sign in to Choose this Option</a></em>
+
+						</div>
+					</div>
+
+					@endif	
 					{!! Form::close() !!}
 				</div>
 			</div>
