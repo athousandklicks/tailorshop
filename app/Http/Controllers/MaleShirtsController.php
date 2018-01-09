@@ -19,6 +19,7 @@ use App\Placket;
 use App\User;
 
 use Session;
+use Auth;
 
 class MaleShirtsController extends Controller
 {
@@ -29,8 +30,12 @@ class MaleShirtsController extends Controller
      */
     public function index()
     {
+
+        // $tasks = Shirt::where(['user_id' => '12'])->get();
+        // return response()->json([
+        //     'tasks'    => $tasks,
+        // ], 200);
         $fabrics = Fabric::all();
-        
         return view('front.measurement.male-shirts',compact('fabrics'));
     }
 

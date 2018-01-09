@@ -24,7 +24,7 @@
 						<div class="row">
 							<strong class="logo">
 								<a href="index.html">
-									<img src="images/logo2.png" alt="image description">
+									<img src="/images/logo2.png" alt="image description">
 								</a>
 							</strong>
 							<div class="description">

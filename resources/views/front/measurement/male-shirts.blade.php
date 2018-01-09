@@ -75,7 +75,7 @@
 				
 
 				<div class="select-fabric">
-					{!! Form::open(['route' => 'maleshirt.store', 'method' => 'POST', 'files' => true, 'data-parsley-validate'=>'']) !!}
+					{!! Form::open(['route' => 'makeshirts.store', 'method' => 'POST', 'files' => true, 'data-parsley-validate'=>'']) !!}
 
 
 					{!! Form::hidden('fabric', $fabric->name, ['class' => 'form-control']) !!}

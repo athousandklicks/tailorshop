@@ -22,8 +22,8 @@
 								<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 									<ul class="nav navbar-nav">
 										<li class="dropdown">
-											<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="glyphicon glyphicon-user"></i> <em>Hello {{ Auth::user()->name }}</em> <span class="caret"></span></a>
-											<ul class="dropdown-menu">
+											<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="glyphicon glyphicon-user"></i> <em>Hello Man {{ Auth::user()->name }}</em> <span class="caret"></span></a>
+								{{-- 			<ul class="dropdown-menu">
 												<li><a href="#">Your Designs</a></li>
 												<li><a href="#">Another action</a></li>
 												<li><a href="#">Something else here</a></li>
@@ -38,9 +38,17 @@
 												<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
 													{{ csrf_field() }}
 												</form></li>
-											</ul>
+											</ul> --}}
 										</li>
 									</ul>
+									<p><a href="{{ route('logout') }}"
+													onclick="event.preventDefault();
+													document.getElementById('logout-form').submit();">
+													Logout
+												</a>
+												<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+													{{ csrf_field() }}
+												</form></p>
 								</div><!-- /.navbar-collapse -->
 
 
@@ -83,7 +91,7 @@
 						<ul class="cart-list">
 							<li>
 								<div class="product-img">
-									<img src="images/img1.jpg" alt="image description">
+									<img src="/images/img1.jpg" alt="image description">
 								</div>
 								<div class="detail">
 									<span class="product-title">Pearl Izumi Men's E:Motion Tri N1 Neutral Race Shoe</span>
@@ -93,7 +101,7 @@
 							</li>
 							<li>
 								<div class="product-img">
-									<img src="images/img1.jpg" alt="image description">
+									<img src="/images/img1.jpg" alt="image description">
 								</div>
 								<div class="detail">
 									<span class="product-title">Pearl Izumi Men's E:Motion Tri N1 Neutral Race Shoe</span>
@@ -112,7 +120,7 @@
 				</div>
 				<strong class="logo">
 					<a href="index.html">
-						<img src="images/logo.png" alt="image description">
+						<img src="/images/logo.png" alt="image description">
 					</a>
 				</strong>
 			</div>
@@ -132,6 +140,8 @@
 
 
 						<li class="{{Request::is('/') ? "active" : ""}}"><a href="/">Home</a></li>
+
+						<li class="{{Request::is('/example') ? "active" : ""}}"><a href="/example">Example</a></li>
 
 						<li class="{{Request::is('about') ? "active" : ""}}"><a href="/about">About</a></li>
 

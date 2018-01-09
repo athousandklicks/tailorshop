@@ -6,7 +6,7 @@
 	</head>
 
 	<body class="home">
-
+<div id="app">
 	<!-- Wrapper Start -->
 	<div id="wrapper">
 
@@ -27,12 +27,13 @@
 		</footer>
 
 	</div>
+</div>
 	<!-- Wrapper End -->
-
+<script src="{{ asset('js/app.js') }}"></script>
 		@include('partials._javascript')
 
 		@yield('scripts')
-		
+
 	</body>
 	
 </html>

@@ -7,10 +7,10 @@ use App\CollarType;
 use Session;
 
 class CollarTypeController extends Controller
-{
- public function __construct() {
-    $this->middleware('auth:admin');
-}
+ {
+//  public function __construct() {
+//     $this->middleware('auth:admin');
+// }
     /**
      * Display a listing of the resource.
      *
@@ -18,11 +18,16 @@ class CollarTypeController extends Controller
      */
     public function index()
     {
-        $collarTypes = CollarType::all();
-        return view('admin.tailorshop.collarType',compact('collarTypes'));
+        $collartypes = collarType::all();
+        return response()->json([
+            'collartypes'    => $collartypes,
+        ], 200);
+
+        // $collarTypes = CollarType::all();
+        // return view('admin.tailorshop.collarType',compact('collarTypes'));
     }
 
-    /**
+    /**  collarType
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response

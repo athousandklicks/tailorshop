@@ -10,7 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Route::get('/example', 'FrontController@example')->name('example');
 
 Route::get('/', 'FrontController@index')->name('index');
 Route::get('/about', 'FrontController@about')->name('about');
@@ -101,4 +101,29 @@ Route::prefix('admin')->group(function() {
   //Route::get('/password/reset', 'Auth\AdminForgotPasswordController@showLinkRequestForm')->name('admin.password.request');
   //Route::post('/password/reset', 'Auth\AdminResetPasswordController@reset');
   //::get('/password/reset/{token}', 'Auth\AdminResetPasswordController@showResetForm')->name('admin.password.reset');
+
+  Route::resource('/measure', 'VueMeasurementController');
 });
+
+
+
+Route::group(['middleware' => 'auth'], function(){
+
+    Route::get('/makeshirts/{order_id}', [
+        'uses' => 'ShirtController@home',
+        'as' => 'design-options'
+    ]);
+
+    // Route::get('/makeshirts/example/{id}', [
+    //    'uses' => 'ShirtController@edit',
+    //    'as' => 'design'
+    // ]);
+
+    // Route::post('/makeshirts/update/profile', [
+    //     'uses' => 'ShirtController@update',
+    //     'as' => 'makeshirts.store'
+    // ]);
+
+});
+
+Route::resource('makeshirts','ShirtController');

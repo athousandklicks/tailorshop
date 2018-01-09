@@ -25,6 +25,11 @@ class FrontController extends Controller
         return view('front.about');
     }
 
+       public function example()
+    {
+        return view('front.example');
+    }
+
     public function design_shirts()
     {
         return view('front.design-shirts');
