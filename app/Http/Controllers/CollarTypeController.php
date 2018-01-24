@@ -5,29 +5,25 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\CollarType;
 use Session;
+use Auth;
 
 class CollarTypeController extends Controller
- {
-//  public function __construct() {
-//     $this->middleware('auth:admin');
-// }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+{
+     public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+
+     public function index()
     {
         $collartypes = collarType::all();
         return response()->json([
             'collartypes'    => $collartypes,
         ], 200);
-
-        // $collarTypes = CollarType::all();
-        // return view('admin.tailorshop.collarType',compact('collarTypes'));
     }
 
-    /**  collarType
+    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
@@ -45,32 +41,8 @@ class CollarTypeController extends Controller
      */
     public function store(Request $request)
     {
-                // Save a new collarTypes and then redirect back to index
-
-
-        $this->validate($request, array(
-            'name' => 'required|max:255',
-            'img_link'=>'image|mimes:png,jpg,jpeg|max:10000'
-            ));
-
-        $collarTypes = new CollarType;
-
-        $collarTypes->name = $request->name;
-
-
-        $img_link=$request->img_link;
-        if($img_link){
-          $imageName=$img_link->getClientOriginalName();
-          $img_link->move('images/collartypes/', $imageName);
-          $collarTypes['img_link']=$imageName;
-      }
-
-      $collarTypes->save();
-
-      Session::flash('success', 'New collarTypes has been created');
-
-      return redirect()->route('collarType.index');
-  }
+        //
+    }
 
     /**
      * Display the specified resource.
@@ -91,8 +63,7 @@ class CollarTypeController extends Controller
      */
     public function edit($id)
     {
-        $collarTypes = CollarType::find($id);
-        return view('admin.tailorshop.collarType_edit',compact('collarTypes'));
+        //
     }
 
     /**
@@ -104,32 +75,8 @@ class CollarTypeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $collarTypes = CollarType::find($id);
-
-        $this->validate($request, array(
-            'name' => 'required|max:255',
-            'img_link'=>'image|mimes:png,jpg,jpeg|max:10000'
-            ));
-
-
-        $collarTypes -> name = $request->input('name');
-
-
-        if ($request->hasFile('img_link')) {
-            $img_link=$request->img_link;
-            if($img_link){
-              $imageName=$img_link->getClientOriginalName();
-              $img_link->move('images/collartypes/', $imageName);
-              $collarTypes['img_link']=$imageName;
-          }
-      }
-            $collarTypes -> save(); //save to the database
-
-        Session::flash('success','collarTypes successfully updated'); //
-
-        return redirect()->route('collarType.index');
+        //
     }
-    
 
     /**
      * Remove the specified resource from storage.
@@ -139,13 +86,6 @@ class CollarTypeController extends Controller
      */
     public function destroy($id)
     {
-                //find the item to delete
-        $collarTypes = CollarType::find($id);
-
-        $collarTypes->delete();
-
-        Session::flash('success','collarTypes successfully deleted'); //import use Session;
-
-        return redirect()->route('collarType.index');
+        //
     }
 }

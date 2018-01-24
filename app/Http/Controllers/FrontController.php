@@ -30,9 +30,9 @@ class FrontController extends Controller
         return view('front.example');
     }
 
-    public function design_shirts()
+    public function select_shirt_type()
     {
-        return view('front.design-shirts');
+        return view('front.select-shirt-type');
     }
 
     public function design_pants()

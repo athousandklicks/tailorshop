@@ -6,5 +6,5 @@
 
 <example :current_order_id="{{ $shirts->id }}"></example>
 
-
+{{-- <example :current_order_id="{{ $shirts->id }}"></example> --}}
 @endsection

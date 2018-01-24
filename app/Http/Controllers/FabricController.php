@@ -4,13 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Fabric;
+use App\Shirt;
 use Session;
+use Auth;
 
 class FabricController extends Controller
 {
-    public function __construct() {
-        $this->middleware('auth:admin');
-    }
     /**
      * Display a listing of the resource.
      *
@@ -19,7 +18,7 @@ class FabricController extends Controller
     public function index()
     {
         $fabrics = Fabric::all();
-        return view('admin.tailorshop.fabric',compact('fabrics'));
+        return view('front.choose-fabric',compact('fabrics'));
     }
 
     /**
@@ -29,7 +28,10 @@ class FabricController extends Controller
      */
     public function create()
     {
-        //
+        $fabrics = Fabric::all();
+        return response()->json([
+            'fabrics'    => $fabrics,
+        ], 200);
     }
 
     /**
@@ -40,41 +42,26 @@ class FabricController extends Controller
      */
     public function store(Request $request)
     {
+        $alpahbet = rand_string(2);
+        $numeric = rand(1, 100000000);
 
-                // Save a new fabrics and then redirect back to index
-        $this->validate($request, array(
-            'name' => 'required|max:255',
-            //'price' => 'required|max:16|numeric',
-            'fabric_id' => 'required|max:255',
-            'material' => 'required|max:255',
-            'image'=>'image|mimes:png,jpg,jpeg|max:10000'
-            ));
+              $this->validate($request, array(
+            'fabric' => 'required|max:255',
+            'gender' => 'required|max:255'
+        ));
 
-        $fabrics = new Fabric;
+        $shirts = new Shirt;
+        $shirts -> fabric = $request -> fabric;
+        $shirts -> gender = $request -> gender;
+        $shirts -> fabric_status = $request -> fabric_status;
+        $shirts -> order_id = $alpahbet."-".$numeric;
 
-        $fabrics->name = $request->name;
-        $fabrics->price = $request->price;
-        $fabrics->fabric_id = $request->fabric_id;
-        $fabrics->material = $request->material;
-        $fabrics->season = $request->season;
-        $fabrics->ply = $request->ply;
-        $fabrics->thread_count = $request->thread_count;
-        $fabrics->weight = $request->weight;
+        $shirts -> save(); //save to the database
 
-        $image=$request->image;
-        if($image){
-          $imageName=$image->getClientOriginalExtension();
-          $image->move('images/fabrics/', $request->name.'.'.$imageName);
-          $fabrics['image']=$request->name.'.'.$imageName;
-      }
-
-
-      $fabrics->save();
-
-      Session::flash('success', 'New fabrics has been created');
-
-      return redirect()->route('fabric.index');
-  }
+        Session::flash('success','New Order successfully created'); //import use Session;
+        //now re-direct to Shirts Controller to continue shirt design
+        return redirect()->route('shirt-design-details.edit', $shirts->id);
+    }
 
     /**
      * Display the specified resource.
@@ -95,8 +82,7 @@ class FabricController extends Controller
      */
     public function edit($id)
     {
-        $fabrics = Fabric::find($id);
-        return view('admin.tailorshop.fabric_edit',compact('fabrics'));
+        
     }
 
     /**
@@ -108,47 +94,8 @@ class FabricController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $fabrics = Fabric::find($id);
-
-        $this->validate($request, array(
-            'name' => 'required|max:255',
-           // 'price' => 'required|max:16|numeric',
-            'fabric_id' => 'required|max:255',
-            'material' => 'required|max:255',
-            'image'=>'image|mimes:png,jpg,jpeg|max:10000'
-            ));
-
-
-        $fabrics->name = $request->name;
-        $fabrics->price = $request->price;
-        $fabrics->fabric_id = $request->fabric_id;
-        $fabrics->material = $request->material;
-        $fabrics->season = $request->season;
-        $fabrics->ply = $request->ply;
-        $fabrics->thread_count = $request->thread_count;
-        $fabrics->weight = $request->weight;
-
-        if ($request->hasFile('image')) {
-          $image=$request->image;
-
-          if($image){
-            $imageName=$image->getClientOriginalExtension();
-
-            $image->move('images/fabrics/', $request->name.'.'.$imageName);
-
-       // $oldImageName = preg_replace('/\s+/', '_', $product->name).'/'.$imageName;
-            $fabrics['image']=$request->name.'.'.$imageName;
-   //     Storage::delete($oldImageName);
-        }
+        //
     }
-
-        $fabrics -> save(); //save to the database
-
-        Session::flash('success','fabrics successfully updated'); //
-
-        return redirect()->route('fabric.index');
-    }
-    
 
     /**
      * Remove the specified resource from storage.
@@ -158,13 +105,18 @@ class FabricController extends Controller
      */
     public function destroy($id)
     {
-                //find the item to delete
-        $fabrics = Fabric::find($id);
-
-        $fabrics->delete();
-
-        Session::flash('success','fabrics successfully deleted'); //import use Session;
-
-        return redirect()->route('fabric.index');
+        //
     }
+}
+
+
+function rand_string( $length ) {
+    $chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";  
+    $str = '';
+
+    $size = strlen( $chars );
+    for( $i = 0; $i < $length; $i++ ) {
+        $str .= $chars[ rand( 0, $size - 1 ) ];
+    }
+    return $str;
 }

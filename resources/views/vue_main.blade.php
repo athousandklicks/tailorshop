@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ config('app.locale') }}">
 
 <head>
 	@include('partials._head')
 </head>
 
-<body class="home">
+<body>
 	<div id="app">
 		<!-- Wrapper Start -->
 		<div id="wrapper">

@@ -38,6 +38,8 @@
 
               {{ Form::text('material', $fabrics->material, ['class' => 'form-control coupon', 'placeholder'=>'Enter Material']) }}
 
+              {{ Form::number('price', null, ['class' => 'form-control coupon', 'placeholder'=>'Enter Price', 'step' => '0.1']) }}
+
               {{ Form::text('season', $fabrics->season, ['class' => 'form-control coupon', 'placeholder'=>'Enter Season']) }}
 
               {{ Form::text('ply', $fabrics->ply, ['class' => 'form-control coupon', 'placeholder'=>'Enter Ply']) }}

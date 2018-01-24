@@ -1,20 +1,10 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
 Route::get('/example', 'FrontController@example')->name('example');
 
 Route::get('/', 'FrontController@index')->name('index');
 Route::get('/about', 'FrontController@about')->name('about');
-Route::get('/design-shirts', 'FrontController@design_shirts')->name('design-shirts');
+Route::get('/select-shirt-type', 'FrontController@select_shirt_type')->name('select-shirt-type');
 Route::get('/design-pants', 'FrontController@design_pants')->name('design-pants');
 Route::get('/suit-jackets', 'FrontController@suit_jackets')->name('suit-jackets');
 Route::get('/dresses-skirts', 'FrontController@dresses_skirts')->name('dresses-skirts');
@@ -57,30 +47,34 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
 	})->name('index');
 });
 */
-Route::resource('measurement','MeasurementController');
-Route::resource('product','ProductsController');
-Route::resource('category','CategoriesController', ['except' => ['create']]);
-Route::resource('colour','ColoursController', ['except' => ['create']]);
-Route::resource('size','SizeController', ['except' => ['create']]);
+Route::resource('measurement','Auth\MeasurementController');
+Route::resource('product','Auth\ProductsController');
+Route::resource('category','Auth\CategoriesController', ['except' => ['create']]);
+Route::resource('colour','Auth\ColoursController', ['except' => ['create']]);
+Route::resource('size','Auth\SizeController', ['except' => ['create']]);
 
 
 
-Route::resource('button','ButtonController', ['except' => ['create']]);
-Route::resource('collarType','CollarTypeController', ['except' => ['create']]);
-Route::resource('embroidery','EmbroideryController', ['except' => ['create']]);
-Route::resource('fabric','FabricController', ['except' => ['create']]);
-Route::resource('fitting','FittingController', ['except' => ['create']]);
-Route::resource('pocketHankerchief','PocketHankerchiefController', ['except' => ['create']]);
-Route::resource('pocket','PocketController', ['except' => ['create']]);
-Route::resource('thread','ThreadController', ['except' => ['create']]);
-Route::resource('zipperType','ZipperTypeController', ['except' => ['create']]);
-Route::resource('sleeveAndCuff','sleeveAndCuffController', ['except' => ['create']]);
-Route::resource('back','BackController', ['except' => ['create']]);
-Route::resource('bottom','BottomController', ['except' => ['create']]);
-Route::resource('placket','PlacketController', ['except' => ['create']]);
+Route::resource('button','Auth\ButtonController', ['except' => ['create']]);
+Route::resource('collarType','Auth\CollarTypeController', ['except' => ['create']]);
+Route::resource('embroidery','Auth\EmbroideryController', ['except' => ['create']]);
+Route::resource('fabric','Auth\FabricController', ['except' => ['create']]);
+Route::resource('fitting','Auth\FittingController', ['except' => ['create']]);
+Route::resource('pocketHankerchief','Auth\PocketHankerchiefController', ['except' => ['create']]);
+Route::resource('pocket','Auth\PocketController', ['except' => ['create']]);
+Route::resource('thread','Auth\ThreadController', ['except' => ['create']]);
+Route::resource('zipperType','Auth\ZipperTypeController', ['except' => ['create']]);
+Route::resource('sleeveAndCuff','Auth\sleeveAndCuffController', ['except' => ['create']]);
+Route::resource('back','Auth\BackController', ['except' => ['create']]);
+Route::resource('bottom','Auth\BottomController', ['except' => ['create']]);
+Route::resource('placket','Auth\PlacketController', ['except' => ['create']]);
+Route::resource('misc','Auth\MiscController', ['except' => ['create']]);
 
 
-Route::resource('maleshirt','MaleShirtsController');
+Route::resource('maleshirt','Auth\MaleShirtsController');
+
+
+
 
 
 
@@ -93,7 +87,7 @@ Route::get('/index', 'FrontController@index')->name('index');
 Route::prefix('admin')->group(function() {
   Route::get('/login', 'Auth\AdminLoginController@showLoginForm')->name('admin.login');
   Route::post('/login', 'Auth\AdminLoginController@login')->name('admin.login.submit');
-  Route::get('/admin', 'AdminController@index')->name('admin.index');
+  Route::get('/admin', 'Auth\AdminController@index')->name('admin.index');
   //Route::get('/logout', 'Auth\AdminLoginController@logout')->name('admin.logout');
 
   // Password reset routes
@@ -109,9 +103,9 @@ Route::prefix('admin')->group(function() {
 
 Route::group(['middleware' => 'auth'], function(){
 
-    Route::get('/makeshirts/{order_id}', [
-        'uses' => 'ShirtController@home',
-        'as' => 'design-options'
+    Route::get('/shirt-design-details/{order_id}', [
+        'uses' => 'ShirtController@index',
+        'as' => 'shirt-design-details'
     ]);
 
     // Route::get('/makeshirts/example/{id}', [
@@ -126,4 +120,13 @@ Route::group(['middleware' => 'auth'], function(){
 
 });
 
-Route::resource('makeshirts','ShirtController');
+Route::resource('choosefabric','FabricController');
+Route::resource('shirt-design-details','ShirtController');
+
+
+//Vue Resource Controllers
+Route::resource('collars','CollarTypeController', ['except' => ['create']]);
+Route::resource('sleeve_and_cuffs','SleeveAndCuffsController', ['except' => ['create']]);
+
+// Route::get('miscs/miscitems', 'MiscController@miscItems');
+Route::resource('miscs','MiscController');

@@ -6,7 +6,7 @@
 	</head>
 
 	<body class="home">
-<div id="app">
+
 	<!-- Wrapper Start -->
 	<div id="wrapper">
 
@@ -26,7 +26,7 @@
 			@include('partials._footer')
 		</footer>
 
-	</div>
+
 </div>
 	<!-- Wrapper End -->
 <script src="{{ asset('js/app.js') }}"></script>

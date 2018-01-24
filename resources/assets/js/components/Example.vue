@@ -122,7 +122,7 @@
                         </div>
 
                         <form role="form">                    
-  
+                           
                         <div class="form-group">
                             <label>Collar Type:</label>
                             <img :src="image_src+update_collarType.img_link" height="250" width="250" v-model="update_collarType.img_link">
@@ -146,6 +146,11 @@
     </div>
     <!-- Main End -->
 </template>
+
+
+
+
+
 
 <script>
 export default {
@@ -197,7 +202,7 @@ methods: {
 
     loadCollarTypes()
     {
-        axios.get('/collarType')
+        axios.get('/collars')
         .then(response => {
             this.collarTypeName = response.data.collartypes;
         });
@@ -227,7 +232,7 @@ methods: {
 },
              computed: {
                    csrfToken() { 
-                    window.Laravel.csrfToken; 
+                    window.Tailorshop.csrfToken; 
                 }
              }
 }

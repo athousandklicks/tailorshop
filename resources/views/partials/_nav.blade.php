@@ -145,7 +145,7 @@
 
 						<li class="{{Request::is('about') ? "active" : ""}}"><a href="/about">About</a></li>
 
-						<li class="{{Request::is('design-shirts') ? "active" : ""}}"><a href="/design-shirts">Shirts</a></li>
+						<li class="{{Request::is('select-shirt-type') ? "active" : ""}}"><a href="/select-shirt-type">Shirts</a></li>
 
 						<li class="{{Request::is('design-pants') ? "active" : ""}}"><a href="/design-pants">Pants</a></li>
 

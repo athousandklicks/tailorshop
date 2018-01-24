@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 46);
+/******/ 	return __webpack_require__(__webpack_require__.s = 51);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -380,7 +380,7 @@ module.exports = {
 /* WEBPACK VAR INJECTION */(function(process) {
 
 var utils = __webpack_require__(0);
-var normalizeHeaderName = __webpack_require__(26);
+var normalizeHeaderName = __webpack_require__(29);
 
 var PROTECTION_PREFIX = /^\)\]\}',?\n/;
 var DEFAULT_CONTENT_TYPE = {
@@ -471,7 +471,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = defaults;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)))
 
 /***/ }),
 /* 2 */
@@ -508,12 +508,12 @@ module.exports = g;
 
 
 var utils = __webpack_require__(0);
-var settle = __webpack_require__(18);
-var buildURL = __webpack_require__(21);
-var parseHeaders = __webpack_require__(27);
-var isURLSameOrigin = __webpack_require__(25);
+var settle = __webpack_require__(21);
+var buildURL = __webpack_require__(24);
+var parseHeaders = __webpack_require__(30);
+var isURLSameOrigin = __webpack_require__(28);
 var createError = __webpack_require__(6);
-var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(20);
+var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(23);
 
 module.exports = function xhrAdapter(config) {
   return new Promise(function dispatchXhrRequest(resolve, reject) {
@@ -609,7 +609,7 @@ module.exports = function xhrAdapter(config) {
     // This is only done if running in a standard browser environment.
     // Specifically not if we're in a web worker, or react-native.
     if (utils.isStandardBrowserEnv()) {
-      var cookies = __webpack_require__(23);
+      var cookies = __webpack_require__(26);
 
       // Add xsrf header
       var xsrfValue = (config.withCredentials || isURLSameOrigin(config.url)) && config.xsrfCookieName ?
@@ -729,7 +729,7 @@ module.exports = function isCancel(value) {
 "use strict";
 
 
-var enhanceError = __webpack_require__(17);
+var enhanceError = __webpack_require__(20);
 
 /**
  * Create an Error with the specified message, config, error code, and response.
@@ -766,6 +766,62 @@ module.exports = function bind(fn, thisArg) {
 
 /***/ }),
 /* 8 */
+/***/ (function(module, exports) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+// css base code, injected by the css-loader
+module.exports = function() {
+	var list = [];
+
+	// return the list of modules as css string
+	list.toString = function toString() {
+		var result = [];
+		for(var i = 0; i < this.length; i++) {
+			var item = this[i];
+			if(item[2]) {
+				result.push("@media " + item[2] + "{" + item[1] + "}");
+			} else {
+				result.push(item[1]);
+			}
+		}
+		return result.join("");
+	};
+
+	// import a list of modules into the list
+	list.i = function(modules, mediaQuery) {
+		if(typeof modules === "string")
+			modules = [[null, modules, ""]];
+		var alreadyImportedModules = {};
+		for(var i = 0; i < this.length; i++) {
+			var id = this[i][0];
+			if(typeof id === "number")
+				alreadyImportedModules[id] = true;
+		}
+		for(i = 0; i < modules.length; i++) {
+			var item = modules[i];
+			// skip already imported module
+			// this implementation is not 100% perfect for weird media query combinations
+			//  when a module is imported multiple times with different media queries.
+			//  I hope this will never occur (Hey this way we have smaller bundles)
+			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+				if(mediaQuery && !item[2]) {
+					item[2] = mediaQuery;
+				} else if(mediaQuery) {
+					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+				}
+				list.push(item);
+			}
+		}
+	};
+	return list;
+};
+
+
+/***/ }),
+/* 9 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -955,7 +1011,285 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 9 */
+/* 10 */
+/***/ (function(module, exports) {
+
+// this module is a runtime utility for cleaner component module output and will
+// be included in the final webpack user bundle
+
+module.exports = function normalizeComponent (
+  rawScriptExports,
+  compiledTemplate,
+  scopeId,
+  cssModules
+) {
+  var esModule
+  var scriptExports = rawScriptExports = rawScriptExports || {}
+
+  // ES6 modules interop
+  var type = typeof rawScriptExports.default
+  if (type === 'object' || type === 'function') {
+    esModule = rawScriptExports
+    scriptExports = rawScriptExports.default
+  }
+
+  // Vue.extend constructor export interop
+  var options = typeof scriptExports === 'function'
+    ? scriptExports.options
+    : scriptExports
+
+  // render functions
+  if (compiledTemplate) {
+    options.render = compiledTemplate.render
+    options.staticRenderFns = compiledTemplate.staticRenderFns
+  }
+
+  // scopedId
+  if (scopeId) {
+    options._scopeId = scopeId
+  }
+
+  // inject cssModules
+  if (cssModules) {
+    var computed = Object.create(options.computed || null)
+    Object.keys(cssModules).forEach(function (key) {
+      var module = cssModules[key]
+      computed[key] = function () { return module }
+    })
+    options.computed = computed
+  }
+
+  return {
+    esModule: esModule,
+    exports: scriptExports,
+    options: options
+  }
+}
+
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*
+  MIT License http://www.opensource.org/licenses/mit-license.php
+  Author Tobias Koppers @sokra
+  Modified by Evan You @yyx990803
+*/
+
+var hasDocument = typeof document !== 'undefined'
+
+if (typeof DEBUG !== 'undefined' && DEBUG) {
+  if (!hasDocument) {
+    throw new Error(
+    'vue-style-loader cannot be used in a non-browser environment. ' +
+    "Use { target: 'node' } in your Webpack config to indicate a server-rendering environment."
+  ) }
+}
+
+var listToStyles = __webpack_require__(48)
+
+/*
+type StyleObject = {
+  id: number;
+  parts: Array<StyleObjectPart>
+}
+
+type StyleObjectPart = {
+  css: string;
+  media: string;
+  sourceMap: ?string
+}
+*/
+
+var stylesInDom = {/*
+  [id: number]: {
+    id: number,
+    refs: number,
+    parts: Array<(obj?: StyleObjectPart) => void>
+  }
+*/}
+
+var head = hasDocument && (document.head || document.getElementsByTagName('head')[0])
+var singletonElement = null
+var singletonCounter = 0
+var isProduction = false
+var noop = function () {}
+
+// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
+// tags it will allow on a page
+var isOldIE = typeof navigator !== 'undefined' && /msie [6-9]\b/.test(navigator.userAgent.toLowerCase())
+
+module.exports = function (parentId, list, _isProduction) {
+  isProduction = _isProduction
+
+  var styles = listToStyles(parentId, list)
+  addStylesToDom(styles)
+
+  return function update (newList) {
+    var mayRemove = []
+    for (var i = 0; i < styles.length; i++) {
+      var item = styles[i]
+      var domStyle = stylesInDom[item.id]
+      domStyle.refs--
+      mayRemove.push(domStyle)
+    }
+    if (newList) {
+      styles = listToStyles(parentId, newList)
+      addStylesToDom(styles)
+    } else {
+      styles = []
+    }
+    for (var i = 0; i < mayRemove.length; i++) {
+      var domStyle = mayRemove[i]
+      if (domStyle.refs === 0) {
+        for (var j = 0; j < domStyle.parts.length; j++) {
+          domStyle.parts[j]()
+        }
+        delete stylesInDom[domStyle.id]
+      }
+    }
+  }
+}
+
+function addStylesToDom (styles /* Array<StyleObject> */) {
+  for (var i = 0; i < styles.length; i++) {
+    var item = styles[i]
+    var domStyle = stylesInDom[item.id]
+    if (domStyle) {
+      domStyle.refs++
+      for (var j = 0; j < domStyle.parts.length; j++) {
+        domStyle.parts[j](item.parts[j])
+      }
+      for (; j < item.parts.length; j++) {
+        domStyle.parts.push(addStyle(item.parts[j]))
+      }
+      if (domStyle.parts.length > item.parts.length) {
+        domStyle.parts.length = item.parts.length
+      }
+    } else {
+      var parts = []
+      for (var j = 0; j < item.parts.length; j++) {
+        parts.push(addStyle(item.parts[j]))
+      }
+      stylesInDom[item.id] = { id: item.id, refs: 1, parts: parts }
+    }
+  }
+}
+
+function createStyleElement () {
+  var styleElement = document.createElement('style')
+  styleElement.type = 'text/css'
+  head.appendChild(styleElement)
+  return styleElement
+}
+
+function addStyle (obj /* StyleObjectPart */) {
+  var update, remove
+  var styleElement = document.querySelector('style[data-vue-ssr-id~="' + obj.id + '"]')
+
+  if (styleElement) {
+    if (isProduction) {
+      // has SSR styles and in production mode.
+      // simply do nothing.
+      return noop
+    } else {
+      // has SSR styles but in dev mode.
+      // for some reason Chrome can't handle source map in server-rendered
+      // style tags - source maps in <style> only works if the style tag is
+      // created and inserted dynamically. So we remove the server rendered
+      // styles and inject new ones.
+      styleElement.parentNode.removeChild(styleElement)
+    }
+  }
+
+  if (isOldIE) {
+    // use singleton mode for IE9.
+    var styleIndex = singletonCounter++
+    styleElement = singletonElement || (singletonElement = createStyleElement())
+    update = applyToSingletonTag.bind(null, styleElement, styleIndex, false)
+    remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true)
+  } else {
+    // use multi-style-tag mode in all other cases
+    styleElement = createStyleElement()
+    update = applyToTag.bind(null, styleElement)
+    remove = function () {
+      styleElement.parentNode.removeChild(styleElement)
+    }
+  }
+
+  update(obj)
+
+  return function updateStyle (newObj /* StyleObjectPart */) {
+    if (newObj) {
+      if (newObj.css === obj.css &&
+          newObj.media === obj.media &&
+          newObj.sourceMap === obj.sourceMap) {
+        return
+      }
+      update(obj = newObj)
+    } else {
+      remove()
+    }
+  }
+}
+
+var replaceText = (function () {
+  var textStore = []
+
+  return function (index, replacement) {
+    textStore[index] = replacement
+    return textStore.filter(Boolean).join('\n')
+  }
+})()
+
+function applyToSingletonTag (styleElement, index, remove, obj) {
+  var css = remove ? '' : obj.css
+
+  if (styleElement.styleSheet) {
+    styleElement.styleSheet.cssText = replaceText(index, css)
+  } else {
+    var cssNode = document.createTextNode(css)
+    var childNodes = styleElement.childNodes
+    if (childNodes[index]) styleElement.removeChild(childNodes[index])
+    if (childNodes.length) {
+      styleElement.insertBefore(cssNode, childNodes[index])
+    } else {
+      styleElement.appendChild(cssNode)
+    }
+  }
+}
+
+function applyToTag (styleElement, obj) {
+  var css = obj.css
+  var media = obj.media
+  var sourceMap = obj.sourceMap
+
+  if (media) {
+    styleElement.setAttribute('media', media)
+  }
+
+  if (sourceMap) {
+    // https://developer.chrome.com/devtools/docs/javascript-debugging
+    // this makes source maps inside style tags work properly in Chrome
+    css += '\n/*# sourceURL=' + sourceMap.sources[0] + ' */'
+    // http://stackoverflow.com/a/26603875
+    css += '\n/*# sourceMappingURL=data:application/json;base64,' + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + ' */'
+  }
+
+  if (styleElement.styleSheet) {
+    styleElement.styleSheet.cssText = css
+  } else {
+    while (styleElement.firstChild) {
+      styleElement.removeChild(styleElement.firstChild)
+    }
+    styleElement.appendChild(document.createTextNode(css))
+  }
+}
+
+
+/***/ }),
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
@@ -965,36 +1299,37 @@ process.umask = function() { return 0; };
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-__webpack_require__(30);
+__webpack_require__(34);
 
-window.Vue = __webpack_require__(44);
+window.Vue = __webpack_require__(49);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
+Vue.component('example', __webpack_require__(42));
 
-Vue.component('example', __webpack_require__(38));
+Vue.component('shirt-design-details', __webpack_require__(43));
 
 var app = new Vue({
   el: '#app'
 });
 
 /***/ }),
-/* 10 */
+/* 13 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 11 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(12);
+module.exports = __webpack_require__(15);
 
 /***/ }),
-/* 12 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1002,7 +1337,7 @@ module.exports = __webpack_require__(12);
 
 var utils = __webpack_require__(0);
 var bind = __webpack_require__(7);
-var Axios = __webpack_require__(14);
+var Axios = __webpack_require__(17);
 var defaults = __webpack_require__(1);
 
 /**
@@ -1037,14 +1372,14 @@ axios.create = function create(instanceConfig) {
 
 // Expose Cancel & CancelToken
 axios.Cancel = __webpack_require__(4);
-axios.CancelToken = __webpack_require__(13);
+axios.CancelToken = __webpack_require__(16);
 axios.isCancel = __webpack_require__(5);
 
 // Expose all/spread
 axios.all = function all(promises) {
   return Promise.all(promises);
 };
-axios.spread = __webpack_require__(28);
+axios.spread = __webpack_require__(31);
 
 module.exports = axios;
 
@@ -1053,7 +1388,7 @@ module.exports.default = axios;
 
 
 /***/ }),
-/* 13 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1117,7 +1452,7 @@ module.exports = CancelToken;
 
 
 /***/ }),
-/* 14 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1125,10 +1460,10 @@ module.exports = CancelToken;
 
 var defaults = __webpack_require__(1);
 var utils = __webpack_require__(0);
-var InterceptorManager = __webpack_require__(15);
-var dispatchRequest = __webpack_require__(16);
-var isAbsoluteURL = __webpack_require__(24);
-var combineURLs = __webpack_require__(22);
+var InterceptorManager = __webpack_require__(18);
+var dispatchRequest = __webpack_require__(19);
+var isAbsoluteURL = __webpack_require__(27);
+var combineURLs = __webpack_require__(25);
 
 /**
  * Create a new instance of Axios
@@ -1209,7 +1544,7 @@ module.exports = Axios;
 
 
 /***/ }),
-/* 15 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1268,14 +1603,14 @@ module.exports = InterceptorManager;
 
 
 /***/ }),
-/* 16 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var utils = __webpack_require__(0);
-var transformData = __webpack_require__(19);
+var transformData = __webpack_require__(22);
 var isCancel = __webpack_require__(5);
 var defaults = __webpack_require__(1);
 
@@ -1354,7 +1689,7 @@ module.exports = function dispatchRequest(config) {
 
 
 /***/ }),
-/* 17 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1380,7 +1715,7 @@ module.exports = function enhanceError(error, config, code, response) {
 
 
 /***/ }),
-/* 18 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1412,7 +1747,7 @@ module.exports = function settle(resolve, reject, response) {
 
 
 /***/ }),
-/* 19 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1439,7 +1774,7 @@ module.exports = function transformData(data, headers, fns) {
 
 
 /***/ }),
-/* 20 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1482,7 +1817,7 @@ module.exports = btoa;
 
 
 /***/ }),
-/* 21 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1557,7 +1892,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
 
 
 /***/ }),
-/* 22 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1576,7 +1911,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 
 
 /***/ }),
-/* 23 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1636,7 +1971,7 @@ module.exports = (
 
 
 /***/ }),
-/* 24 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1657,7 +1992,7 @@ module.exports = function isAbsoluteURL(url) {
 
 
 /***/ }),
-/* 25 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1732,7 +2067,7 @@ module.exports = (
 
 
 /***/ }),
-/* 26 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1751,7 +2086,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 
 
 /***/ }),
-/* 27 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1795,7 +2130,7 @@ module.exports = function parseHeaders(headers) {
 
 
 /***/ }),
-/* 28 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1829,11 +2164,16 @@ module.exports = function spread(callback) {
 
 
 /***/ }),
-/* 29 */
+/* 32 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2028,7 +2368,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         loadCollarTypes: function loadCollarTypes() {
             var _this2 = this;
 
-            axios.get('/collarType').then(function (response) {
+            axios.get('/collars').then(function (response) {
                 _this2.collarTypeName = response.data.collartypes;
             });
         },
@@ -2054,17 +2394,842 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     computed: {
         csrfToken: function csrfToken() {
-            window.Laravel.csrfToken;
+            window.Tailorshop.csrfToken;
         }
     }
 });
 
 /***/ }),
-/* 30 */
+/* 33 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+
+            Miscellaneous: {
+                misc_fabric: '',
+                misc_item: ''
+            },
+
+            errors: [],
+            orders: [],
+            ext: '.jpg',
+
+            fabric_image_src: '/images/fabrics/',
+
+            //Collar Type Variables
+            image_src: '/images/collartypes/', //Link to Collar Type Images
+            collarTypeName: '', //Holds array of Collar types from the Controller
+            selectedCollarType: {}, //Used to submit selected collar type to DB
+            update_collarType: {}, //Holds an array of value used for submitting CT
+
+            //Sleeve and Cuffs Variables
+            Sleeve_Cuff_src: '/images/sleeveAndCuffs/', //Link to Collar Type Images
+            Sleeve_CuffName: '', //Holds array of Collar types from the Controller
+            selectedSleeve_Cuff: {}, //Used to submit selected collar type to DB
+            update_sleeve_Cuff: {}, //Holds an array of value used for submitting CT
+
+            //Misc Variables
+            miscs_src: '/images/miscs/', //Link to Collar Type Images
+            miscsName: '', //Holds array of Collar types from the Controller
+            selectedMisc: {}, //Used to submit selected collar type to DB
+            update_misc: {}, //Holds an array of value used for submitting CT
+            update_misc2: {},
+            miscsName2: '',
+
+            //Fabrics Variables
+            fabric_src: '/images/fabrics/', //Link to Collar Type Images
+            fabricName: '', //Holds array of Collar types from the Controller
+            selectedFabric: {}, //Used to submit selected collar type to DB
+            update_fabric: {} //Holds an array of value used for submitting CT
+
+
+        };
+    },
+    mounted: function mounted() {
+        this.loadOrder();
+        this.loadCollarTypes();
+        this.loadSleeveAndCuffs();
+        this.loadMiscs();
+        this.loadMiscs2();
+    },
+
+
+    props: ['current_order_id'],
+
+    methods: {
+        loadOrder: function loadOrder() {
+            var _this = this;
+
+            axios.get('/shirt-design-details/' + this.current_order_id).then(function (response) {
+                _this.orders = response.data.orders;
+            });
+        },
+
+
+        //Collar Type Functions Begin   
+
+        loadCollarTypes: function loadCollarTypes() //Loads all the collar types from DB
+        {
+            var _this2 = this;
+
+            axios.get('/collars').then(function (response) {
+                _this2.collarTypeName = response.data.collartypes;
+            });
+        },
+        chooseCollarType: function chooseCollarType(index) //Init modal with the selected collar type
+        {
+            this.errors = [];
+            $("#update_collarType_model").modal("show");
+            this.update_collarType = this.collarTypeName[index];
+        },
+        saveCollarType: function saveCollarType() //Saves the selected collar type to DB
+        {
+            var _this3 = this;
+
+            axios.put('/shirt-design-details/' + this.current_order_id, {
+                collar: this.update_collarType.name
+            }).then(function (response) {
+
+                $("#update_collarType_model").modal("hide");
+            }).catch(function (error) {
+                _this3.errors = [];
+                if (error.response.data.errors.name) {
+                    _this3.errors.push(error.response.data.errors.name[0]);
+                }
+                if (error.response.data.errors.img_link) {
+                    _this3.errors.push(error.response.data.errors.description[0]);
+                }
+            });
+        },
+
+
+        //Collar Type Functions End
+
+
+        //Sleeve and Cuffs Functions Begin   
+
+        loadSleeveAndCuffs: function loadSleeveAndCuffs() //Loads all the collar types from DB
+        {
+            var _this4 = this;
+
+            axios.get('/sleeve_and_cuffs').then(function (response) {
+                _this4.Sleeve_CuffName = response.data.sleeveAndCuffs;
+            });
+        },
+        chooseSleeveAndCuffs: function chooseSleeveAndCuffs(index) //Init modal with the selected collar type
+        {
+            this.errors = [];
+            $("#update_sleeve_and_cuffs_model").modal("show");
+            this.update_sleeve_Cuff = this.Sleeve_CuffName[index];
+        },
+        saveSleeveAndCuffs: function saveSleeveAndCuffs() //Saves the selected collar type to DB
+        {
+            var _this5 = this;
+
+            axios.put('/shirt-design-details/' + this.current_order_id, {
+                sleeve_cuffs: this.update_sleeve_Cuff.name
+            }).then(function (response) {
+
+                $("#update_sleeve_and_cuffs_model").modal("hide");
+            }).catch(function (error) {
+                _this5.errors = [];
+                if (error.response.data.errors.name) {
+                    _this5.errors.push(error.response.data.errors.name[0]);
+                }
+                if (error.response.data.errors.img_link) {
+                    _this5.errors.push(error.response.data.errors.description[0]);
+                }
+            });
+        },
+
+
+        //Sleeve and Cuffs Functions End
+
+
+        //Miscellaneous Functions Begin 
+        loadMiscs: function loadMiscs() {
+            var _this6 = this;
+
+            axios.get('/miscs').then(function (response) {
+                _this6.miscsName = response.data.miscs;
+            });
+        },
+
+
+        //Get the index of the Misc Item and load with function. The index is used to determine which Misc Item was clicked before Fabrics are display. This info is then used to determine the field the fabric will be saved to in the shirts table in the DB.
+        loadMiscFabrics: function loadMiscFabrics(index) {
+            var _this7 = this;
+
+            this.errors = [];
+
+            $("#update_miscs_model").modal("show");
+            this.update_misc = this.miscsName[index];
+
+            axios.get('/choosefabric/create').then(function (response) {
+                _this7.fabricName = response.data.fabrics;
+            });
+        },
+        saveMiscFabrics: function saveMiscFabrics(index) //Saves the selected misc Item to DB
+        {
+            var _this8 = this;
+
+            axios.put('/shirt-design-details/' + this.current_order_id, {
+                misc_item: this.update_misc.name,
+                misc_fabric: this.fabricName[index].name
+            }).then(function (response) {
+
+                $("#update_miscs_model").modal("hide");
+            }).catch(function (error) {
+                _this8.errors = [];
+                if (error.response.data.errors.misc_item) {
+                    _this8.errors.push(error.response.data.errors.misc_item[0]);
+                }
+                if (error.response.data.errors.misc_fabric) {
+                    _this8.errors.push(error.response.data.errors.misc_fabric[0]);
+                }
+            });
+        },
+        loadMiscs2: function loadMiscs2() {
+            var _this9 = this;
+
+            axios.get('/miscs/create').then(function (response) {
+                _this9.miscsName2 = response.data.miscs2;
+            });
+        },
+        initloadMiscs2: function initloadMiscs2(index) {
+            this.errors = [];
+            $("#update_misc2_model").modal("show");
+            this.update_misc2 = this.miscsName2[index];
+        },
+        saveMiscItem2: function saveMiscItem2() {
+            var _this10 = this;
+
+            axios.put('/shirt-design-details/' + this.current_order_id, {
+                misc_item: this.update_misc2.name
+            }).then(function (response) {
+
+                $("#update_misc2_model").modal("hide");
+            }).catch(function (error) {
+                _this10.errors = [];
+                if (error.response.data.errors.misc_item) {
+                    _this10.errors.push(error.response.data.errors.misc_item[0]);
+                }
+            });
+        }
+    },
+
+    computed: {}
+});
+
+/***/ }),
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
-window._ = __webpack_require__(35);
+window._ = __webpack_require__(39);
 
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
@@ -2073,9 +3238,9 @@ window._ = __webpack_require__(35);
  */
 
 try {
-  window.$ = window.jQuery = __webpack_require__(34);
+  window.$ = window.jQuery = __webpack_require__(38);
 
-  __webpack_require__(31);
+  __webpack_require__(35);
 } catch (e) {}
 
 /**
@@ -2084,7 +3249,7 @@ try {
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
-window.axios = __webpack_require__(11);
+window.axios = __webpack_require__(14);
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
@@ -2118,7 +3283,7 @@ if (token) {
 // });
 
 /***/ }),
-/* 31 */
+/* 35 */
 /***/ (function(module, exports) {
 
 /*!
@@ -4501,70 +5666,21 @@ if (typeof jQuery === 'undefined') {
 
 
 /***/ }),
-/* 32 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(33)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports = module.exports = __webpack_require__(8)();
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
-/* 33 */
-/***/ (function(module, exports) {
+/* 37 */
+/***/ (function(module, exports, __webpack_require__) {
 
-/*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
-*/
-// css base code, injected by the css-loader
-module.exports = function() {
-	var list = [];
-
-	// return the list of modules as css string
-	list.toString = function toString() {
-		var result = [];
-		for(var i = 0; i < this.length; i++) {
-			var item = this[i];
-			if(item[2]) {
-				result.push("@media " + item[2] + "{" + item[1] + "}");
-			} else {
-				result.push(item[1]);
-			}
-		}
-		return result.join("");
-	};
-
-	// import a list of modules into the list
-	list.i = function(modules, mediaQuery) {
-		if(typeof modules === "string")
-			modules = [[null, modules, ""]];
-		var alreadyImportedModules = {};
-		for(var i = 0; i < this.length; i++) {
-			var id = this[i][0];
-			if(typeof id === "number")
-				alreadyImportedModules[id] = true;
-		}
-		for(i = 0; i < modules.length; i++) {
-			var item = modules[i];
-			// skip already imported module
-			// this implementation is not 100% perfect for weird media query combinations
-			//  when a module is imported multiple times with different media queries.
-			//  I hope this will never occur (Hey this way we have smaller bundles)
-			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
-				if(mediaQuery && !item[2]) {
-					item[2] = mediaQuery;
-				} else if(mediaQuery) {
-					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
-				}
-				list.push(item);
-			}
-		}
-	};
-	return list;
-};
-
+exports = module.exports = __webpack_require__(8)();
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
-/* 34 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -14824,7 +15940,7 @@ return jQuery;
 
 
 /***/ }),
-/* 35 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, module) {var __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -31913,10 +33029,10 @@ return jQuery;
   }
 }.call(this));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2), __webpack_require__(45)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2), __webpack_require__(50)(module)))
 
 /***/ }),
-/* 36 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -32106,10 +33222,10 @@ return jQuery;
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2), __webpack_require__(8)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2), __webpack_require__(9)))
 
 /***/ }),
-/* 37 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var apply = Function.prototype.apply;
@@ -32162,24 +33278,24 @@ exports._unrefActive = exports.active = function(item) {
 };
 
 // setimmediate attaches itself to the global object
-__webpack_require__(36);
+__webpack_require__(40);
 exports.setImmediate = setImmediate;
 exports.clearImmediate = clearImmediate;
 
 
 /***/ }),
-/* 38 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(41)
+__webpack_require__(47)
 
-var Component = __webpack_require__(39)(
+var Component = __webpack_require__(10)(
   /* script */
-  __webpack_require__(29),
+  __webpack_require__(32),
   /* template */
-  __webpack_require__(40),
+  __webpack_require__(45),
   /* scopeId */
   null,
   /* cssModules */
@@ -32206,64 +33322,1193 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 39 */
-/***/ (function(module, exports) {
+/* 43 */
+/***/ (function(module, exports, __webpack_require__) {
 
-// this module is a runtime utility for cleaner component module output and will
-// be included in the final webpack user bundle
 
-module.exports = function normalizeComponent (
-  rawScriptExports,
-  compiledTemplate,
-  scopeId,
-  cssModules
-) {
-  var esModule
-  var scriptExports = rawScriptExports = rawScriptExports || {}
+/* styles */
+__webpack_require__(46)
 
-  // ES6 modules interop
-  var type = typeof rawScriptExports.default
-  if (type === 'object' || type === 'function') {
-    esModule = rawScriptExports
-    scriptExports = rawScriptExports.default
+var Component = __webpack_require__(10)(
+  /* script */
+  __webpack_require__(33),
+  /* template */
+  __webpack_require__(44),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "C:\\wamp\\www\\Laravel\\tailorshop\\resources\\assets\\js\\components\\ShirtDesignDetails.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] ShirtDesignDetails.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-41064fea", Component.options)
+  } else {
+    hotAPI.reload("data-v-41064fea", Component.options)
   }
+})()}
 
-  // Vue.extend constructor export interop
-  var options = typeof scriptExports === 'function'
-    ? scriptExports.options
-    : scriptExports
-
-  // render functions
-  if (compiledTemplate) {
-    options.render = compiledTemplate.render
-    options.staticRenderFns = compiledTemplate.staticRenderFns
-  }
-
-  // scopedId
-  if (scopeId) {
-    options._scopeId = scopeId
-  }
-
-  // inject cssModules
-  if (cssModules) {
-    var computed = Object.create(options.computed || null)
-    Object.keys(cssModules).forEach(function (key) {
-      var module = cssModules[key]
-      computed[key] = function () { return module }
-    })
-    options.computed = computed
-  }
-
-  return {
-    esModule: esModule,
-    exports: scriptExports,
-    options: options
-  }
-}
+module.exports = Component.exports
 
 
 /***/ }),
-/* 40 */
+/* 44 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "haslayout padding-section",
+    attrs: {
+      "id": "main"
+    }
+  }, [_c('div', {
+    staticClass: "container"
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-lg-8 col-md-6 col-sm-6 col-xs-6 width"
+  }, [_c('div', {
+    staticClass: "product-making"
+  }, [_c('div', {
+    staticClass: "product-tabs"
+  }, [_vm._m(0), _vm._v(" "), _c('div', {
+    staticClass: "product-tab-data",
+    attrs: {
+      "id": "product-tab-data"
+    }
+  }, [_c('div', {
+    staticClass: "item design-shirt"
+  }, [_c('form', {
+    staticClass: "shirtdesign-form"
+  }, [_c('fieldset', [_c('div', {
+    staticClass: "panel-group shirtdesign-accordion theme-accordion",
+    attrs: {
+      "id": "shirtdesign-accordion"
+    }
+  }, [_vm._m(1), _vm._v(" "), _c('div', {
+    staticClass: "panel accordion-pannel"
+  }, [_vm._m(2), _vm._v(" "), _c('div', {
+    staticClass: "panel-collapse collapse",
+    attrs: {
+      "id": "collapseOne"
+    }
+  }, [_c('div', {
+    staticClass: "panel-body"
+  }, [_c('ul', {
+    staticClass: "tab-nav",
+    attrs: {
+      "role": "tablist"
+    }
+  }, _vm._l((_vm.collarTypeName), function(collartype, index) {
+    return _c('li', {
+      staticClass: "col-lg-3 col-md-4 col-sm-6 col-xs-6 pattran-half",
+      attrs: {
+        "role": "presentation"
+      }
+    }, [_c('label', [_c('img', {
+      attrs: {
+        "src": _vm.image_src + collartype.img_link,
+        "height": "100",
+        "width": "100"
+      },
+      on: {
+        "click": function($event) {
+          _vm.chooseCollarType(index)
+        }
+      }
+    })]), _vm._v(" "), _c('p', [_vm._v(_vm._s(collartype.name))])])
+  }))])])]), _vm._v(" "), _c('div', {
+    staticClass: "panel accordion-pannel"
+  }, [_vm._m(3), _vm._v(" "), _c('div', {
+    staticClass: "panel-collapse collapse",
+    attrs: {
+      "id": "collapseTwo"
+    }
+  }, [_c('div', {
+    staticClass: "panel-body"
+  }, [_c('ul', {
+    staticClass: "tab-nav",
+    attrs: {
+      "role": "tablist"
+    }
+  }, _vm._l((_vm.Sleeve_CuffName), function(sleeve_and_cuffs, index) {
+    return _c('li', {
+      staticClass: "col-lg-3 col-md-4 col-sm-6 col-xs-6 pattran-half",
+      attrs: {
+        "role": "presentation"
+      }
+    }, [_c('label', [_c('img', {
+      attrs: {
+        "src": _vm.Sleeve_Cuff_src + sleeve_and_cuffs.img_link,
+        "height": "100",
+        "width": "100"
+      },
+      on: {
+        "click": function($event) {
+          _vm.chooseSleeveAndCuffs(index)
+        }
+      }
+    })]), _vm._v(" "), _c('p', [_vm._v(_vm._s(sleeve_and_cuffs.name))])])
+  }))])])]), _vm._v(" "), _c('div', {
+    staticClass: "panel accordion-pannel"
+  }, [_vm._m(4), _vm._v(" "), _c('div', {
+    staticClass: "panel-collapse collapse",
+    attrs: {
+      "id": "collapseThree"
+    }
+  }, [_c('div', {
+    staticClass: "panel-body"
+  }, [_c('ul', {
+    staticClass: "tab-nav",
+    attrs: {
+      "role": "tablist"
+    }
+  }, _vm._l((_vm.collarTypeName), function(collartype, index) {
+    return _c('li', {
+      staticClass: "col-lg-3 col-md-4 col-sm-6 col-xs-6 pattran-half",
+      attrs: {
+        "role": "presentation"
+      }
+    }, [_c('label', [_c('img', {
+      attrs: {
+        "src": _vm.image_src + collartype.img_link,
+        "height": "100",
+        "width": "100"
+      },
+      on: {
+        "click": function($event) {
+          _vm.initUpdate(index)
+        }
+      }
+    })]), _vm._v(" "), _c('p', [_vm._v(_vm._s(collartype.name))])])
+  }))])])]), _vm._v(" "), _c('div', {
+    staticClass: "panel accordion-pannel"
+  }, [_vm._m(5), _vm._v(" "), _c('div', {
+    staticClass: "panel-collapse collapse",
+    attrs: {
+      "id": "collapseFour"
+    }
+  }, [_c('div', {
+    staticClass: "panel-body"
+  }, [_c('ul', {
+    staticClass: "tab-nav",
+    attrs: {
+      "role": "tablist"
+    }
+  }, _vm._l((_vm.collarTypeName), function(collartype, index) {
+    return _c('li', {
+      staticClass: "col-lg-3 col-md-4 col-sm-6 col-xs-6 pattran-half",
+      attrs: {
+        "role": "presentation"
+      }
+    }, [_c('label', [_c('img', {
+      attrs: {
+        "src": _vm.image_src + collartype.img_link,
+        "height": "100",
+        "width": "100"
+      },
+      on: {
+        "click": function($event) {
+          _vm.initUpdate(index)
+        }
+      }
+    })]), _vm._v(" "), _c('p', [_vm._v(_vm._s(collartype.name))])])
+  }))])])]), _vm._v(" "), _c('div', {
+    staticClass: "panel accordion-pannel"
+  }, [_vm._m(6), _vm._v(" "), _c('div', {
+    staticClass: "panel-collapse collapse",
+    attrs: {
+      "id": "collapseFive"
+    }
+  }, [_c('div', {
+    staticClass: "panel-body"
+  }, [_c('ul', {
+    staticClass: "tab-nav",
+    attrs: {
+      "role": "tablist"
+    }
+  }, _vm._l((_vm.collarTypeName), function(collartype, index) {
+    return _c('li', {
+      staticClass: "col-lg-3 col-md-4 col-sm-6 col-xs-6 pattran-half",
+      attrs: {
+        "role": "presentation"
+      }
+    }, [_c('label', [_c('img', {
+      attrs: {
+        "src": _vm.image_src + collartype.img_link,
+        "height": "100",
+        "width": "100"
+      },
+      on: {
+        "click": function($event) {
+          _vm.initUpdate(index)
+        }
+      }
+    })]), _vm._v(" "), _c('p', [_vm._v(_vm._s(collartype.name))])])
+  }))])])]), _vm._v(" "), _c('div', {
+    staticClass: "panel accordion-pannel"
+  }, [_vm._m(7), _vm._v(" "), _c('div', {
+    staticClass: "panel-collapse collapse",
+    attrs: {
+      "id": "collapseSix"
+    }
+  }, [_c('div', {
+    staticClass: "panel-body"
+  }, [_c('ul', {
+    staticClass: "tab-nav",
+    attrs: {
+      "role": "tablist"
+    }
+  }, _vm._l((_vm.collarTypeName), function(collartype, index) {
+    return _c('li', {
+      staticClass: "col-lg-3 col-md-4 col-sm-6 col-xs-6 pattran-half",
+      attrs: {
+        "role": "presentation"
+      }
+    }, [_c('label', [_c('img', {
+      attrs: {
+        "src": _vm.image_src + collartype.img_link,
+        "height": "100",
+        "width": "100"
+      },
+      on: {
+        "click": function($event) {
+          _vm.initUpdate(index)
+        }
+      }
+    })]), _vm._v(" "), _c('p', [_vm._v(_vm._s(collartype.name))])])
+  }))])])]), _vm._v(" "), _c('div', {
+    staticClass: "panel accordion-pannel"
+  }, [_vm._m(8), _vm._v(" "), _c('div', {
+    staticClass: "panel-collapse collapse",
+    attrs: {
+      "id": "collapseSeven"
+    }
+  }, [_c('div', {
+    staticClass: "panel-body"
+  }, [_c('ul', {
+    staticClass: "tab-nav",
+    attrs: {
+      "role": "tablist"
+    }
+  }, _vm._l((_vm.collarTypeName), function(collartype, index) {
+    return _c('li', {
+      staticClass: "col-lg-3 col-md-4 col-sm-6 col-xs-6 pattran-half",
+      attrs: {
+        "role": "presentation"
+      }
+    }, [_c('label', [_c('img', {
+      attrs: {
+        "src": _vm.image_src + collartype.img_link,
+        "height": "100",
+        "width": "100"
+      },
+      on: {
+        "click": function($event) {
+          _vm.initUpdate(index)
+        }
+      }
+    })]), _vm._v(" "), _c('p', [_vm._v(_vm._s(collartype.name))])])
+  }))])])]), _vm._v(" "), _c('div', {
+    staticClass: "panel accordion-pannel"
+  }, [_vm._m(9), _vm._v(" "), _c('div', {
+    staticClass: "panel-collapse collapse",
+    attrs: {
+      "id": "collapseEight"
+    }
+  }, [_c('div', {
+    staticClass: "panel-body"
+  }, [_c('ul', {
+    staticClass: "tab-nav",
+    attrs: {
+      "role": "tablist"
+    }
+  }, _vm._l((_vm.collarTypeName), function(collartype, index) {
+    return _c('li', {
+      staticClass: "col-lg-3 col-md-4 col-sm-6 col-xs-6 pattran-half",
+      attrs: {
+        "role": "presentation"
+      }
+    }, [_c('label', [_c('img', {
+      attrs: {
+        "src": _vm.image_src + collartype.img_link,
+        "height": "100",
+        "width": "100"
+      },
+      on: {
+        "click": function($event) {
+          _vm.initUpdate(index)
+        }
+      }
+    })]), _vm._v(" "), _c('p', [_vm._v(_vm._s(collartype.name))])])
+  }))])])]), _vm._v(" "), _c('div', {
+    staticClass: "panel accordion-pannel"
+  }, [_vm._m(10), _vm._v(" "), _c('div', {
+    staticClass: "panel-collapse collapse",
+    attrs: {
+      "id": "collapseNine"
+    }
+  }, [_c('div', {
+    staticClass: "panel-body"
+  }, [_c('ul', {
+    staticClass: "tab-nav",
+    attrs: {
+      "role": "tablist"
+    }
+  }, _vm._l((_vm.collarTypeName), function(collartype, index) {
+    return _c('li', {
+      staticClass: "col-lg-3 col-md-4 col-sm-6 col-xs-6 pattran-half",
+      attrs: {
+        "role": "presentation"
+      }
+    }, [_c('label', [_c('img', {
+      attrs: {
+        "src": _vm.image_src + collartype.img_link,
+        "height": "100",
+        "width": "100"
+      },
+      on: {
+        "click": function($event) {
+          _vm.initUpdate(index)
+        }
+      }
+    })]), _vm._v(" "), _c('p', [_vm._v(_vm._s(collartype.name))])])
+  }))])])]), _vm._v(" "), _c('div', {
+    staticClass: "panel accordion-pannel"
+  }, [_vm._m(11), _vm._v(" "), _c('div', {
+    staticClass: "panel-collapse collapse",
+    attrs: {
+      "id": "collapseTen"
+    }
+  }, [_c('div', {
+    staticClass: "panel-body"
+  }, [_c('ul', {
+    staticClass: "tab-nav",
+    attrs: {
+      "role": "tablist"
+    }
+  }, _vm._l((_vm.collarTypeName), function(collartype, index) {
+    return _c('li', {
+      staticClass: "col-lg-3 col-md-4 col-sm-6 col-xs-6 pattran-half",
+      attrs: {
+        "role": "presentation"
+      }
+    }, [_c('label', [_c('img', {
+      attrs: {
+        "src": _vm.image_src + collartype.img_link,
+        "height": "100",
+        "width": "100"
+      },
+      on: {
+        "click": function($event) {
+          _vm.initUpdate(index)
+        }
+      }
+    })]), _vm._v(" "), _c('p', [_vm._v(_vm._s(collartype.name))])])
+  }))])])]), _vm._v(" "), _c('div', {
+    staticClass: "panel accordion-pannel"
+  }, [_vm._m(12), _vm._v(" "), _c('div', {
+    staticClass: "panel-collapse collapse",
+    attrs: {
+      "id": "collapseEleven"
+    }
+  }, [_c('div', {
+    staticClass: "panel-body"
+  }, [_c('ul', {
+    staticClass: "tab-nav",
+    attrs: {
+      "role": "tablist"
+    }
+  }, [_vm._l((_vm.miscsName2), function(misc2, index) {
+    return _c('li', {
+      staticClass: "col-lg-3 col-md-4 col-sm-6 col-xs-6 pattran-half",
+      attrs: {
+        "role": "presentation"
+      }
+    }, [_c('label', [_c('img', {
+      attrs: {
+        "src": _vm.miscs_src + misc2.img_link,
+        "height": "100",
+        "width": "100"
+      },
+      on: {
+        "click": function($event) {
+          _vm.initloadMiscs2(index)
+        }
+      }
+    })]), _vm._v(" "), _c('p', [_vm._v(_vm._s(misc2.name))])])
+  }), _vm._v(" "), _vm._l((_vm.miscsName), function(misc, index) {
+    return _c('li', {
+      staticClass: "col-lg-3 col-md-4 col-sm-6 col-xs-6 pattran-half",
+      attrs: {
+        "role": "presentation"
+      }
+    }, [_c('label', [_c('img', {
+      attrs: {
+        "src": _vm.miscs_src + misc.img_link,
+        "height": "100",
+        "width": "100"
+      },
+      on: {
+        "click": function($event) {
+          _vm.loadMiscFabrics(index)
+        }
+      }
+    })]), _vm._v(" "), _c('p', [_vm._v(_vm._s(misc.name))])])
+  })], 2)])])])])])]), _vm._v(" "), _vm._m(13)])])])])]), _vm._v(" "), _c('div', {
+    staticClass: "col-lg-4 col-md-6 col-sm-6 col-xs-6 width"
+  }, [_c('div', {
+    staticClass: "form-wrapper"
+  }, [_vm._m(14), _vm._v(" "), _c('div', {
+    staticClass: "col formation"
+  }, _vm._l((_vm.orders), function(order, key) {
+    return _c('ul', {
+      staticClass: "orderlist",
+      attrs: {
+        "id": key
+      }
+    }, [_c('img', {
+      attrs: {
+        "src": _vm.fabric_image_src + order.fabric + _vm.ext,
+        "height": "100",
+        "width": "100"
+      }
+    }), _vm._v(" "), _c('li', [_c('span', [_vm._v("Fabric:")]), _vm._v(" " + _vm._s(order.fabric))]), _vm._v(" "), _c('li', [_c('span', [_vm._v("Order ID:")]), _vm._v(" " + _vm._s(order.order_id))]), _vm._v(" "), _c('li', [_c('span', [_vm._v("Gender:")]), _vm._v(" " + _vm._s(order.gender) + " ")]), _vm._v(" "), _c('li', [_c('span', [_vm._v("Collar Type:")]), _vm._v(" " + _vm._s(order.collar) + " ")]), _vm._v(" "), _c('li', [_c('span', [_vm._v("Sleeve & Cuffs:")]), _vm._v(" " + _vm._s(order.sleeve_and_cuffs) + " ")])])
+  }))])])])]), _vm._v(" "), _c('div', {
+    staticClass: "modal fade",
+    attrs: {
+      "tabindex": "-1",
+      "role": "dialog",
+      "id": "update_collarType_model"
+    }
+  }, [_c('div', {
+    staticClass: "modal-dialog",
+    attrs: {
+      "role": "document"
+    }
+  }, [_c('div', {
+    staticClass: "modal-content"
+  }, [_vm._m(15), _vm._v(" "), _c('div', {
+    staticClass: "modal-body"
+  }, [(_vm.errors.length > 0) ? _c('div', {
+    staticClass: "alert alert-danger"
+  }, [_c('ul', _vm._l((_vm.errors), function(error) {
+    return _c('li', [_vm._v(_vm._s(error))])
+  }))]) : _vm._e(), _vm._v(" "), _c('form', {
+    attrs: {
+      "role": "form"
+    }
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('label', [_vm._v("Collar Type:")]), _vm._v(" "), _c('img', {
+    attrs: {
+      "src": _vm.image_src + _vm.update_collarType.img_link,
+      "height": "250",
+      "width": "250"
+    },
+    model: {
+      value: (_vm.update_collarType.img_link),
+      callback: function($$v) {
+        _vm.$set(_vm.update_collarType, "img_link", $$v)
+      },
+      expression: "update_collarType.img_link"
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', [_vm._v("Name:")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.update_collarType.name),
+      expression: "update_collarType.name"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "type": "text",
+      "placeholder": "Collar Name",
+      "name": "collar",
+      "id": "collar"
+    },
+    domProps: {
+      "value": (_vm.update_collarType.name)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.$set(_vm.update_collarType, "name", $event.target.value)
+      }
+    }
+  })])])]), _vm._v(" "), _c('div', {
+    staticClass: "modal-footer"
+  }, [_c('button', {
+    staticClass: "btn btn-default",
+    attrs: {
+      "type": "button",
+      "data-dismiss": "modal"
+    }
+  }, [_vm._v("Close")]), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-primary",
+    attrs: {
+      "type": "button"
+    },
+    on: {
+      "click": _vm.saveCollarType
+    }
+  }, [_vm._v("Confirm")])])])])]), _vm._v(" "), _c('div', {
+    staticClass: "modal fade",
+    attrs: {
+      "tabindex": "-1",
+      "role": "dialog",
+      "id": "update_sleeve_and_cuffs_model"
+    }
+  }, [_c('div', {
+    staticClass: "modal-dialog",
+    attrs: {
+      "role": "document"
+    }
+  }, [_c('div', {
+    staticClass: "modal-content"
+  }, [_vm._m(16), _vm._v(" "), _c('div', {
+    staticClass: "modal-body"
+  }, [(_vm.errors.length > 0) ? _c('div', {
+    staticClass: "alert alert-danger"
+  }, [_c('ul', _vm._l((_vm.errors), function(error) {
+    return _c('li', [_vm._v(_vm._s(error))])
+  }))]) : _vm._e(), _vm._v(" "), _c('form', {
+    attrs: {
+      "role": "form"
+    }
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('label', [_vm._v("Selected Sleeve and Cuff:")]), _vm._v(" "), _c('img', {
+    attrs: {
+      "src": _vm.Sleeve_Cuff_src + _vm.update_sleeve_Cuff.img_link,
+      "height": "250",
+      "width": "250"
+    },
+    model: {
+      value: (_vm.update_sleeve_Cuff.img_link),
+      callback: function($$v) {
+        _vm.$set(_vm.update_sleeve_Cuff, "img_link", $$v)
+      },
+      expression: "update_sleeve_Cuff.img_link"
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', [_vm._v("Name:")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.update_sleeve_Cuff.name),
+      expression: "update_sleeve_Cuff.name"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "type": "text",
+      "placeholder": "Sleeve and Cuff",
+      "name": "sleeve_Cuff",
+      "id": "sleeve_Cuff"
+    },
+    domProps: {
+      "value": (_vm.update_sleeve_Cuff.name)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.$set(_vm.update_sleeve_Cuff, "name", $event.target.value)
+      }
+    }
+  })])])]), _vm._v(" "), _c('div', {
+    staticClass: "modal-footer"
+  }, [_c('button', {
+    staticClass: "btn btn-default",
+    attrs: {
+      "type": "button",
+      "data-dismiss": "modal"
+    }
+  }, [_vm._v("Close")]), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-primary",
+    attrs: {
+      "type": "button"
+    },
+    on: {
+      "click": _vm.saveSleeveAndCuffs
+    }
+  }, [_vm._v("Confirm")])])])])]), _vm._v(" "), _c('div', {
+    staticClass: "modal fade",
+    attrs: {
+      "tabindex": "-1",
+      "role": "dialog",
+      "id": "update_miscs_model"
+    }
+  }, [_c('div', {
+    staticClass: "modal-dialog",
+    attrs: {
+      "role": "document"
+    }
+  }, [_c('div', {
+    staticClass: "modal-content"
+  }, [_vm._m(17), _vm._v(" "), _c('div', {
+    staticClass: "modal-body"
+  }, [(_vm.errors.length > 0) ? _c('div', {
+    staticClass: "alert alert-danger"
+  }, [_c('ul', _vm._l((_vm.errors), function(error) {
+    return _c('li', [_vm._v(_vm._s(error))])
+  }))]) : _vm._e(), _vm._v(" "), _c('ul', {
+    staticClass: "tab-nav",
+    attrs: {
+      "role": "tablist"
+    }
+  }, _vm._l((_vm.fabricName), function(fabric, index) {
+    return _c('li', {
+      staticClass: "col-lg-3 col-md-4 col-sm-6 col-xs-6 pattran-half",
+      attrs: {
+        "role": "presentation"
+      }
+    }, [_c('label', [_c('img', {
+      attrs: {
+        "src": _vm.fabric_src + fabric.image,
+        "height": "100",
+        "width": "100"
+      }
+    })]), _vm._v(" "), _c('form', {
+      attrs: {
+        "role": "form"
+      }
+    }, [_c('div', {
+      staticClass: "form-group"
+    }, [_c('label', [_vm._v("Fabric Name:" + _vm._s(fabric.name))]), _vm._v(" "), _c('label', [_vm._v("Misc Item:" + _vm._s(_vm.update_misc.name))]), _vm._v(" "), _c('input', {
+      directives: [{
+        name: "model",
+        rawName: "v-model",
+        value: (_vm.update_misc.name),
+        expression: "update_misc.name"
+      }],
+      staticClass: "form-control",
+      attrs: {
+        "type": "hidden",
+        "name": "misc",
+        "id": "misc"
+      },
+      domProps: {
+        "value": (_vm.update_misc.name)
+      },
+      on: {
+        "input": function($event) {
+          if ($event.target.composing) { return; }
+          _vm.$set(_vm.update_misc, "name", $event.target.value)
+        }
+      }
+    }), _vm._v(" "), _c('input', {
+      directives: [{
+        name: "model",
+        rawName: "v-model",
+        value: (fabric.name),
+        expression: "fabric.name"
+      }],
+      staticClass: "form-control",
+      attrs: {
+        "type": "hidden",
+        "name": "fabric",
+        "id": "fabric"
+      },
+      domProps: {
+        "value": (fabric.name)
+      },
+      on: {
+        "input": function($event) {
+          if ($event.target.composing) { return; }
+          _vm.$set(fabric, "name", $event.target.value)
+        }
+      }
+    }), _vm._v(" "), _c('button', {
+      staticClass: "btn btn-primary",
+      attrs: {
+        "type": "button"
+      },
+      on: {
+        "click": function($event) {
+          _vm.saveMiscFabrics(index)
+        }
+      }
+    }, [_vm._v("Select\n                                                    ")])])])])
+  }))]), _vm._v(" "), _vm._m(18)])])]), _vm._v(" "), _c('div', {
+    staticClass: "modal fade",
+    attrs: {
+      "tabindex": "-1",
+      "role": "dialog",
+      "id": "update_misc2_model"
+    }
+  }, [_c('div', {
+    staticClass: "modal-dialog",
+    attrs: {
+      "role": "document"
+    }
+  }, [_c('div', {
+    staticClass: "modal-content"
+  }, [_c('div', {
+    staticClass: "modal-header"
+  }, [_vm._m(19), _vm._v(" "), _c('h4', {
+    staticClass: "modal-title"
+  }, [_vm._v("Confirm " + _vm._s(_vm.update_misc2.name) + " Selection")])]), _vm._v(" "), _c('div', {
+    staticClass: "modal-body"
+  }, [(_vm.errors.length > 0) ? _c('div', {
+    staticClass: "alert alert-danger"
+  }, [_c('ul', _vm._l((_vm.errors), function(error) {
+    return _c('li', [_vm._v(_vm._s(error))])
+  }))]) : _vm._e(), _vm._v(" "), _c('form', {
+    attrs: {
+      "role": "form"
+    }
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('label', [_vm._v(_vm._s(_vm.update_misc2.name))]), _vm._v(" "), _c('img', {
+    attrs: {
+      "src": _vm.miscs_src + _vm.update_misc2.img_link,
+      "height": "250",
+      "width": "250"
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', [_vm._v("Name:")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.update_misc2.name),
+      expression: "update_misc2.name"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "type": "hidden",
+      "name": "misc2",
+      "id": "misc2"
+    },
+    domProps: {
+      "value": (_vm.update_misc2.name)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.$set(_vm.update_misc2, "name", $event.target.value)
+      }
+    }
+  })])])]), _vm._v(" "), _c('div', {
+    staticClass: "modal-footer"
+  }, [_c('button', {
+    staticClass: "btn btn-default",
+    attrs: {
+      "type": "button",
+      "data-dismiss": "modal"
+    }
+  }, [_vm._v("Close")]), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-primary",
+    attrs: {
+      "type": "button"
+    },
+    on: {
+      "click": function($event) {
+        _vm.saveMiscItem2()
+      }
+    }
+  }, [_vm._v("Confirm")])])])])])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "head"
+  }, [_c('div', {
+    staticClass: "product-tabs",
+    attrs: {
+      "id": "product-tabs"
+    }
+  }, [_c('div', {
+    staticClass: "item"
+  }, [_c('a', {
+    attrs: {
+      "href": "#top-rated"
+    }
+  }, [_vm._v("Enter your Parameters")])])])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "panel accordion-pannel"
+  }, [_c('div', {
+    staticClass: "accordion-heading"
+  }, [_c('h4', [_c('a', {
+    attrs: {
+      "data-toggle": "collapse",
+      "data-parent": "#shirtdesign-accordion",
+      "href": "#collapseZero"
+    }
+  }, [_c('em', [_vm._v("Measurement")]), _vm._v(" "), _c('i', {
+    staticClass: "indicator fa fa-angle-right pull-right"
+  })])])]), _vm._v(" "), _c('div', {
+    staticClass: "panel-collapse collapse in",
+    attrs: {
+      "id": "collapseZero"
+    }
+  }, [_c('div', {
+    staticClass: "panel-body"
+  }, [_c('ul', [_c('li', {
+    staticClass: "col-sm-5"
+  }, [_c('img', {
+    attrs: {
+      "src": "/images/thumb1.jpg",
+      "alt": "image description"
+    }
+  })]), _vm._v(" "), _c('li', {
+    staticClass: "col-sm-7"
+  }, [_c('div', {
+    staticClass: "size-input"
+  }, [_c('input', {
+    staticClass: "form-control",
+    attrs: {
+      "type": "text",
+      "placeholder": "Neck (cm)"
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "size-input"
+  }, [_c('input', {
+    staticClass: "form-control",
+    attrs: {
+      "type": "text",
+      "placeholder": "Arm Round (cm)"
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "size-input"
+  }, [_c('input', {
+    staticClass: "form-control",
+    attrs: {
+      "type": "text",
+      "placeholder": "Arm Length (cm)"
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "size-input"
+  }, [_c('input', {
+    staticClass: "form-control",
+    attrs: {
+      "type": "text",
+      "placeholder": "Chest Bust (cm)"
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "size-input"
+  }, [_c('input', {
+    staticClass: "form-control",
+    attrs: {
+      "type": "text",
+      "placeholder": "Front Length (cm)"
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "size-input"
+  }, [_c('input', {
+    staticClass: "form-control",
+    attrs: {
+      "type": "text",
+      "placeholder": "Hip (cm)"
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "size-input"
+  }, [_c('input', {
+    staticClass: "form-control",
+    attrs: {
+      "type": "text",
+      "placeholder": "Back Length (cm)"
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "size-sub"
+  }, [_c('button', {
+    staticClass: "theme-btn checkout-btn",
+    attrs: {
+      "type": "submit"
+    }
+  }, [_vm._v("Submit")])])])])])])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "accordion-heading"
+  }, [_c('h4', [_c('a', {
+    attrs: {
+      "data-toggle": "collapse",
+      "data-parent": "#shirtdesign-accordion",
+      "href": "#collapseOne"
+    }
+  }, [_c('em', [_vm._v("Collar Type ")]), _vm._v(" "), _c('i', {
+    staticClass: "indicator fa fa-angle-down pull-right"
+  })])])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "accordion-heading"
+  }, [_c('h4', [_c('a', {
+    attrs: {
+      "data-toggle": "collapse",
+      "data-parent": "#shirtdesign-accordion",
+      "href": "#collapseTwo"
+    }
+  }, [_c('em', [_vm._v("Sleeve and Cuffs")]), _vm._v(" "), _c('i', {
+    staticClass: "indicator fa fa-angle-right pull-right"
+  })])])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "accordion-heading"
+  }, [_c('h4', [_c('a', {
+    attrs: {
+      "data-toggle": "collapse",
+      "data-parent": "#shirtdesign-accordion",
+      "href": "#collapseThree"
+    }
+  }, [_c('em', [_vm._v("Pockets")]), _vm._v(" "), _c('i', {
+    staticClass: "indicator fa fa-angle-right pull-right"
+  })])])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "accordion-heading"
+  }, [_c('h4', [_c('a', {
+    attrs: {
+      "data-toggle": "collapse",
+      "data-parent": "#shirtdesign-accordion",
+      "href": "#collapseFour"
+    }
+  }, [_c('em', [_vm._v("Placket")]), _vm._v(" "), _c('i', {
+    staticClass: "indicator fa fa-angle-right pull-right"
+  })])])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "accordion-heading"
+  }, [_c('h4', [_c('a', {
+    attrs: {
+      "data-toggle": "collapse",
+      "data-parent": "#shirtdesign-accordion",
+      "href": "#collapseFive"
+    }
+  }, [_c('em', [_vm._v("Fit")]), _vm._v(" "), _c('i', {
+    staticClass: "indicator fa fa-angle-right pull-right"
+  })])])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "accordion-heading"
+  }, [_c('h4', [_c('a', {
+    attrs: {
+      "data-toggle": "collapse",
+      "data-parent": "#shirtdesign-accordion",
+      "href": "#collapseSix"
+    }
+  }, [_c('em', [_vm._v("Back")]), _vm._v(" "), _c('i', {
+    staticClass: "indicator fa fa-angle-right pull-right"
+  })])])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "accordion-heading"
+  }, [_c('h4', [_c('a', {
+    attrs: {
+      "data-toggle": "collapse",
+      "data-parent": "#shirtdesign-accordion",
+      "href": "#collapseSeven"
+    }
+  }, [_c('em', [_vm._v("Bottom")]), _vm._v(" "), _c('i', {
+    staticClass: "indicator fa fa-angle-right pull-right"
+  })])])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "accordion-heading"
+  }, [_c('h4', [_c('a', {
+    attrs: {
+      "data-toggle": "collapse",
+      "data-parent": "#shirtdesign-accordion",
+      "href": "#collapseEight"
+    }
+  }, [_c('em', [_vm._v("Zipper Types")]), _vm._v(" "), _c('i', {
+    staticClass: "indicator fa fa-angle-right pull-right"
+  })])])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "accordion-heading"
+  }, [_c('h4', [_c('a', {
+    attrs: {
+      "data-toggle": "collapse",
+      "data-parent": "#shirtdesign-accordion",
+      "href": "#collapseNine"
+    }
+  }, [_c('em', [_vm._v("Pocket hankerchief")]), _vm._v(" "), _c('i', {
+    staticClass: "indicator fa fa-angle-right pull-right"
+  })])])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "accordion-heading"
+  }, [_c('h4', [_c('a', {
+    attrs: {
+      "data-toggle": "collapse",
+      "data-parent": "#shirtdesign-accordion",
+      "href": "#collapseTen"
+    }
+  }, [_c('em', [_vm._v("Thread Colour")]), _vm._v(" "), _c('i', {
+    staticClass: "indicator fa fa-angle-right pull-right"
+  })])])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "accordion-heading"
+  }, [_c('h4', [_c('a', {
+    attrs: {
+      "data-toggle": "collapse",
+      "data-parent": "#shirtdesign-accordion",
+      "href": "#collapseEleven"
+    }
+  }, [_c('em', [_vm._v("Miscellaneous")]), _vm._v(" "), _c('i', {
+    staticClass: "indicator fa fa-angle-right pull-right"
+  })])])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "foot"
+  }, [_c('div', {
+    staticClass: "howitwork"
+  }, [_c('div', {
+    staticClass: "video-box"
+  }, [_c('img', {
+    attrs: {
+      "src": "/images/video-placeholder.jpg",
+      "alt": "image description"
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "content-box"
+  }, [_c('strong', [_vm._v("How it works?")]), _vm._v(" "), _c('p', [_vm._v("Sed ut perspiciatis unde nis iste natus error sit volupttem accum oloremq unde nis.")])])]), _vm._v(" "), _c('div', {
+    staticClass: "needhelp"
+  }, [_c('strong', [_vm._v("need help?")]), _vm._v(" "), _c('p', [_vm._v("Contact us for friendly, free help.")]), _vm._v(" "), _c('span', [_vm._v("Call: 001-234-5678")]), _vm._v(" "), _c('span', [_vm._v("Email: "), _c('a', {
+    attrs: {
+      "href": "info@domain.com"
+    }
+  }, [_vm._v("info@domain.com")])])]), _vm._v(" "), _c('div', {
+    staticClass: "likeus"
+  }, [_c('strong', [_vm._v("like us")]), _vm._v(" "), _c('ul', {
+    staticClass: "social-icon"
+  }, [_c('li', [_c('a', {
+    attrs: {
+      "href": "#"
+    }
+  }, [_c('i', {
+    staticClass: "fa fa-facebook"
+  })])]), _vm._v(" "), _c('li', [_c('a', {
+    attrs: {
+      "href": "#"
+    }
+  }, [_c('i', {
+    staticClass: "fa fa-twitter"
+  })])]), _vm._v(" "), _c('li', [_c('a', {
+    attrs: {
+      "href": "#"
+    }
+  }, [_c('i', {
+    staticClass: "fa fa-linkedin"
+  })])]), _vm._v(" "), _c('li', [_c('a', {
+    attrs: {
+      "href": "#"
+    }
+  }, [_c('i', {
+    staticClass: "fa fa-google-plus"
+  })])]), _vm._v(" "), _c('li', [_c('a', {
+    attrs: {
+      "href": "#"
+    }
+  }, [_c('i', {
+    staticClass: "fa fa-rss"
+  })])]), _vm._v(" "), _c('li', [_c('a', {
+    attrs: {
+      "href": "#"
+    }
+  }, [_c('i', {
+    staticClass: "fa fa-tumblr"
+  })])])])])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "form-heading"
+  }, [_c('a', [_vm._v("Enter your Parameters \n\n                            ")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "modal-header"
+  }, [_c('button', {
+    staticClass: "close",
+    attrs: {
+      "type": "button",
+      "data-dismiss": "modal",
+      "aria-label": "Close"
+    }
+  }, [_c('span', {
+    attrs: {
+      "aria-hidden": "true"
+    }
+  }, [_vm._v("×")])]), _vm._v(" "), _c('h4', {
+    staticClass: "modal-title"
+  }, [_vm._v("Confirm Collar Type")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "modal-header"
+  }, [_c('button', {
+    staticClass: "close",
+    attrs: {
+      "type": "button",
+      "data-dismiss": "modal",
+      "aria-label": "Close"
+    }
+  }, [_c('span', {
+    attrs: {
+      "aria-hidden": "true"
+    }
+  }, [_vm._v("×")])]), _vm._v(" "), _c('h4', {
+    staticClass: "modal-title"
+  }, [_vm._v("Confirm Sleeve and Cuff")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "modal-header"
+  }, [_c('button', {
+    staticClass: "close",
+    attrs: {
+      "type": "button",
+      "data-dismiss": "modal",
+      "aria-label": "Close"
+    }
+  }, [_c('span', {
+    attrs: {
+      "aria-hidden": "true"
+    }
+  }, [_vm._v("×")])]), _vm._v(" "), _c('h4', {
+    staticClass: "modal-title"
+  }, [_vm._v("Select Fabric")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "modal-footer"
+  }, [_c('button', {
+    staticClass: "btn btn-default",
+    attrs: {
+      "type": "button",
+      "data-dismiss": "modal"
+    }
+  }, [_vm._v("Close")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('button', {
+    staticClass: "close",
+    attrs: {
+      "type": "button",
+      "data-dismiss": "modal",
+      "aria-label": "Close"
+    }
+  }, [_c('span', {
+    attrs: {
+      "aria-hidden": "true"
+    }
+  }, [_vm._v("×")])])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-41064fea", module.exports)
+  }
+}
+
+/***/ }),
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -32547,17 +34792,43 @@ if (false) {
 }
 
 /***/ }),
-/* 41 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(32);
+var content = __webpack_require__(36);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(42)("17fe5ccf", content, false);
+var update = __webpack_require__(11)("3bc8c6bb", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-41064fea\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ShirtDesignDetails.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-41064fea\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./ShirtDesignDetails.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 47 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(37);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(11)("17fe5ccf", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -32573,228 +34844,7 @@ if(false) {
 }
 
 /***/ }),
-/* 42 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/*
-  MIT License http://www.opensource.org/licenses/mit-license.php
-  Author Tobias Koppers @sokra
-  Modified by Evan You @yyx990803
-*/
-
-var hasDocument = typeof document !== 'undefined'
-
-if (typeof DEBUG !== 'undefined' && DEBUG) {
-  if (!hasDocument) {
-    throw new Error(
-    'vue-style-loader cannot be used in a non-browser environment. ' +
-    "Use { target: 'node' } in your Webpack config to indicate a server-rendering environment."
-  ) }
-}
-
-var listToStyles = __webpack_require__(43)
-
-/*
-type StyleObject = {
-  id: number;
-  parts: Array<StyleObjectPart>
-}
-
-type StyleObjectPart = {
-  css: string;
-  media: string;
-  sourceMap: ?string
-}
-*/
-
-var stylesInDom = {/*
-  [id: number]: {
-    id: number,
-    refs: number,
-    parts: Array<(obj?: StyleObjectPart) => void>
-  }
-*/}
-
-var head = hasDocument && (document.head || document.getElementsByTagName('head')[0])
-var singletonElement = null
-var singletonCounter = 0
-var isProduction = false
-var noop = function () {}
-
-// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
-// tags it will allow on a page
-var isOldIE = typeof navigator !== 'undefined' && /msie [6-9]\b/.test(navigator.userAgent.toLowerCase())
-
-module.exports = function (parentId, list, _isProduction) {
-  isProduction = _isProduction
-
-  var styles = listToStyles(parentId, list)
-  addStylesToDom(styles)
-
-  return function update (newList) {
-    var mayRemove = []
-    for (var i = 0; i < styles.length; i++) {
-      var item = styles[i]
-      var domStyle = stylesInDom[item.id]
-      domStyle.refs--
-      mayRemove.push(domStyle)
-    }
-    if (newList) {
-      styles = listToStyles(parentId, newList)
-      addStylesToDom(styles)
-    } else {
-      styles = []
-    }
-    for (var i = 0; i < mayRemove.length; i++) {
-      var domStyle = mayRemove[i]
-      if (domStyle.refs === 0) {
-        for (var j = 0; j < domStyle.parts.length; j++) {
-          domStyle.parts[j]()
-        }
-        delete stylesInDom[domStyle.id]
-      }
-    }
-  }
-}
-
-function addStylesToDom (styles /* Array<StyleObject> */) {
-  for (var i = 0; i < styles.length; i++) {
-    var item = styles[i]
-    var domStyle = stylesInDom[item.id]
-    if (domStyle) {
-      domStyle.refs++
-      for (var j = 0; j < domStyle.parts.length; j++) {
-        domStyle.parts[j](item.parts[j])
-      }
-      for (; j < item.parts.length; j++) {
-        domStyle.parts.push(addStyle(item.parts[j]))
-      }
-      if (domStyle.parts.length > item.parts.length) {
-        domStyle.parts.length = item.parts.length
-      }
-    } else {
-      var parts = []
-      for (var j = 0; j < item.parts.length; j++) {
-        parts.push(addStyle(item.parts[j]))
-      }
-      stylesInDom[item.id] = { id: item.id, refs: 1, parts: parts }
-    }
-  }
-}
-
-function createStyleElement () {
-  var styleElement = document.createElement('style')
-  styleElement.type = 'text/css'
-  head.appendChild(styleElement)
-  return styleElement
-}
-
-function addStyle (obj /* StyleObjectPart */) {
-  var update, remove
-  var styleElement = document.querySelector('style[data-vue-ssr-id~="' + obj.id + '"]')
-
-  if (styleElement) {
-    if (isProduction) {
-      // has SSR styles and in production mode.
-      // simply do nothing.
-      return noop
-    } else {
-      // has SSR styles but in dev mode.
-      // for some reason Chrome can't handle source map in server-rendered
-      // style tags - source maps in <style> only works if the style tag is
-      // created and inserted dynamically. So we remove the server rendered
-      // styles and inject new ones.
-      styleElement.parentNode.removeChild(styleElement)
-    }
-  }
-
-  if (isOldIE) {
-    // use singleton mode for IE9.
-    var styleIndex = singletonCounter++
-    styleElement = singletonElement || (singletonElement = createStyleElement())
-    update = applyToSingletonTag.bind(null, styleElement, styleIndex, false)
-    remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true)
-  } else {
-    // use multi-style-tag mode in all other cases
-    styleElement = createStyleElement()
-    update = applyToTag.bind(null, styleElement)
-    remove = function () {
-      styleElement.parentNode.removeChild(styleElement)
-    }
-  }
-
-  update(obj)
-
-  return function updateStyle (newObj /* StyleObjectPart */) {
-    if (newObj) {
-      if (newObj.css === obj.css &&
-          newObj.media === obj.media &&
-          newObj.sourceMap === obj.sourceMap) {
-        return
-      }
-      update(obj = newObj)
-    } else {
-      remove()
-    }
-  }
-}
-
-var replaceText = (function () {
-  var textStore = []
-
-  return function (index, replacement) {
-    textStore[index] = replacement
-    return textStore.filter(Boolean).join('\n')
-  }
-})()
-
-function applyToSingletonTag (styleElement, index, remove, obj) {
-  var css = remove ? '' : obj.css
-
-  if (styleElement.styleSheet) {
-    styleElement.styleSheet.cssText = replaceText(index, css)
-  } else {
-    var cssNode = document.createTextNode(css)
-    var childNodes = styleElement.childNodes
-    if (childNodes[index]) styleElement.removeChild(childNodes[index])
-    if (childNodes.length) {
-      styleElement.insertBefore(cssNode, childNodes[index])
-    } else {
-      styleElement.appendChild(cssNode)
-    }
-  }
-}
-
-function applyToTag (styleElement, obj) {
-  var css = obj.css
-  var media = obj.media
-  var sourceMap = obj.sourceMap
-
-  if (media) {
-    styleElement.setAttribute('media', media)
-  }
-
-  if (sourceMap) {
-    // https://developer.chrome.com/devtools/docs/javascript-debugging
-    // this makes source maps inside style tags work properly in Chrome
-    css += '\n/*# sourceURL=' + sourceMap.sources[0] + ' */'
-    // http://stackoverflow.com/a/26603875
-    css += '\n/*# sourceMappingURL=data:application/json;base64,' + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + ' */'
-  }
-
-  if (styleElement.styleSheet) {
-    styleElement.styleSheet.cssText = css
-  } else {
-    while (styleElement.firstChild) {
-      styleElement.removeChild(styleElement.firstChild)
-    }
-    styleElement.appendChild(document.createTextNode(css))
-  }
-}
-
-
-/***/ }),
-/* 43 */
+/* 48 */
 /***/ (function(module, exports) {
 
 /**
@@ -32827,7 +34877,7 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
-/* 44 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43641,10 +45691,10 @@ Vue$3.compile = compileToFunctions;
 
 module.exports = Vue$3;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2), __webpack_require__(37).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2), __webpack_require__(41).setImmediate))
 
 /***/ }),
-/* 45 */
+/* 50 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -43672,11 +45722,11 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 46 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(9);
-module.exports = __webpack_require__(10);
+__webpack_require__(12);
+module.exports = __webpack_require__(13);
 
 
 /***/ })

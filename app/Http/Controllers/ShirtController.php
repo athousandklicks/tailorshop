@@ -9,27 +9,20 @@ use Auth;
 
 class ShirtController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index($order_id)
-    {
-        // $orders = Shirt::where(['order_id' => $order_id])->get();
-        // return response()->json([
-        //     'orders'    => $orders,
-        // ], 200);
-    }
+   public function __construct()
+   {
+    $this->middleware('auth');
+}
 
-    public function home($id)
-    {
-        $orders = Shirt::where(['id' => $id])->get();
-        return response()->json([
-            'orders'    => $orders,
-        ], 200);
-    }
 
+//Generate data for the Current ORDER that was created when Fabric was selected
+public function index($id)
+{
+    $orders = Shirt::where(['id' => $id])->get();
+    return response()->json([
+        'orders'    => $orders,
+    ], 200);
+}
 
     /**
      * Show the form for creating a new resource.
@@ -49,21 +42,7 @@ class ShirtController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, array(
-            'fabric' => 'required|max:255',
-            'gender' => 'required|max:255'
-        ));
 
-        $shirts = new Shirt;
-        $shirts -> fabric = $request -> fabric;
-        $shirts -> gender = $request -> gender;
-        $shirts -> fabric_status = $request -> fabric_status;
-        $shirts -> order_id = rand(1, 100000000);
-
-        $shirts -> save(); //save to the database
-
-        Session::flash('success','New Order successfully created'); //import use Session;
-        return redirect()->route('makeshirts.edit', $shirts->id);
     }
 
     /**
@@ -85,8 +64,9 @@ class ShirtController extends Controller
      */
     public function edit($id)
     {
+        //Shirt data received from fabric controller after fabric is saved to DB
         $shirts = Shirt::find($id);
-        return view('front.example', compact('shirts'));
+        return view('front.shirt-design-details', compact('shirts'));
     }
 
     /**
@@ -97,23 +77,143 @@ class ShirtController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
-     $this->validate($request, [
-        'collar' => 'required|max:255',
+    { 
+
+        $check_collar=$request->collar;
+        $check_sleeve_cuffs=$request->sleeve_cuffs;
+
+        $check_misc_item=$request->misc_item;
+        $check_misc_fabric=$request->misc_fabric;
+
+        $shirt = Shirt::find($id);
+
+        if($check_collar){
+         $this->validate($request, [
+            'collar' => 'required|max:255',
+        ]);
+         $shirt->collar = $request->input('collar');
+     }
+
+     if($check_sleeve_cuffs){
+         $this->validate($request, [
+            'sleeve_cuffs' => 'required|max:255',
+        ]);
+         $shirt->sleeve_and_cuffs = $request->input('sleeve_cuffs');
+     }
+
+
+//Check for Misc Items added
+
+     if($check_misc_item){
+
+        if($request->misc_item == 'Contrast Collar type'){
+           $this->validate($request, [
+            'misc_fabric' => 'required|max:255',
+        ]);
+           $shirt->contrast_collar = $request->input('misc_fabric');
+       }
+
+       if($request->misc_item == 'Coloured buttonholes'){
+           $this->validate($request, [
+            'misc_fabric' => 'required|max:255',
+        ]);
+           $shirt->coloured_hole_thread = $request->input('misc_fabric');
+       }
+
+       if($request->misc_item == 'Coloured button threads'){
+           $this->validate($request, [
+            'misc_fabric' => 'required|max:255',
+        ]);
+           $shirt->coloured_button_thread = $request->input('misc_fabric');
+       }
+
+       if($request->misc_item == 'Inside fabric for collar'){
+           $this->validate($request, [
+            'misc_fabric' => 'required|max:255',
+        ]);
+           $shirt->collar_inside_fabric = $request->input('misc_fabric');
+       }
+
+       if($request->misc_item == 'Contrast cuffs'){
+           $this->validate($request, [
+            'misc_fabric' => 'required|max:255',
+        ]);
+           $shirt->contrast_cuff = $request->input('misc_fabric');
+       }
+
+       if($request->misc_item == 'Inside fabric for cuff'){
+           $this->validate($request, [
+            'misc_fabric' => 'required|max:255',
+        ]);
+           $shirt->cuff_inside_fabric = $request->input('misc_fabric');
+       }
+
+       if($request->misc_item == 'Contrast Pocket'){
+           $this->validate($request, [
+            'misc_fabric' => 'required|max:255',
+        ]);
+           $shirt->contrast_pocket = $request->input('misc_fabric');
+       }
+
+       if($request->misc_item == 'Contrast Pocket Flap'){
+           $this->validate($request, [
+            'misc_fabric' => 'required|max:255',
+        ]);
+           $shirt->contrast_pocket_flap = $request->input('misc_fabric');
+       }
+
+       if($request->misc_item == 'Epaulettes'){
+           $this->validate($request, [
+            'misc_fabric' => 'required|max:255',
+        ]);
+           $shirt->epaulettes = $request->input('misc_fabric');
+       }
+
+       if($request->misc_item == 'Inside Placket Lining Buttonhole Side'){
+           $this->validate($request, [
+            'misc_fabric' => 'required|max:255',
+        ]);
+           $shirt->inside_placket_botton_hole = $request->input('misc_fabric');
+       }
+
+       if($request->misc_item == 'Inside Placket Lining Buttons Side'){
+           $this->validate($request, [
+            'misc_fabric' => 'required|max:255',
+        ]);
+           $shirt->inside_placket_botton = $request->input('misc_fabric');
+       }
+
+       if($request->misc_item == 'Tuxedo'){
+           $this->validate($request, [
+            'misc_fabric' => 'required|max:255',
+        ]);
+           $shirt->tuxedo = $request->input('misc_fabric');
+       }
+
+       if($request->misc_item == 'Back split'){
+         $this->validate($request, [
+            'misc_item' => 'required|max:255',
+        ]);
+         $shirt->back_split = $request->input('misc_item');
+     }
+
+     if($request->misc_item == 'Button on the Back Height Collar'){
+       $this->validate($request, [
+        'misc_item' => 'required|max:255',
     ]);
+       $shirt->button_on_back = $request->input('misc_item');
+   }
 
-    $shirt = Shirt::find($id);
+   }       
 
 
-    // $shirt->collar = request('collar');
-     $shirt->collar = $request->input('collar');
+   $shirt->save();
 
-     $shirt->save();
-
-     return response()->json([
-        'message' => 'Task updated successfully!'
-    ], 200);
- }
+   return response()->json([
+    // 'message' => 'Added Successfully!'
+    'message' => $request->misc_item.' Successfully Added'
+], 200);
+}
 
     /**
      * Remove the specified resource from storage.

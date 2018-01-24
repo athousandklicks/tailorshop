@@ -50,6 +50,8 @@
                                     <label><em><a href="{{route('bottom.index')}}">Add Bottom Type</a></em>
                                     </label>
                                     <label><em><a href="{{route('placket.index')}}">Add Placket Type</a></em>
+                                    </label> 
+                                    <label><em><a href="{{route('misc.index')}}">Add Miscellaneous Item</a></em>
                                     </label>                 
                                 </div>
                             </div>

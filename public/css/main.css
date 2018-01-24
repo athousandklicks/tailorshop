@@ -2787,7 +2787,7 @@ product-slider{ position:relative;}
 .shirtdesign-accordion .panel a em{float:left;}
 .shirtdesign-accordion .panel a:hover{ color:#23232d !important;}
 .shirtdesign-form{
-	overflow:hidden;
+
 	list-style:none;
 }
 .shirtdesign-form ul li{
@@ -3429,6 +3429,12 @@ padding-bottom: 20px;
 
 .orderlist li span{
 	font-weight: 600;
+}
+
+.size-sub{
+	width: 50%;
+	padding-top: 20px;
+	padding-bottom: 10px;
 }
 
 
